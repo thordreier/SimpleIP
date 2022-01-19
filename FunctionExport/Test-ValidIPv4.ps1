@@ -26,17 +26,21 @@ function Test-ValidIPv4
         [System.Management.Automation.SwitchParameter]
         $IpOnly,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'Subnet')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Mask')]
         [System.Management.Automation.SwitchParameter]
-        $Subnet,
+        $Mask,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'AllowSubnet')]
+        [Parameter(ParameterSetName = 'Mask')]
         [System.Management.Automation.SwitchParameter]
-        $AllowSubnet,
+        $AllowBits,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'RequireSubnet')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'AllowMask')]
         [System.Management.Automation.SwitchParameter]
-        $RequireSubnet
+        $AllowMask,
+
+        [Parameter(Mandatory = $true, ParameterSetName = 'RequireMask')]
+        [System.Management.Automation.SwitchParameter]
+        $RequireMask
     )
 
     begin
@@ -58,16 +62,18 @@ function Test-ValidIPv4
             $i = '(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)'
             $s = '(((255\.){3}(255|254|252|248|240|224|192|128|0+))|((255\.){2}(255|254|252|248|240|224|192|128|0+)\.0)|((255\.)(255|254|252|248|240|224|192|128|0+)(\.0+){2})|((255|254|252|248|240|224|192|128|0+)(\.0+){3}))'
             $b = '[0-9]|[12][0-9]|3[0-2]'
-            $matchIp     = "^($i)$"
-            $matchSubnet = "^($s)$"
-            $matchAll    = "^($i)[/ ](($s)|($b))$"
+            $matchIp          = "^($i)$"
+            $matchMask        = "^($s)$"
+            $matchMaskAndBits = "^(($s)|($b))$"
+            $matchAll         = "^($i)[/ ](($s)|($b))$"
 
             (
-                ($PSCmdlet.ParameterSetName -eq 'IpOnly'        -and $Ip -match $matchIp    ) -or
-                ($PSCmdlet.ParameterSetName -eq 'Subnet'        -and $Ip -match $matchSubnet) -or
-                ($PSCmdlet.ParameterSetName -eq 'AllowSubnet'   -and $Ip -match $matchIp    ) -or
-                ($PSCmdlet.ParameterSetName -eq 'AllowSubnet'   -and $Ip -match $matchAll   ) -or
-                ($PSCmdlet.ParameterSetName -eq 'RequireSubnet' -and $Ip -match $matchAll   )
+                ($PSCmdlet.ParameterSetName -eq 'IpOnly'        -and $Ip -match $matchIp                            ) -or
+                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMask        -and -not $AllowBits) -or
+                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMaskAndBits -and $AllowBits     ) -or
+                ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $Ip -match $matchIp                              ) -or
+                ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $Ip -match $matchAll                             ) -or
+                ($PSCmdlet.ParameterSetName -eq 'RequireMask' -and $Ip -match $matchAll                             )
             )
         }
         catch
