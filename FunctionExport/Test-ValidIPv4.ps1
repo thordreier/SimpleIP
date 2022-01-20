@@ -32,7 +32,7 @@ function Test-ValidIPv4
 
         [Parameter(ParameterSetName = 'Mask')]
         [System.Management.Automation.SwitchParameter]
-        $AllowBits,
+        $AllowLength,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'AllowMask')]
         [System.Management.Automation.SwitchParameter]
@@ -62,18 +62,18 @@ function Test-ValidIPv4
             $i = '(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)'
             $s = '(((255\.){3}(255|254|252|248|240|224|192|128|0+))|((255\.){2}(255|254|252|248|240|224|192|128|0+)\.0)|((255\.)(255|254|252|248|240|224|192|128|0+)(\.0+){2})|((255|254|252|248|240|224|192|128|0+)(\.0+){3}))'
             $b = '[0-9]|[12][0-9]|3[0-2]'
-            $matchIp          = "^($i)$"
-            $matchMask        = "^($s)$"
-            $matchMaskAndBits = "^(($s)|($b))$"
-            $matchAll         = "^($i)[/ ](($s)|($b))$"
+            $matchIp            = "^($i)$"
+            $matchMask          = "^($s)$"
+            $matchMaskAndLength = "^(($s)|($b))$"
+            $matchAll           = "^($i)[/ ](($s)|($b))$"
 
             (
-                ($PSCmdlet.ParameterSetName -eq 'IpOnly'        -and $Ip -match $matchIp                            ) -or
-                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMask        -and -not $AllowBits) -or
-                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMaskAndBits -and $AllowBits     ) -or
-                ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $Ip -match $matchIp                              ) -or
-                ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $Ip -match $matchAll                             ) -or
-                ($PSCmdlet.ParameterSetName -eq 'RequireMask' -and $Ip -match $matchAll                             )
+                ($PSCmdlet.ParameterSetName -eq 'IpOnly'      -and $Ip -match $matchIp                                  ) -or
+                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMask          -and -not $AllowLength) -or
+                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMaskAndLength -and $AllowLength     ) -or
+                ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $Ip -match $matchIp                                  ) -or
+                ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $Ip -match $matchAll                                 ) -or
+                ($PSCmdlet.ParameterSetName -eq 'RequireMask' -and $Ip -match $matchAll                                 )
             )
         }
         catch

@@ -16,8 +16,8 @@ function Convert-Ipv4Mask
 
     [OutputType([System.String], ParameterSetName = 'Default')]
     [OutputType([System.String], ParameterSetName = 'QuadDot')]
-    [OutputType([System.Byte]  , ParameterSetName = 'Bits')]
-    [OutputType([System.String], ParameterSetName = 'BitsWithSlash')]
+    [OutputType([System.Byte]  , ParameterSetName = 'Length')]
+    [OutputType([System.String], ParameterSetName = 'LengthWithSlash')]
     [OutputType([System.UInt32], ParameterSetName = 'Integer')]
     [OutputType([System.String], ParameterSetName = 'Binary')]
 
@@ -32,13 +32,13 @@ function Convert-Ipv4Mask
         [System.Management.Automation.SwitchParameter]
         $QuadDot,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'Bits')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'Length')]
         [System.Management.Automation.SwitchParameter]
-        $Bits,
+        $Length,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'BitsWithSlash')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'LengthWithSlash')]
         [System.Management.Automation.SwitchParameter]
-        $BitsWithSlash,
+        $LengthWithSlash,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'Integer')]
         [System.Management.Automation.SwitchParameter]
@@ -88,17 +88,17 @@ function Convert-Ipv4Mask
 
             if (($output = $PSCmdlet.ParameterSetName) -eq 'Default')
             {
-                $output = if ($quadDotInput) {'BitsWithSlash'} else {'QuadDot'}
+                $output = if ($quadDotInput) {'LengthWithSlash'} else {'QuadDot'}
             }
 
             # Return
             switch ($output)
             {
-                'QuadDot'       {$i | Convert-IPv4Address}
-                'Bits'          {[System.Byte] [regex]::Matches(($i | Convert-IPv4Address -Binary), '1').Count}
-                'BitsWithSlash' {'/' + [regex]::Matches(($i | Convert-IPv4Address -Binary), '1').Count}
-                'Integer'       {$i}
-                'Binary'        {$i | Convert-IPv4Address -Binary}
+                'QuadDot'         {$i | Convert-IPv4Address}
+                'Length'          {[System.Byte] [regex]::Matches(($i | Convert-IPv4Address -Binary), '1').Count}
+                'LengthWithSlash' {'/' + [regex]::Matches(($i | Convert-IPv4Address -Binary), '1').Count}
+                'Integer'         {$i}
+                'Binary'          {$i | Convert-IPv4Address -Binary}
             }
         }
         catch
