@@ -1,4 +1,4 @@
-function Convert-Ipv4Mask
+function Convert-IPv4Mask
 {
     <#
         .SYNOPSIS

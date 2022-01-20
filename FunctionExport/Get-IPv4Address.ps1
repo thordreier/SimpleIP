@@ -121,13 +121,13 @@ function Get-IPv4Address
             }
             else
             {
-                $Mask = $Mask | Convert-Ipv4Mask -Length
+                $Mask = $Mask | Convert-IPv4Mask -Length
             }
 
             if (-not (Test-ValidIPv4 -Ip $Ip))
             {
                 ($Ip, $m) = $Ip -split '[/ ]'
-                $m = $m | Convert-Ipv4Mask -Length
+                $m = $m | Convert-IPv4Mask -Length
                 if ($Mask -eq '')
                 {
                     $Mask = $m
@@ -138,8 +138,8 @@ function Get-IPv4Address
                 }
             }
 
-            [System.String] $maskQuadDot  = $Mask | Convert-Ipv4Mask -QuadDot
-            [System.UInt32] $maskInt      = $Mask | Convert-Ipv4Mask -Integer
+            [System.String] $maskQuadDot  = $Mask | Convert-IPv4Mask -QuadDot
+            [System.UInt32] $maskInt      = $Mask | Convert-IPv4Mask -Integer
             [System.UInt32] $ipInt        = $Ip | Convert-IPv4Address -Integer
             [System.UInt32] $subnetInt    = $ipInt -band $maskInt
             [System.UInt32] $broadcastInt = $ipInt -bor (-bnot $maskInt)

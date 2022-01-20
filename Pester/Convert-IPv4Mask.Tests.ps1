@@ -1,8 +1,8 @@
-# Invoke-Pester -Path .\Pester\Convert-Ipv4Mask.Tests.ps1 -Output Detailed
-Describe 'Convert-Ipv4Mask' {
+# Invoke-Pester -Path .\Pester\Convert-IPv4Mask.Tests.ps1 -Output Detailed
+Describe 'Convert-IPv4Mask' {
 
     It 'Positional argmuent' {
-        $r = Convert-Ipv4Mask 255.255.0.0 -ErrorAction Stop
+        $r = Convert-IPv4Mask 255.255.0.0 -ErrorAction Stop
         $r | Should -BeOfType 'System.String'
         $r | Should -Be '/16'
     }
@@ -44,212 +44,212 @@ Describe 'Convert-Ipv4Mask' {
             @{Mask = '255.255.255.255' ; Length = 32 ; Int = 4294967295 ; Bin = '11111111111111111111111111111111' ; Hex = 'FFFFFFFF'}
         )
 
-        It 'Convert-Ipv4Mask -Mask <Mask> == /<Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Mask <Mask> == /<Length>' -TestCases $testCases1 {
             param ($Mask, $Length)
-            $r = Convert-Ipv4Mask -Mask $Mask -ErrorAction Stop
+            $r = Convert-IPv4Mask -Mask $Mask -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be "/$Length"
         }
 
-        It 'Convert-Ipv4Mask -QuadDot -Mask <Mask> == <Mask>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -QuadDot -Mask <Mask> == <Mask>' -TestCases $testCases1 {
             param ($Mask)
-            $r = Convert-Ipv4Mask -QuadDot -Mask $Mask -ErrorAction Stop
+            $r = Convert-IPv4Mask -QuadDot -Mask $Mask -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-Ipv4Mask -Length -Mask <Mask> == <Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Length -Mask <Mask> == <Length>' -TestCases $testCases1 {
             param ($Mask, $Length)
-            $r = Convert-Ipv4Mask -Length -Mask $Mask -ErrorAction Stop
+            $r = Convert-IPv4Mask -Length -Mask $Mask -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Length
         }
 
-        It 'Convert-Ipv4Mask -LengthWithSlash -Mask <Mask> == /<Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -LengthWithSlash -Mask <Mask> == /<Length>' -TestCases $testCases1 {
             param ($Mask, $Length)
-            $r = Convert-Ipv4Mask -LengthWithSlash -Mask $Mask -ErrorAction Stop
+            $r = Convert-IPv4Mask -LengthWithSlash -Mask $Mask -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be "/$Length"
         }
 
-        It 'Convert-Ipv4Mask -Integer -Mask <Mask> == <Int>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Integer -Mask <Mask> == <Int>' -TestCases $testCases1 {
             param ($Mask, $Int)
-            $r = Convert-Ipv4Mask -Integer -Mask $Mask -ErrorAction Stop
+            $r = Convert-IPv4Mask -Integer -Mask $Mask -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             $r | Should -Be $Int
         }
 
-        It 'Convert-Ipv4Mask -Binary -Mask <Mask> == <Bin>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Binary -Mask <Mask> == <Bin>' -TestCases $testCases1 {
             param ($Mask, $Bin)
-            $r = Convert-Ipv4Mask -Binary -Mask $Mask -ErrorAction Stop
+            $r = Convert-IPv4Mask -Binary -Mask $Mask -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
 
-        It 'Convert-Ipv4Mask -Mask <Length> == <Mask>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Mask <Length> == <Mask>' -TestCases $testCases1 {
             param ($Length, $Mask)
-            $r = Convert-Ipv4Mask -Mask $Length -ErrorAction Stop
+            $r = Convert-IPv4Mask -Mask $Length -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-Ipv4Mask -QuadDot -Mask <Length> == <Mask>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -QuadDot -Mask <Length> == <Mask>' -TestCases $testCases1 {
             param ($Length, $Mask)
-            $r = Convert-Ipv4Mask -QuadDot -Mask $Length -ErrorAction Stop
+            $r = Convert-IPv4Mask -QuadDot -Mask $Length -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-Ipv4Mask -Length -Mask <Length> == <Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Length -Mask <Length> == <Length>' -TestCases $testCases1 {
             param ($Length)
-            $r = Convert-Ipv4Mask -Length -Mask $Length -ErrorAction Stop
+            $r = Convert-IPv4Mask -Length -Mask $Length -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Length
         }
 
-        It 'Convert-Ipv4Mask -LengthWithSlash -Mask <Length> == /<Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -LengthWithSlash -Mask <Length> == /<Length>' -TestCases $testCases1 {
             param ($Length)
-            $r = Convert-Ipv4Mask -LengthWithSlash -Mask $Length -ErrorAction Stop
+            $r = Convert-IPv4Mask -LengthWithSlash -Mask $Length -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be "/$Length"
         }
 
-        It 'Convert-Ipv4Mask -Integer -Mask <Length> == <Int>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Integer -Mask <Length> == <Int>' -TestCases $testCases1 {
             param ($Length, $Int)
-            $r = Convert-Ipv4Mask -Integer -Mask $Length -ErrorAction Stop
+            $r = Convert-IPv4Mask -Integer -Mask $Length -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             $r | Should -Be $Int
         }
 
-        It 'Convert-Ipv4Mask -Binary -Mask <Length> == <Bin>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Binary -Mask <Length> == <Bin>' -TestCases $testCases1 {
             param ($Length, $Bin)
-            $r = Convert-Ipv4Mask -Binary -Mask $Length -ErrorAction Stop
+            $r = Convert-IPv4Mask -Binary -Mask $Length -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
 
-        It 'Convert-Ipv4Mask -Mask /<Length> == <Mask>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Mask /<Length> == <Mask>' -TestCases $testCases1 {
             param ($Length, $Mask)
-            $r = Convert-Ipv4Mask -Mask "/$Length" -ErrorAction Stop
+            $r = Convert-IPv4Mask -Mask "/$Length" -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-Ipv4Mask -QuadDot -Mask /<Length> == <Mask>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -QuadDot -Mask /<Length> == <Mask>' -TestCases $testCases1 {
             param ($Length, $Mask)
-            $r = Convert-Ipv4Mask -QuadDot -Mask "/$Length" -ErrorAction Stop
+            $r = Convert-IPv4Mask -QuadDot -Mask "/$Length" -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-Ipv4Mask -Length -Mask /<Length> == <Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Length -Mask /<Length> == <Length>' -TestCases $testCases1 {
             param ($Length)
-            $r = Convert-Ipv4Mask -Length -Mask "/$Length" -ErrorAction Stop
+            $r = Convert-IPv4Mask -Length -Mask "/$Length" -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Length
         }
 
-        It 'Convert-Ipv4Mask -LengthWithSlash -Mask /<Length> == /<Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -LengthWithSlash -Mask /<Length> == /<Length>' -TestCases $testCases1 {
             param ($Length)
-            $r = Convert-Ipv4Mask -LengthWithSlash -Mask "/$Length" -ErrorAction Stop
+            $r = Convert-IPv4Mask -LengthWithSlash -Mask "/$Length" -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be "/$Length"
         }
 
-        It 'Convert-Ipv4Mask -Integer -Mask /<Length> == <Int>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Integer -Mask /<Length> == <Int>' -TestCases $testCases1 {
             param ($Length, $Int)
-            $r = Convert-Ipv4Mask -Integer -Mask "/$Length" -ErrorAction Stop
+            $r = Convert-IPv4Mask -Integer -Mask "/$Length" -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             $r | Should -Be $Int
         }
 
-        It 'Convert-Ipv4Mask -Binary -Mask /<Length> == <Bin>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Binary -Mask /<Length> == <Bin>' -TestCases $testCases1 {
             param ($Length, $Bin)
-            $r = Convert-Ipv4Mask -Binary -Mask "/$Length" -ErrorAction Stop
+            $r = Convert-IPv4Mask -Binary -Mask "/$Length" -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
 
-        It 'Convert-Ipv4Mask -Mask <Int> == <Mask>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Mask <Int> == <Mask>' -TestCases $testCases1 {
             param ($Int, $Mask)
-            $r = Convert-Ipv4Mask -Mask $Int -ErrorAction Stop
+            $r = Convert-IPv4Mask -Mask $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-Ipv4Mask -QuadDot -Mask <Int> == <Mask>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -QuadDot -Mask <Int> == <Mask>' -TestCases $testCases1 {
             param ($Int, $Mask)
-            $r = Convert-Ipv4Mask -QuadDot -Mask $Int -ErrorAction Stop
+            $r = Convert-IPv4Mask -QuadDot -Mask $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-Ipv4Mask -Length -Mask <Int> == <Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Length -Mask <Int> == <Length>' -TestCases $testCases1 {
             param ($Int, $Length)
-            $r = Convert-Ipv4Mask -Length -Mask $Int -ErrorAction Stop
+            $r = Convert-IPv4Mask -Length -Mask $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Length
         }
 
-        It 'Convert-Ipv4Mask -LengthWithSlash -Mask <Int> == /<Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -LengthWithSlash -Mask <Int> == /<Length>' -TestCases $testCases1 {
             param ($Int, $Length)
-            $r = Convert-Ipv4Mask -LengthWithSlash -Mask $Int -ErrorAction Stop
+            $r = Convert-IPv4Mask -LengthWithSlash -Mask $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be "/$Length"
         }
 
-        It 'Convert-Ipv4Mask -Integer -Mask <Int> == <Int>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Integer -Mask <Int> == <Int>' -TestCases $testCases1 {
             param ($Int)
-            $r = Convert-Ipv4Mask -Integer -Mask $Int -ErrorAction Stop
+            $r = Convert-IPv4Mask -Integer -Mask $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             $r | Should -Be $Int
         }
 
-        It 'Convert-Ipv4Mask -Binary -Mask <Int> == <Bin>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Binary -Mask <Int> == <Bin>' -TestCases $testCases1 {
             param ($Int, $Bin)
-            $r = Convert-Ipv4Mask -Binary -Mask $Int -ErrorAction Stop
+            $r = Convert-IPv4Mask -Binary -Mask $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
 
-        It 'Convert-Ipv4Mask -Mask <Bin> == <Mask>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Mask <Bin> == <Mask>' -TestCases $testCases1 {
             param ($Bin, $Length)
-            $r = Convert-Ipv4Mask -Mask $Bin -ErrorAction Stop
+            $r = Convert-IPv4Mask -Mask $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-Ipv4Mask -QuadDot -Mask <Bin> == <Mask>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -QuadDot -Mask <Bin> == <Mask>' -TestCases $testCases1 {
             param ($Bin, $Mask)
-            $r = Convert-Ipv4Mask -QuadDot -Mask $Bin -ErrorAction Stop
+            $r = Convert-IPv4Mask -QuadDot -Mask $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-Ipv4Mask -Length -Mask <Bin> == <Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Length -Mask <Bin> == <Length>' -TestCases $testCases1 {
             param ($Bin, $Length)
-            $r = Convert-Ipv4Mask -Length -Mask $Bin -ErrorAction Stop
+            $r = Convert-IPv4Mask -Length -Mask $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Length
         }
 
-        It 'Convert-Ipv4Mask -LengthWithSlash -Mask <Bin> == /<Length>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -LengthWithSlash -Mask <Bin> == /<Length>' -TestCases $testCases1 {
             param ($Bin, $Length)
-            $r = Convert-Ipv4Mask -LengthWithSlash -Mask $Bin -ErrorAction Stop
+            $r = Convert-IPv4Mask -LengthWithSlash -Mask $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be "/$Length"
         }
 
-        It 'Convert-Ipv4Mask -Integer -Mask <Bin> == <Int>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Integer -Mask <Bin> == <Int>' -TestCases $testCases1 {
             param ($Bin, $Int)
-            $r = Convert-Ipv4Mask -Integer -Mask $Bin -ErrorAction Stop
+            $r = Convert-IPv4Mask -Integer -Mask $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             $r | Should -Be $Int
         }
 
-        It 'Convert-Ipv4Mask -Binary -Mask <Bin> == <Bin>' -TestCases $testCases1 {
+        It 'Convert-IPv4Mask -Binary -Mask <Bin> == <Bin>' -TestCases $testCases1 {
             param ($Bin)
-            $r = Convert-Ipv4Mask -Binary -Mask $Bin -ErrorAction Stop
+            $r = Convert-IPv4Mask -Binary -Mask $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
@@ -258,44 +258,44 @@ Describe 'Convert-Ipv4Mask' {
     Context TestCasesBackAndForth1 {
         $testCasesBackAndForth1 = (0..32).ForEach({@{Mask = $_}})
 
-        It '<Mask> | Convert-Ipv4Mask | Convert-Ipv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
+        It '<Mask> | Convert-IPv4Mask | Convert-IPv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
             param ($Mask)
-            $r = $Mask | Convert-Ipv4Mask -ErrorAction Stop | Convert-Ipv4Mask -Length -ErrorAction Stop
+            $r = $Mask | Convert-IPv4Mask -ErrorAction Stop | Convert-IPv4Mask -Length -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Mask
         }
 
-        It '<Mask> | Convert-Ipv4Mask -QuadDot | Convert-Ipv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
+        It '<Mask> | Convert-IPv4Mask -QuadDot | Convert-IPv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
             param ($Mask)
-            $r = $Mask | Convert-Ipv4Mask -QuadDot -ErrorAction Stop | Convert-Ipv4Mask -Length -ErrorAction Stop
+            $r = $Mask | Convert-IPv4Mask -QuadDot -ErrorAction Stop | Convert-IPv4Mask -Length -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Mask
         }
 
-        It '<Mask> | Convert-Ipv4Mask -Length | Convert-Ipv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
+        It '<Mask> | Convert-IPv4Mask -Length | Convert-IPv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
             param ($Mask)
-            $r = $Mask | Convert-Ipv4Mask -Length -ErrorAction Stop | Convert-Ipv4Mask -Length -ErrorAction Stop
+            $r = $Mask | Convert-IPv4Mask -Length -ErrorAction Stop | Convert-IPv4Mask -Length -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Mask
         }
 
-        It '<Mask> | Convert-Ipv4Mask -LengthWithSlash | Convert-Ipv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
+        It '<Mask> | Convert-IPv4Mask -LengthWithSlash | Convert-IPv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
             param ($Mask)
-            $r = $Mask | Convert-Ipv4Mask -LengthWithSlash -ErrorAction Stop | Convert-Ipv4Mask -Length -ErrorAction Stop
+            $r = $Mask | Convert-IPv4Mask -LengthWithSlash -ErrorAction Stop | Convert-IPv4Mask -Length -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Mask
         }
 
-        It '<Mask> | Convert-Ipv4Mask -Integer | Convert-Ipv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
+        It '<Mask> | Convert-IPv4Mask -Integer | Convert-IPv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
             param ($Mask)
-            $r = $Mask | Convert-Ipv4Mask -Integer -ErrorAction Stop | Convert-Ipv4Mask -Length -ErrorAction Stop
+            $r = $Mask | Convert-IPv4Mask -Integer -ErrorAction Stop | Convert-IPv4Mask -Length -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Mask
         }
 
-        It '<Mask> | Convert-Ipv4Mask -Binary | Convert-Ipv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
+        It '<Mask> | Convert-IPv4Mask -Binary | Convert-IPv4Mask -Length == <Result>' -TestCases $testCasesBackAndForth1 {
             param ($Mask)
-            $r = $Mask | Convert-Ipv4Mask -Binary -ErrorAction Stop | Convert-Ipv4Mask -Length -ErrorAction Stop
+            $r = $Mask | Convert-IPv4Mask -Binary -ErrorAction Stop | Convert-IPv4Mask -Length -ErrorAction Stop
             $r | Should -BeOfType 'System.Byte'
             $r | Should -Be $Mask
         }
@@ -309,9 +309,9 @@ Describe 'Convert-Ipv4Mask' {
             @{Mask = 'abc'         ; Throw = '*is not a valid subnet mask*'}
         )
 
-        It 'Convert-Ipv4Mask -Mask <Mask>  (throw)' -TestCases $testCasesThrow1 {
+        It 'Convert-IPv4Mask -Mask <Mask>  (throw)' -TestCases $testCasesThrow1 {
             param ($Mask, $Throw)
-            {Convert-Ipv4Mask -Mask $Mask -ErrorAction Stop} | Should -Throw $Throw
+            {Convert-IPv4Mask -Mask $Mask -ErrorAction Stop} | Should -Throw $Throw
         }
     }
 }
