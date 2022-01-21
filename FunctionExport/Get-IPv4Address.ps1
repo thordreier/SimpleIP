@@ -2,16 +2,91 @@ function Get-IPv4Address
 {
     <#
         .SYNOPSIS
-            xxx
+            Get IP subnet, mask, broadcast for an IP address
 
         .DESCRIPTION
-            xxx
+            Get IP subnet, mask, broadcast for an IP address
 
-        .PARAMETER xxx
-            xxx
+        .PARAMETER Ip
+            Input IP in quad dot format with subnet mask, either:
+            - IP + mask in quad dot, eg. "127.0.0.1 255.0.0.0"
+            - IP + mask length,      eg. "127.0.0.1/8"
+            If input is IP without subnet mask (eg. "127.0.0.1") then -Mask parameter must be set
+
+        .PARAMETER Mask
+            If input IP is in format without subnet mask, this parameter must be set to either
+            - Quad dot format,        eg. "255.255.255.0"
+            - Mask length (0-32),     eg. "24"
+            - Mask length with slash, eg. "/24"
+
+        .PARAMETER Subnet
+            Return subnet
+            If input is "10.11.12.13/24", then "10.11.12.0/24" is returned
+
+        .PARAMETER Broadcast
+            Return broadcast
+            If input is "10.11.12.13/24", then "10.11.12.255/24" is returned
+
+        .PARAMETER First
+            Return first usable IP in subnet
+            If input is "10.11.12.13/24", then "10.11.12.1/24" is returned
+
+        .PARAMETER Last
+            Return last usable IP in subnet
+            If input is "10.11.12.13/24", then "10.11.12.254/24" is returned
+
+        .PARAMETER All
+            Return all usable IPs in subnet
+            If input is "10.11.12.13/24", then an array with IP addresses from "10.11.12.1/24" to "10.11.12.254/24" is returned
+
+        .PARAMETER Pool
+            Treat subnet and broadcast adddresses as usable
+            First IP will be same as subnet and last IP will be the same as broadcast
+
+        .PARAMETER WithMaskLength
+            Return in "127.0.0.1/8" format
+            This is default output
+
+        .PARAMETER WithMask
+            Return in "127.0.0.1 255.0.0.0" format
+
+        .PARAMETER IpOnly
+            Return in "127.0.0.1" format
+
+        .PARAMETER MaskQuadDotOnly
+            Only return subnet mask in "255.0.0.0" format
+
+        .PARAMETER MaskLengthOnly
+            Only return subnet mask in "8" format
+
+        .PARAMETER MaskLengthWithSlashOnly
+            Only return subnet mask in "/8" format
+
+        .PARAMETER Info
+            Return object with different info
 
         .EXAMPLE
-            xxx
+            Get-IPv4Address -Ip 127.0.0.1/8 -Subnet
+            127.0.0.0/24
+
+        .EXAMPLE
+            Get-IPv4Address -Ip 127.0.0.1/8 -Broadcast -WithMask
+            127.255.255.255 255.0.0.0
+
+        .EXAMPLE
+            Get-IPv4Address -Ip 10.100.200.201 -Mask /30 -All -WithMask
+            10.100.200.201 255.255.255.252
+            10.100.200.202 255.255.255.252
+
+        .EXAMPLE
+            Get-IPv4Address -Ip 192.168.0.150/255.255.255.128 -Info
+            IP          : 192.168.0.150
+            Subnet      : 192.168.0.128
+            FirstIP     : 192.168.0.129
+            LastIP      : 192.168.0.254
+            Broadcast   : 192.168.0.255
+            MaskQuadDot : 255.255.255.128
+            MaskLength  : 25
     #>
 
     [OutputType([System.String])]

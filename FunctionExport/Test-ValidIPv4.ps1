@@ -2,16 +2,86 @@ function Test-ValidIPv4
 {
     <#
         .SYNOPSIS
-            xxx
+            Test if a string contains a valid IP address
 
         .DESCRIPTION
-            xxx
+            Test if a string contains a valid IP address
+            Uses regex to test
+            Returns [bool]
 
-        .PARAMETER xxx
-            xxx
+        .PARAMETER Ip
+            IP address (or subnet mask) to test is valid or not
+
+        .PARAMETER IpOnly
+            Only return True if input is valid IPv4 in quad dot format (without subnet mask)
+            Eg. "127.0.0.1"
+            This is default
+
+        .PARAMETER Mask
+            Only return True if input is valid IPv4 subnet mask in quad dot format
+            Eg. "255.255.255.0"
+
+        .PARAMETER AllowLength
+            Used along with -Mask
+            Only return true if input is subnet mask in:
+            - Quad dot format,        eg. "255.255.255.0"
+            - Mask length (0-32),     eg. "24"
+            - Mask length with slash, eg. "/24"
+
+        .PARAMETER AllowMask
+            Return true if input is either
+            - IP in quad dot,        eg. "127.0.0.1"
+            - IP + mask in quad dot, eg. "127.0.0.1 255.0.0.0"
+            - IP + mask length,      eg. "127.0.0.1/8"
+
+        .PARAMETER RequireMask
+            Return true if input is IP with mask, either
+            - IP + mask in quad dot, eg. "127.0.0.1 255.0.0.0"
+            - IP + mask length,      eg. "127.0.0.1/8"
 
         .EXAMPLE
-            xxx
+            Test-ValidIPv4 -Ip 127.0.0.1
+            True
+
+        .EXAMPLE
+            Test-ValidIPv4 -Ip 127.0.0.256
+            False
+
+        .EXAMPLE
+            Test-ValidIPv4 -Ip 127.0.0.1/32
+            False
+
+        .EXAMPLE
+            Test-ValidIPv4 -Ip 127.0.0.1/32 -AllowMask
+            True
+
+        .EXAMPLE
+            Test-ValidIPv4 -Ip "127.0.0.1 255.255.255.255" -AllowMask
+            True
+
+        .EXAMPLE
+            Test-ValidIPv4 -Ip 127.0.0.1 -RequireMask
+            False
+
+        .EXAMPLE
+            Test-ValidIPv4 -Ip 255.255.0.0 -Mask
+            True
+
+        .EXAMPLE
+            Test-ValidIPv4 -Ip 255.0.255.0 -Mask
+            False
+
+        .EXAMPLE
+            Test-ValidIPv4 -Ip 32 -Mask
+            False
+
+        .EXAMPLE
+            Test-ValidIPv4 -Ip 32 -Mask -AllowLength
+            True
+
+        .EXAMPLE
+            Test-ValidIPv4 -Ip /32 -Mask -AllowLength
+            True
     #>
 
     [OutputType([System.Boolean])]
@@ -64,13 +134,13 @@ function Test-ValidIPv4
             $b = '[0-9]|[12][0-9]|3[0-2]'
             $matchIp            = "^($i)$"
             $matchMask          = "^($s)$"
-            $matchMaskAndLength = "^(($s)|($b))$"
+            $matchMaskAndLength = "^(($s)|(/?($b)))$"
             $matchAll           = "^($i)[/ ](($s)|($b))$"
 
             (
                 ($PSCmdlet.ParameterSetName -eq 'IpOnly'      -and $Ip -match $matchIp                                  ) -or
                 ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMask          -and -not $AllowLength) -or
-                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMaskAndLength -and $AllowLength     ) -or
+                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMaskAndLength -and      $AllowLength) -or
                 ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $Ip -match $matchIp                                  ) -or
                 ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $Ip -match $matchAll                                 ) -or
                 ($PSCmdlet.ParameterSetName -eq 'RequireMask' -and $Ip -match $matchAll                                 )

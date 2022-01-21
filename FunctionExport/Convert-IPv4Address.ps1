@@ -2,27 +2,57 @@ function Convert-IPv4Address
 {
     <#
         .SYNOPSIS
-            xxx
+            Convert IP address between formats
 
         .DESCRIPTION
-            xxx
+            Convert IP address between formats
 
-        .PARAMETER xxx
-            xxx
+        .PARAMETER Ip
+            Input IP is either:
+            - Quad dot (without mask) eg. "192.168.1.2"
+            - Integer (uint32)        eg. 3232235778
+            - Binary (32 long string) eg. "11000000101010000000000100000010"
+
+        .PARAMETER QuadDot
+            Output in quad dot format, eg. "192.168.1.2"
+            This is default output
+
+        .PARAMETER Integer
+            Output integer (uint32), eg 3232235778
+
+        .PARAMETER Binary
+            Output in binary (32 long string), eg. "11000000101010000000000100000010"
 
         .EXAMPLE
-            xxx
+            Convert-IPv4Address -Ip 192.168.1.2 -Integer
+            3232235778
+
+        .EXAMPLE
+            Convert-IPv4Address -Ip 192.168.1.2 -Binary
+            11000000101010000000000100000010
+
+        .EXAMPLE
+            Convert-IPv4Address -Ip 11000000101010000000000100000010 -QuadDot
+            192.168.1.2
+
+        .EXAMPLE
+            3232235778 | Convert-IPv4Address
+            192.168.1.2
     #>
 
-    [OutputType([System.String], ParameterSetName = 'Default')]
+    [OutputType([System.String], ParameterSetName = 'QuadDot')]
     [OutputType([System.UInt32], ParameterSetName = 'Integer')]
     [OutputType([System.String], ParameterSetName = 'Binary')]
-    [CmdletBinding(DefaultParameterSetName = 'Default')]
+    [CmdletBinding(DefaultParameterSetName = 'QuadDot')]
     param
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position=0)]
         [System.String]
         $Ip,
+
+        [Parameter(ParameterSetName = 'QuadDot')]
+        [System.Management.Automation.SwitchParameter]
+        $QuadDot,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'Integer')]
         [System.Management.Automation.SwitchParameter]

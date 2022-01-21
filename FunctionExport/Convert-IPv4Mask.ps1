@@ -2,16 +2,52 @@ function Convert-IPv4Mask
 {
     <#
         .SYNOPSIS
-            xxx
+            Convert IP subnet mask between formats
 
         .DESCRIPTION
-            xxx
+            Convert IP subnet mask between formats
+            If input is in quad dot format ("255.0.0.0"), output defaults to mask length with a leading slash ("/8")
+            - else output defaults to quad dot format
+            Output can be forced to be in specific format with switches
 
-        .PARAMETER xxx
-            xxx
+        .PARAMETER Mask
+            Input subnet mask is either:
+            - Quad dot                eg. "255.255.128.0"
+            - Mask length (0-32)      eg. "17"
+            - Mask length with slash  eg. "/17"
+            - Integer (uint32)        eg. "4294934528"
+            - Binary (32 long string) eg. "11111111111111111000000000000000"
+
+        .PARAMETER QuadDot
+            Output in quad dot format, eg. "255.255.128.0"
+
+        .PARAMETER Length
+            Output is in mask length, eg "17"
+
+        .PARAMETER LengthWithSlash
+            Output is in mask length with leading slash, eg "/17"
+
+        .PARAMETER Integer
+            Output integer (uint32), eg 4294934528
+
+        .PARAMETER Binary
+            Output in binary (32 long string), eg. "11111111111111111000000000000000"
 
         .EXAMPLE
-            xxx
+            Convert-IPv4Mask -Mask 255.255.128.0
+            /17
+
+        .EXAMPLE
+            Convert-IPv4Mask -Mask /17
+            255.255.128.0
+
+        .EXAMPLE
+            Convert-IPv4Mask -Mask 17
+            255.255.128.0
+
+        .EXAMPLE
+            Convert-IPv4Mask -Mask 17 -Binary
+            11111111111111111000000000000000
     #>
 
     [OutputType([System.String], ParameterSetName = 'Default')]

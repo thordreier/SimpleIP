@@ -2,16 +2,28 @@ function Get-IPv4Mask
 {
     <#
         .SYNOPSIS
-            xxx
+            Get IP subnet mask for an IP address
 
         .DESCRIPTION
-            xxx
+            Get IP subnet mask for an IP address
 
-        .PARAMETER xxx
-            xxx
+        .PARAMETER Ip
+            Input IP in quad dot format with subnet mask, either:
+            - IP + mask in quad dot, eg. "127.0.0.1 255.0.0.0"
+            - IP + mask length,      eg. "127.0.0.1/8"
+
+        .PARAMETER QuadDot
+            Return subnet mask in "255.0.0.0" format
+
+        .PARAMETER Length
+            Return subnet mask in "8" format
+
+        .PARAMETER LengthWithSlash
+            Return subnet mask in "/8" format
 
         .EXAMPLE
-            xxx
+            Get-IPv4Mask 9.8.7.6/22 -QuadDot
+            255.255.252.0
     #>
 
     [OutputType([System.String])]
