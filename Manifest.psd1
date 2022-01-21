@@ -87,7 +87,7 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = 'IP','IPv4','IPv6','subnet','mask','netmask','TCP/IP'
+        Tags = 'IP','IPv4','IPv6','subnet','mask','netmask','prefix','broadcast','TCP/IP'
 
         # A URL to the license for this module.
         LicenseUri = 'https://opensource.org/licenses/MIT'
