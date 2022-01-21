@@ -96,7 +96,11 @@ function Get-IPv4Address
 
         [Parameter(Mandatory = $true, ParameterSetName = 'MaskLengthWithSlashOnly')]
         [System.Management.Automation.SwitchParameter]
-        $MaskLengthWithSlashOnly
+        $MaskLengthWithSlashOnly,
+
+        [Parameter(Mandatory = $true, ParameterSetName = 'Info')]
+        [System.Management.Automation.SwitchParameter]
+        $Info
     )
 
     begin
@@ -143,35 +147,46 @@ function Get-IPv4Address
             [System.UInt32] $ipInt        = $Ip | Convert-IPv4Address -Integer
             [System.UInt32] $subnetInt    = $ipInt -band $maskInt
             [System.UInt32] $broadcastInt = $ipInt -bor (-bnot $maskInt)
-            [System.UInt32] $firstInt     = 0
-            [System.UInt32] $lastInt      = 0
-            if ($Pool -or $Mask -eq 31 -or $Mask -eq 32) {
-                $firstInt = $subnetInt
-                $lastInt  = $broadcastInt
+            [System.UInt32] $firstInt     = $subnetInt
+            [System.UInt32] $lastInt      = $broadcastInt
+            if (-not ($Pool -or $Mask -eq 31 -or $Mask -eq 32))
+            {
+                ++$firstInt
+                --$lastInt
+            }
+
+            if ($Info)
+            {
+                [PSCustomObject] @{
+                    IP          = $ipInt        | Convert-IPv4Address
+                    Subnet      = $subnetInt    | Convert-IPv4Address
+                    FirstIP     = $firstInt     | Convert-IPv4Address
+                    LastIP      = $lastInt      | Convert-IPv4Address
+                    Broadcast   = $broadcastInt | Convert-IPv4Address
+                    MaskQuadDot = $maskQuadDot
+                    MaskLength  = $Mask
+                }
             }
             else
             {
-                $firstInt = $subnetInt + 1
-                $lastInt  = $broadcastInt -1
+                $createScript =
+                    if     ($Subnet)    { {$subnetInt} }
+                    elseif ($Broadcast) { {$broadcastInt} }
+                    elseif ($First)     { {$firstInt} }
+                    elseif ($Last)      { {$lastInt} }
+                    elseif ($All)       { {for ([uint32] $i = $firstInt; $i -le $lastInt; $i++) {$i}} }
+                    else                { {$ipInt} }
+
+                $outputScript =
+                    if     ($WithMask)                { {'{0} {1}' -f $_, $maskQuadDot} }
+                    elseif ($IpOnly)                  { {$_} }
+                    elseif ($MaskQuadDotOnly)         { {$maskQuadDot} }
+                    elseif ($MaskLengthOnly)          { {$Mask} }
+                    elseif ($MaskLengthWithSlashOnly) { {'/{0}' -f $Mask} }
+                    else                              { {'{0}/{1}' -f $_, $Mask} }
+
+                $createScript.Invoke() | Convert-IPv4Address | ForEach-Object -Process $outputScript
             }
-
-            $createScript =
-                if ($Subnet)        { {$subnetInt} }
-                elseif ($Broadcast) { {$broadcastInt} }
-                elseif ($First)     { {$firstInt} }
-                elseif ($Last)      { {$lastInt} }
-                elseif ($All)       { {for ([uint32] $i = $firstInt; $i -le $lastInt; $i++) {$i}} }
-                else                { {$ipInt} }
-
-            $outputScript =
-                if     ($WithMask)                { {'{0} {1}' -f $_, $maskQuadDot} }
-                elseif ($IpOnly)                  { {$_} }
-                elseif ($MaskQuadDotOnly)         { {$maskQuadDot} }
-                elseif ($MaskLengthOnly)          { {$Mask} }
-                elseif ($MaskLengthWithSlashOnly) { {'/{0}' -f $Mask} }
-                else                              { {'{0}/{1}' -f $_, $Mask} }
-
-            $createScript.Invoke() | Convert-IPv4Address | ForEach-Object -Process $outputScript
         }
         catch
         {

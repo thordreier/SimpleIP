@@ -336,6 +336,19 @@ Describe 'Get-IPv4Address' {
         }
     }
 
+    Context Info {
+        It 'Info' {
+            $r = Get-IPv4Address -Ip 10.200.30.40/11 -Info -ErrorAction Stop
+            $r.IP          | Should -Be 10.200.30.40
+            $r.Subnet      | Should -Be 10.192.0.0
+            $r.FirstIP     | Should -Be 10.192.0.1
+            $r.LastIP      | Should -Be 10.223.255.254
+            $r.Broadcast   | Should -Be 10.223.255.255
+            $r.MaskQuadDot | Should -Be 255.224.0.0
+            $r.MaskLength  | Should -Be 11
+        }
+    }
+
     Context Warning {
         It 'Get-IPv4Address -Ip 1.2.3.4/8 -Mask 24 -Subnet  (warning)' {
             {Get-IPv4Address -Ip 1.2.3.4/8 -Mask 24 -Subnet -ErrorAction Stop -WarningAction Stop 3>$null} | Should -Throw '*Mask set to*but*Using*'
