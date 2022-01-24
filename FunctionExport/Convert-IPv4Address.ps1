@@ -7,7 +7,7 @@ function Convert-IPv4Address
         .DESCRIPTION
             Convert IP address between formats
 
-        .PARAMETER Ip
+        .PARAMETER IP
             Input IP is either:
             - Quad dot (without mask) eg. "192.168.1.2"
             - Integer (uint32)        eg. 3232235778
@@ -24,15 +24,15 @@ function Convert-IPv4Address
             Output in binary (32 long string), eg. "11000000101010000000000100000010"
 
         .EXAMPLE
-            Convert-IPv4Address -Ip 192.168.1.2 -Integer
+            Convert-IPv4Address -IP 192.168.1.2 -Integer
             3232235778
 
         .EXAMPLE
-            Convert-IPv4Address -Ip 192.168.1.2 -Binary
+            Convert-IPv4Address -IP 192.168.1.2 -Binary
             11000000101010000000000100000010
 
         .EXAMPLE
-            Convert-IPv4Address -Ip 11000000101010000000000100000010 -QuadDot
+            Convert-IPv4Address -IP 11000000101010000000000100000010 -QuadDot
             192.168.1.2
 
         .EXAMPLE
@@ -48,7 +48,7 @@ function Convert-IPv4Address
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position=0)]
         [System.String]
-        $Ip,
+        $IP,
 
         [Parameter(ParameterSetName = 'QuadDot')]
         [System.Management.Automation.SwitchParameter]
@@ -80,25 +80,25 @@ function Convert-IPv4Address
             $ErrorActionPreference = 'Stop'
 
             [System.UInt32] $i = 0
-            if (Test-ValidIPv4 -Ip $Ip)
+            if (Test-ValidIPv4 -IP $IP)
             {
-                $Ip -split '\.' | ForEach-Object -Process {
+                $IP -split '\.' | ForEach-Object -Process {
                     $i = $i * 256 + $_
                 }
             }
-            elseif ($Ip -match '^[01]{32}$')
+            elseif ($IP -match '^[01]{32}$')
             {
-                $i = [System.Convert]::ToUInt32($Ip, 2)
+                $i = [System.Convert]::ToUInt32($IP, 2)
             }
             else
             {
                 try
                 {
-                    $i = $Ip
+                    $i = $IP
                 }
                 catch
                 {
-                    throw "$Ip is not a valid IPv4 address"
+                    throw "$IP is not a valid IPv4 address"
                 }
             }
 

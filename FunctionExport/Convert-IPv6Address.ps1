@@ -11,7 +11,7 @@ function Convert-IPv6Address
             but they are run throug this command, they can be compared)
             Output defaults to compacted IPv6 address (eg. "::1")
 
-        .PARAMETER Ip
+        .PARAMETER IP
             Input IP is either
             - Standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
             - [uint16[]] array with  8 elements
@@ -27,7 +27,7 @@ function Convert-IPv6Address
             ab::fff:0:1
 
         .EXAMPLE
-            Convert-IPv6Address -Ip a:b:c::/64 -Info
+            Convert-IPv6Address -IP a:b:c::/64 -Info
             IP                     : a:b:c::/64
             IPCompact              : a:b:c::
             IPExpanded             : 000a:000b:000c:0000:0000:0000:0000:0000
@@ -50,7 +50,7 @@ function Convert-IPv6Address
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position=0)]
         [System.Object]
-        $Ip,
+        $IP,
 
         [Parameter()]
         [Nullable[System.Byte]]
@@ -81,9 +81,9 @@ function Convert-IPv6Address
 
             [System.UInt16[]] $ipIntArray = @()
 
-            if ($Ip -is [System.String])
+            if ($IP -is [System.String])
             {
-                if (-not ($Ip -match '^([0-9a-f:]+)(/(([1-9]?[0-9])|(1[01][0-9])|(12[0-8])))?$')) {throw "Error parsing IPv6 address $Ip"}
+                if (-not ($IP -match '^([0-9a-f:]+)(/(([1-9]?[0-9])|(1[01][0-9])|(12[0-8])))?$')) {throw "Error parsing IPv6 address $IP"}
                 $ipOnly = $Matches[1]
                 if ($Prefix -eq $null)
                 {
@@ -91,7 +91,7 @@ function Convert-IPv6Address
                 }
                 elseif ($Matches[3] -ne $null -and $Prefix -ne $Matches[3])
                 {
-                    "Prefix set to /$($Matches[3]) in -Ip but /$Prefix in -Prefix for $Ip. Using /$Prefix" | Write-Warning
+                    "Prefix set to /$($Matches[3]) in -IP but /$Prefix in -Prefix for $IP. Using /$Prefix" | Write-Warning
                 }
 
                 try
@@ -114,12 +114,12 @@ function Convert-IPv6Address
                 }
                 catch
                 {
-                    throw "Error parsing IPv6 address $Ip"
+                    throw "Error parsing IPv6 address $IP"
                 }
             }
-            elseif ($Ip -is [array] -and $Ip.Count -eq 8)
+            elseif ($IP -is [array] -and $IP.Count -eq 8)
             {
-                try { $ipIntArray = $Ip } catch { throw 'Input IP is in unknown format' }
+                try { $ipIntArray = $IP } catch { throw 'Input IP is in unknown format' }
             }
             else
             {

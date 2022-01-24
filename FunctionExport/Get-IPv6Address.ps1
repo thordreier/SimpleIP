@@ -7,7 +7,7 @@ function Get-IPv6Address
         .DESCRIPTION
             Get subnet, prefix, ... for an IPv6 address
 
-        .PARAMETER Ip
+        .PARAMETER IP
             Input IP is standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
 
         .PARAMETER Prefix
@@ -21,18 +21,18 @@ function Get-IPv6Address
             Return in "7:6:5::/64" format
             This is default output
 
-        .PARAMETER IpOnly
+        .PARAMETER IPOnly
             Return in "7:6:5::" format
 
         .PARAMETER Info
             Return object with different info
 
         .EXAMPLE
-            Get-IPv6Address -Ip 7:6:5::77:88/64 -Subnet
+            Get-IPv6Address -IP 7:6:5::77:88/64 -Subnet
             7:6:5::/64
 
         .EXAMPLE
-            Get-IPv6Address -Ip 7:6:5::77:88/64 -Info
+            Get-IPv6Address -IP 7:6:5::77:88/64 -Info
             IP           : 7:6:5::77:88/64
             Subnet       : 7:6:5::/64
             FirstIP4Real : 7:6:5::/64
@@ -47,34 +47,34 @@ function Get-IPv6Address
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position=0)]
         [System.String]
-        $Ip,
+        $IP,
 
         [Parameter()]
         [Nullable[System.Byte]]
         $Prefix,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetWithPrefix')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIpOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIPOnly')]
         [System.Management.Automation.SwitchParameter]
         $Subnet,
 
         #[Parameter(Mandatory = $true, ParameterSetName = 'BroadcastWithPrefix')]
-        #[Parameter(Mandatory = $true, ParameterSetName = 'BroadcastIpOnly')]
+        #[Parameter(Mandatory = $true, ParameterSetName = 'BroadcastIPOnly')]
         #[System.Management.Automation.SwitchParameter]
         #$Broadcast,
 
         #[Parameter(Mandatory = $true, ParameterSetName = 'FirstWithPrefix')]
-        #[Parameter(Mandatory = $true, ParameterSetName = 'FirstIpOnly')]
+        #[Parameter(Mandatory = $true, ParameterSetName = 'FirstIPOnly')]
         #[System.Management.Automation.SwitchParameter]
         #$First,
 
         #[Parameter(Mandatory = $true, ParameterSetName = 'LastWithPrefix')]
-        #[Parameter(Mandatory = $true, ParameterSetName = 'LastIpOnly')]
+        #[Parameter(Mandatory = $true, ParameterSetName = 'LastIPOnly')]
         #[System.Management.Automation.SwitchParameter]
         #$Last,
 
         #[Parameter(Mandatory = $true, ParameterSetName = 'AllWithPrefix')]
-        #[Parameter(Mandatory = $true, ParameterSetName = 'AllIpOnly')]
+        #[Parameter(Mandatory = $true, ParameterSetName = 'AllIPOnly')]
         #[System.Management.Automation.SwitchParameter]
         #$All,
 
@@ -90,13 +90,13 @@ function Get-IPv6Address
         [System.Management.Automation.SwitchParameter]
         $WithPrefix,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIpOnly')]
-        #[Parameter(Mandatory = $true, ParameterSetName = 'BroadcastIpOnly')]
-        #[Parameter(Mandatory = $true, ParameterSetName = 'FirstIpOnly')]
-        #[Parameter(Mandatory = $true, ParameterSetName = 'LastIpOnly')]
-        #[Parameter(Mandatory = $true, ParameterSetName = 'AllIpOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIPOnly')]
+        #[Parameter(Mandatory = $true, ParameterSetName = 'BroadcastIPOnly')]
+        #[Parameter(Mandatory = $true, ParameterSetName = 'FirstIPOnly')]
+        #[Parameter(Mandatory = $true, ParameterSetName = 'LastIPOnly')]
+        #[Parameter(Mandatory = $true, ParameterSetName = 'AllIPOnly')]
         [System.Management.Automation.SwitchParameter]
-        $IpOnly,
+        $IPOnly,
 
         #[Parameter(Mandatory = $true, ParameterSetName = 'PrefixOnly')]
         #[System.Management.Automation.SwitchParameter]
@@ -128,7 +128,7 @@ function Get-IPv6Address
             $ErrorActionPreference = 'Stop'
 
             $prefixParam = if ($Prefix -eq $null) { @{} } else { @{Prefix = $Prefix} }
-            $ipInfo = Convert-IPv6Address -Info -Ip $Ip @prefixParam
+            $ipInfo = Convert-IPv6Address -Info -IP $IP @prefixParam
 
             if ($ipInfo.Prefix -eq $null) {throw "No prefix defined for $IP"}
             $Prefix = $ipInfo.Prefix
@@ -152,12 +152,12 @@ function Get-IPv6Address
             if ($Info)
             {
                 [PSCustomObject] @{
-                    IP           = Convert-IPv6Address -Ip $ipInt        -Prefix $Prefix
-                    Subnet       = Convert-IPv6Address -Ip $subnetInt    -Prefix $Prefix
-                    FirstIP4Real = Convert-IPv6Address -Ip $subnetInt    -Prefix $Prefix
-                    FirstIP      = Convert-IPv6Address -Ip $firstInt     -Prefix $Prefix
-                    LastIP       = Convert-IPv6Address -Ip $lastInt      -Prefix $Prefix
-                    LastIP4Real  = Convert-IPv6Address -Ip $broadcastInt -Prefix $Prefix
+                    IP           = Convert-IPv6Address -IP $ipInt        -Prefix $Prefix
+                    Subnet       = Convert-IPv6Address -IP $subnetInt    -Prefix $Prefix
+                    FirstIP4Real = Convert-IPv6Address -IP $subnetInt    -Prefix $Prefix
+                    FirstIP      = Convert-IPv6Address -IP $firstInt     -Prefix $Prefix
+                    LastIP       = Convert-IPv6Address -IP $lastInt      -Prefix $Prefix
+                    LastIP4Real  = Convert-IPv6Address -IP $broadcastInt -Prefix $Prefix
                 }
             }
             else
@@ -172,10 +172,10 @@ function Get-IPv6Address
                     else                { throw 'Unknown error' }
 
                 $outputScript =
-                    if     ($IpOnly)              { {(Convert-IPv6Address -Ip $_ -Prefix $Prefix -Info).IPCompact} }
+                    if     ($IPOnly)              { {(Convert-IPv6Address -IP $_ -Prefix $Prefix -Info).IPCompact} }
                     #elseif ($PrefixOnly)          { {} }
                     #elseif ($PrefixWithSlashOnly) { {} }
-                    else                          { {Convert-IPv6Address -Ip $_ -Prefix $Prefix} }
+                    else                          { {Convert-IPv6Address -IP $_ -Prefix $Prefix} }
 
                 $createScript.Invoke() | ForEach-Object -Process $outputScript
             }

@@ -7,7 +7,7 @@ function Get-IPv6Subnet
         .DESCRIPTION
             Get IP subnet for an IPv6 address
 
-        .PARAMETER Ip
+        .PARAMETER IP
             Input IP is standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
 
         .PARAMETER Prefix
@@ -17,15 +17,15 @@ function Get-IPv6Subnet
             Return in "7:6:5::/64" format
             This is default output
 
-        .PARAMETER IpOnly
+        .PARAMETER IPOnly
             Return in "7:6:5::" format
 
         .EXAMPLE
-            Get-IPv6Subnet -Ip 7:6:5::77:88/64
+            Get-IPv6Subnet -IP 7:6:5::77:88/64
             7:6:5::/64
 
         .EXAMPLE
-            Get-IPv6Subnet -Ip 7:6:5::77:88/64 -IpOnly
+            Get-IPv6Subnet -IP 7:6:5::77:88/64 -IPOnly
             7:6:5::
     #>
 
@@ -35,7 +35,7 @@ function Get-IPv6Subnet
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position=0)]
         [System.String]
-        $Ip,
+        $IP,
 
         [Parameter()]
         [Nullable[System.Byte]]
@@ -45,9 +45,9 @@ function Get-IPv6Subnet
         [System.Management.Automation.SwitchParameter]
         $WithPrefix,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIpOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIPOnly')]
         [System.Management.Automation.SwitchParameter]
-        $IpOnly
+        $IPOnly
     )
 
     process

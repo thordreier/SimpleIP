@@ -7,7 +7,7 @@ function Get-IPv4Mask
         .DESCRIPTION
             Get IP subnet mask for an IP address
 
-        .PARAMETER Ip
+        .PARAMETER IP
             Input IP in quad dot format with subnet mask, either:
             - IP + mask in quad dot, eg. "127.0.0.1 255.0.0.0"
             - IP + mask length,      eg. "127.0.0.1/8"
@@ -31,12 +31,12 @@ function Get-IPv4Mask
     param
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position=0)]
-        [ValidateScript({ (Test-ValidIPv4 -Ip $_ -AllowMask) -or $(throw "$_ is not a valid IPv4 address") })]
+        [ValidateScript({ (Test-ValidIPv4 -IP $_ -AllowMask) -or $(throw "$_ is not a valid IPv4 address") })]
         [System.String]
-        $Ip,
+        $IP,
 
         #[Parameter()]
-        #[ValidateScript({ (Test-ValidIPv4 -Ip $_ -Mask -AllowLength) -or $(throw "$_ is not a valid IPv4 mask") })]
+        #[ValidateScript({ (Test-ValidIPv4 -IP $_ -Mask -AllowLength) -or $(throw "$_ is not a valid IPv4 mask") })]
         #[System.String]
         #$Mask = '',
         
@@ -58,7 +58,7 @@ function Get-IPv4Mask
         Write-Verbose -Message "Process begin (ErrorActionPreference: $ErrorActionPreference)"
 
         $params = @{
-            Ip = $Ip
+            IP = $IP
         }
         #if ($Mask -ne '') {$params['Mask'] = $Mask}
 

@@ -9,16 +9,16 @@ Describe 'Get-IPv6Address' {
 
     Context TestCases1 {
         $testCases1 = @(
-            @{Ip = 'aaaa:bbbb:cccc:0:0:0:0:0'  ; Prefix = 8     ;  Subnet = 'aa00::/8'          ; First = '' ; Last = '' ; Broadcast = '' ; AllCount = $null}
-            @{Ip = '::1/128'                   ; Prefix = $null ;  Subnet = '::1/128'           ; First = '' ; Last = '' ; Broadcast = '' ; AllCount = $null}
-            @{Ip = 'a:b:c:d:abcd:f:22:33/65'   ; Prefix = $null ;  Subnet = 'a:b:c:d:8000::/65' ; First = '' ; Last = '' ; Broadcast = '' ; AllCount = $null}
+            @{IP = 'aaaa:bbbb:cccc:0:0:0:0:0'  ; Prefix = 8     ;  Subnet = 'aa00::/8'          ; First = '' ; Last = '' ; Broadcast = '' ; AllCount = $null}
+            @{IP = '::1/128'                   ; Prefix = $null ;  Subnet = '::1/128'           ; First = '' ; Last = '' ; Broadcast = '' ; AllCount = $null}
+            @{IP = 'a:b:c:d:abcd:f:22:33/65'   ; Prefix = $null ;  Subnet = 'a:b:c:d:8000::/65' ; First = '' ; Last = '' ; Broadcast = '' ; AllCount = $null}
         )
 
-        It 'Get-IPv6Address -Subnet -Ip <Ip> -Prefix <Prefix> == <Subnet>' -TestCases $testCases1 {
-            param ($Ip, $Prefix, $Pool, $Subnet)
+        It 'Get-IPv6Address -Subnet -IP <IP> -Prefix <Prefix> == <Subnet>' -TestCases $testCases1 {
+            param ($IP, $Prefix, $Pool, $Subnet)
             $params = @{
                 Subnet         = $true
-                Ip             = $Ip
+                IP             = $IP
             }
             if ($Prefix -ne $null) { $params['Prefix'] = $Prefix }
             $r = Get-IPv6Address @params -ErrorAction Stop
@@ -29,7 +29,7 @@ Describe 'Get-IPv6Address' {
 
     Context Info {
         It 'Info' {
-            $r = Get-IPv6Address -Ip 99:88:77:0::/15 -Info -ErrorAction Stop
+            $r = Get-IPv6Address -IP 99:88:77:0::/15 -Info -ErrorAction Stop
             $r.IP           | Should -Be 99:88:77::/15
             $r.Subnet       | Should -Be 98::/15
             $r.FirstIP4Real | Should -Be 98::/15
@@ -40,25 +40,25 @@ Describe 'Get-IPv6Address' {
     }
 
     Context Warning {
-        It 'Get-IPv6Address -Ip a::f/64 -Prefix 11 -Subnet  (warning)' {
-            {Get-IPv6Address -Ip a::f/64 -Prefix 11 -Subnet -ErrorAction Stop -WarningAction Stop 3>$null} | Should -Throw '*Prefix set to*but*Using*'
+        It 'Get-IPv6Address -IP a::f/64 -Prefix 11 -Subnet  (warning)' {
+            {Get-IPv6Address -IP a::f/64 -Prefix 11 -Subnet -ErrorAction Stop -WarningAction Stop 3>$null} | Should -Throw '*Prefix set to*but*Using*'
         }
     }
 
     Context TestCasesThrow1 {
         $testCasesThrow1 = @(
-            @{Ip = 'a::b'      ; Prefix = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*Parameter set cannot be resolved using the specified named parameters*'}
-            @{Ip = 'xxxx'      ; Prefix = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*Parameter set cannot be resolved using the specified named parameters*'}
-            @{Ip = 'a::b'      ; Prefix = $null ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*No prefix defined for*'}
-            @{Ip = 'xxxx'      ; Prefix = $null ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*Error parsing IPv6 address*'}
-            @{Ip = 'a::b'      ; Prefix = 129   ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*Prefix is higher than 128*'}
-            @{Ip = 'a::b'      ; Prefix = -1    ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*Cannot convert*Byte*'}
+            @{IP = 'a::b'      ; Prefix = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*Parameter set cannot be resolved using the specified named parameters*'}
+            @{IP = 'xxxx'      ; Prefix = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*Parameter set cannot be resolved using the specified named parameters*'}
+            @{IP = 'a::b'      ; Prefix = $null ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*No prefix defined for*'}
+            @{IP = 'xxxx'      ; Prefix = $null ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*Error parsing IPv6 address*'}
+            @{IP = 'a::b'      ; Prefix = 129   ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*Prefix is higher than 128*'}
+            @{IP = 'a::b'      ; Prefix = -1    ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*Cannot convert*Byte*'}
         )
 
-        It 'Convert-IPv6Address -Ip <Ip> -Prefix <Prefix> -<Switch1> -<Switch2>  (throw)' -TestCases $testCasesThrow1 {
-            param ($Ip, $Prefix, $Switch1, $Switch2, $Throw)
+        It 'Convert-IPv6Address -IP <IP> -Prefix <Prefix> -<Switch1> -<Switch2>  (throw)' -TestCases $testCasesThrow1 {
+            param ($IP, $Prefix, $Switch1, $Switch2, $Throw)
             $params = @{}
-            if ($Ip      -ne $null) {$params['Ip']     = $Ip}
+            if ($IP      -ne $null) {$params['IP']     = $IP}
             if ($Prefix  -ne $null) {$params['Prefix'] = $Prefix}
             if ($Switch1 -ne $null) {$params[$Switch1] = $true}
             if ($Switch2 -ne $null) {$params[$Switch2] = $true}

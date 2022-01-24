@@ -118,8 +118,8 @@ function Convert-IPv4Mask
                     throw "$Mask is not a valid subnet mask"
                 }
 
-                if (Test-ValidIPv4 -Ip $Mask) {$quadDotInput = $true}
-                $i = Convert-IPv4Address -Ip $Mask -Integer
+                if (Test-ValidIPv4 -IP $Mask) {$quadDotInput = $true}
+                $i = Convert-IPv4Address -IP $Mask -Integer
             }
 
             if (($output = $PSCmdlet.ParameterSetName) -eq 'Default')

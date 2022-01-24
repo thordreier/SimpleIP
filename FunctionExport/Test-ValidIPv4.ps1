@@ -9,10 +9,10 @@ function Test-ValidIPv4
             Uses regex to test
             Returns [bool]
 
-        .PARAMETER Ip
+        .PARAMETER IP
             IP address (or subnet mask) to test is valid or not
 
-        .PARAMETER IpOnly
+        .PARAMETER IPOnly
             Only return True if input is valid IPv4 in quad dot format (without subnet mask)
             Eg. "127.0.0.1"
             This is default
@@ -40,61 +40,61 @@ function Test-ValidIPv4
             - IP + mask length,      eg. "127.0.0.1/8"
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip 127.0.0.1
+            Test-ValidIPv4 -IP 127.0.0.1
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip 127.0.0.256
+            Test-ValidIPv4 -IP 127.0.0.256
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip 127.0.0.1/32
+            Test-ValidIPv4 -IP 127.0.0.1/32
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip 127.0.0.1/32 -AllowMask
+            Test-ValidIPv4 -IP 127.0.0.1/32 -AllowMask
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip "127.0.0.1 255.255.255.255" -AllowMask
+            Test-ValidIPv4 -IP "127.0.0.1 255.255.255.255" -AllowMask
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip 127.0.0.1 -RequireMask
+            Test-ValidIPv4 -IP 127.0.0.1 -RequireMask
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip 255.255.0.0 -Mask
+            Test-ValidIPv4 -IP 255.255.0.0 -Mask
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip 255.0.255.0 -Mask
+            Test-ValidIPv4 -IP 255.0.255.0 -Mask
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip 32 -Mask
+            Test-ValidIPv4 -IP 32 -Mask
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip 32 -Mask -AllowLength
+            Test-ValidIPv4 -IP 32 -Mask -AllowLength
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -Ip /32 -Mask -AllowLength
+            Test-ValidIPv4 -IP /32 -Mask -AllowLength
             True
     #>
 
     [OutputType([System.Boolean])]
-    [CmdletBinding(DefaultParameterSetName = 'IpOnly')]
+    [CmdletBinding(DefaultParameterSetName = 'IPOnly')]
     param
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position=0)]
         [System.String]
-        $Ip,
+        $IP,
 
-        [Parameter(ParameterSetName = 'IpOnly')]
+        [Parameter(ParameterSetName = 'IPOnly')]
         [System.Management.Automation.SwitchParameter]
-        $IpOnly,
+        $IPOnly,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'Mask')]
         [System.Management.Automation.SwitchParameter]
@@ -132,18 +132,18 @@ function Test-ValidIPv4
             $i = '(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)'
             $s = '(((255\.){3}(255|254|252|248|240|224|192|128|0+))|((255\.){2}(255|254|252|248|240|224|192|128|0+)\.0)|((255\.)(255|254|252|248|240|224|192|128|0+)(\.0+){2})|((255|254|252|248|240|224|192|128|0+)(\.0+){3}))'
             $b = '[0-9]|[12][0-9]|3[0-2]'
-            $matchIp            = "^($i)$"
+            $matchIP            = "^($i)$"
             $matchMask          = "^($s)$"
             $matchMaskAndLength = "^(($s)|(/?($b)))$"
             $matchAll           = "^($i)[/ ](($s)|($b))$"
 
             (
-                ($PSCmdlet.ParameterSetName -eq 'IpOnly'      -and $Ip -match $matchIp                                  ) -or
-                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMask          -and -not $AllowLength) -or
-                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $Ip -match $matchMaskAndLength -and      $AllowLength) -or
-                ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $Ip -match $matchIp                                  ) -or
-                ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $Ip -match $matchAll                                 ) -or
-                ($PSCmdlet.ParameterSetName -eq 'RequireMask' -and $Ip -match $matchAll                                 )
+                ($PSCmdlet.ParameterSetName -eq 'IPOnly'      -and $IP -match $matchIP                                  ) -or
+                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $IP -match $matchMask          -and -not $AllowLength) -or
+                ($PSCmdlet.ParameterSetName -eq 'Mask'        -and $IP -match $matchMaskAndLength -and      $AllowLength) -or
+                ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $IP -match $matchIP                                  ) -or
+                ($PSCmdlet.ParameterSetName -eq 'AllowMask'   -and $IP -match $matchAll                                 ) -or
+                ($PSCmdlet.ParameterSetName -eq 'RequireMask' -and $IP -match $matchAll                                 )
             )
         }
         catch

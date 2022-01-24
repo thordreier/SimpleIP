@@ -7,7 +7,7 @@ function Get-IPv4Address
         .DESCRIPTION
             Get IP subnet, mask, broadcast for an IP address
 
-        .PARAMETER Ip
+        .PARAMETER IP
             Input IP in quad dot format with subnet mask, either:
             - IP + mask in quad dot, eg. "127.0.0.1 255.0.0.0"
             - IP + mask length,      eg. "127.0.0.1/8"
@@ -50,7 +50,7 @@ function Get-IPv4Address
         .PARAMETER WithMask
             Return in "127.0.0.1 255.0.0.0" format
 
-        .PARAMETER IpOnly
+        .PARAMETER IPOnly
             Return in "127.0.0.1" format
 
         .PARAMETER MaskQuadDotOnly
@@ -66,20 +66,20 @@ function Get-IPv4Address
             Return object with different info
 
         .EXAMPLE
-            Get-IPv4Address -Ip 127.0.0.1/8 -Subnet
+            Get-IPv4Address -IP 127.0.0.1/8 -Subnet
             127.0.0.0/24
 
         .EXAMPLE
-            Get-IPv4Address -Ip 127.0.0.1/8 -Broadcast -WithMask
+            Get-IPv4Address -IP 127.0.0.1/8 -Broadcast -WithMask
             127.255.255.255 255.0.0.0
 
         .EXAMPLE
-            Get-IPv4Address -Ip 10.100.200.201 -Mask /30 -All -WithMask
+            Get-IPv4Address -IP 10.100.200.201 -Mask /30 -All -WithMask
             10.100.200.201 255.255.255.252
             10.100.200.202 255.255.255.252
 
         .EXAMPLE
-            Get-IPv4Address -Ip 192.168.0.150/255.255.255.128 -Info
+            Get-IPv4Address -IP 192.168.0.150/255.255.255.128 -Info
             IP          : 192.168.0.150
             Subnet      : 192.168.0.128
             FirstIP     : 192.168.0.129
@@ -94,48 +94,48 @@ function Get-IPv4Address
     param
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position=0)]
-        [ValidateScript({ (Test-ValidIPv4 -Ip $_ -AllowMask) -or $(throw "$_ is not a valid IPv4 address") })]
+        [ValidateScript({ (Test-ValidIPv4 -IP $_ -AllowMask) -or $(throw "$_ is not a valid IPv4 address") })]
         [System.String]
-        $Ip,
+        $IP,
 
         [Parameter()]
-        [ValidateScript({ (Test-ValidIPv4 -Ip $_ -Mask -AllowLength) -or $(throw "$_ is not a valid IPv4 mask") })]
+        [ValidateScript({ (Test-ValidIPv4 -IP $_ -Mask -AllowLength) -or $(throw "$_ is not a valid IPv4 mask") })]
         [System.String]
         $Mask = '',
 
-        [Parameter(ParameterSetName = 'SameIpWithMaskLength')]
-        [Parameter(ParameterSetName = 'SameIpWithMask')]
-        [Parameter(ParameterSetName = 'SameIpIpOnly')]
+        [Parameter(ParameterSetName = 'SameIPWithMaskLength')]
+        [Parameter(ParameterSetName = 'SameIPWithMask')]
+        [Parameter(ParameterSetName = 'SameIPIPOnly')]
         [System.Management.Automation.SwitchParameter]
-        $SameIp,
+        $SameIP,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetWithMaskLength')]
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetWithMask')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIpOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIPOnly')]
         [System.Management.Automation.SwitchParameter]
         $Subnet,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'BroadcastWithMaskLength')]
         [Parameter(Mandatory = $true, ParameterSetName = 'BroadcastWithMask')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'BroadcastIpOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'BroadcastIPOnly')]
         [System.Management.Automation.SwitchParameter]
         $Broadcast,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'FirstWithMaskLength')]
         [Parameter(Mandatory = $true, ParameterSetName = 'FirstWithMask')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'FirstIpOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'FirstIPOnly')]
         [System.Management.Automation.SwitchParameter]
         $First,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'LastWithMaskLength')]
         [Parameter(Mandatory = $true, ParameterSetName = 'LastWithMask')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'LastIpOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'LastIPOnly')]
         [System.Management.Automation.SwitchParameter]
         $Last,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'AllWithMaskLength')]
         [Parameter(Mandatory = $true, ParameterSetName = 'AllWithMask')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'AllIpOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'AllIPOnly')]
         [System.Management.Automation.SwitchParameter]
         $All,
 
@@ -143,7 +143,7 @@ function Get-IPv4Address
         [System.Management.Automation.SwitchParameter]
         $Pool,
 
-        [Parameter(ParameterSetName = 'SameIpWithMaskLength')]
+        [Parameter(ParameterSetName = 'SameIPWithMaskLength')]
         [Parameter(ParameterSetName = 'SubnetWithMaskLength')]
         [Parameter(ParameterSetName = 'BroadcastWithMaskLength')]
         [Parameter(ParameterSetName = 'FirstWithMaskLength')]
@@ -152,7 +152,7 @@ function Get-IPv4Address
         [System.Management.Automation.SwitchParameter]
         $WithMaskLength,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'SameIpWithMask')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'SameIPWithMask')]
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetWithMask')]
         [Parameter(Mandatory = $true, ParameterSetName = 'BroadcastWithMask')]
         [Parameter(Mandatory = $true, ParameterSetName = 'FirstWithMask')]
@@ -161,14 +161,14 @@ function Get-IPv4Address
         [System.Management.Automation.SwitchParameter]
         $WithMask,
 
-        [Parameter(Mandatory = $true, ParameterSetName = 'SameIpIpOnly')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIpOnly')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'BroadcastIpOnly')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'FirstIpOnly')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'LastIpOnly')]
-        [Parameter(Mandatory = $true, ParameterSetName = 'AllIpOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'SameIPIPOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIPOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'BroadcastIPOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'FirstIPOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'LastIPOnly')]
+        [Parameter(Mandatory = $true, ParameterSetName = 'AllIPOnly')]
         [System.Management.Automation.SwitchParameter]
-        $IpOnly,
+        $IPOnly,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'MaskQuadDotOnly')]
         [System.Management.Automation.SwitchParameter]
@@ -205,16 +205,16 @@ function Get-IPv4Address
 
             if ($Mask -eq '')
             {
-                if (Test-ValidIPv4 -Ip $Ip) {throw "No mask defined for $Ip"}
+                if (Test-ValidIPv4 -IP $IP) {throw "No mask defined for $IP"}
             }
             else
             {
                 $Mask = $Mask | Convert-IPv4Mask -Length
             }
 
-            if (-not (Test-ValidIPv4 -Ip $Ip))
+            if (-not (Test-ValidIPv4 -IP $IP))
             {
-                ($Ip, $m) = $Ip -split '[/ ]'
+                ($IP, $m) = $IP -split '[/ ]'
                 $m = $m | Convert-IPv4Mask -Length
                 if ($Mask -eq '')
                 {
@@ -222,13 +222,13 @@ function Get-IPv4Address
                 }
                 elseif ($Mask -ne $m)
                 {
-                    "Mask set to /$m in -Ip but /$Mask in -Mask for $Ip. Using /$Mask" | Write-Warning
+                    "Mask set to /$m in -IP but /$Mask in -Mask for $IP. Using /$Mask" | Write-Warning
                 }
             }
 
             [System.String] $maskQuadDot  = $Mask | Convert-IPv4Mask -QuadDot
             [System.UInt32] $maskInt      = $Mask | Convert-IPv4Mask -Integer
-            [System.UInt32] $ipInt        = $Ip | Convert-IPv4Address -Integer
+            [System.UInt32] $ipInt        = $IP | Convert-IPv4Address -Integer
             [System.UInt32] $subnetInt    = $ipInt -band $maskInt
             [System.UInt32] $broadcastInt = $ipInt -bor (-bnot $maskInt)
             [System.UInt32] $firstInt     = $subnetInt
@@ -263,7 +263,7 @@ function Get-IPv4Address
 
                 $outputScript =
                     if     ($WithMask)                { {'{0} {1}' -f $_, $maskQuadDot} }
-                    elseif ($IpOnly)                  { {$_} }
+                    elseif ($IPOnly)                  { {$_} }
                     elseif ($MaskQuadDotOnly)         { {$maskQuadDot} }
                     elseif ($MaskLengthOnly)          { {$Mask} }
                     elseif ($MaskLengthWithSlashOnly) { {'/{0}' -f $Mask} }

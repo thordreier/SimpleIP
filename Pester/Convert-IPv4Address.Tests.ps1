@@ -9,72 +9,72 @@ Describe 'Convert-IPv4Address' {
 
     Context TestCases1 {
         $testCases1 = @(
-            @{Ip = '0.0.0.0'         ; Int = [uint32]::MinValue ; Bin = '00000000000000000000000000000000'}
-            @{Ip = '255.255.255.255' ; Int = [uint32]::MaxValue ; Bin = '11111111111111111111111111111111'}
-            @{Ip = '1.2.3.4'         ; Int = 16909060           ; Bin = '00000001000000100000001100000100'}
-            @{Ip = '10.20.30.40'     ; Int = 169090600          ; Bin = '00001010000101000001111000101000'}
-            @{Ip = '192.168.254.253' ; Int = 3232300797         ; Bin = '11000000101010001111111011111101'}
+            @{IP = '0.0.0.0'         ; Int = [uint32]::MinValue ; Bin = '00000000000000000000000000000000'}
+            @{IP = '255.255.255.255' ; Int = [uint32]::MaxValue ; Bin = '11111111111111111111111111111111'}
+            @{IP = '1.2.3.4'         ; Int = 16909060           ; Bin = '00000001000000100000001100000100'}
+            @{IP = '10.20.30.40'     ; Int = 169090600          ; Bin = '00001010000101000001111000101000'}
+            @{IP = '192.168.254.253' ; Int = 3232300797         ; Bin = '11000000101010001111111011111101'}
         )
 
-        It 'Convert-IPv4Address -Ip <Ip> == <Ip>' -TestCases $testCases1 {
-            param ($Ip)
-            $r = Convert-IPv4Address -Ip $Ip -ErrorAction Stop
+        It 'Convert-IPv4Address -IP <IP> == <IP>' -TestCases $testCases1 {
+            param ($IP)
+            $r = Convert-IPv4Address -IP $IP -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
-            $r | Should -Be $Ip
+            $r | Should -Be $IP
         }
 
-        It 'Convert-IPv4Address -Integer -Ip <Ip> == <Int>' -TestCases $testCases1 {
-            param ($Ip, $Int)
-            $r = Convert-IPv4Address -Integer -Ip $Ip -ErrorAction Stop
+        It 'Convert-IPv4Address -Integer -IP <IP> == <Int>' -TestCases $testCases1 {
+            param ($IP, $Int)
+            $r = Convert-IPv4Address -Integer -IP $IP -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             $r | Should -Be $Int
         }
 
-        It 'Convert-IPv4Address -Binary -Ip <Ip> == <Bin>' -TestCases $testCases1 {
-            param ($Ip, $Bin)
-            $r = Convert-IPv4Address -Binary -Ip $Ip -ErrorAction Stop
+        It 'Convert-IPv4Address -Binary -IP <IP> == <Bin>' -TestCases $testCases1 {
+            param ($IP, $Bin)
+            $r = Convert-IPv4Address -Binary -IP $IP -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
 
-        It 'Convert-IPv4Address -Ip <Int> == <Ip>' -TestCases $testCases1 {
-            param ($Int, $Ip)
-            $r = Convert-IPv4Address -Ip $Int -ErrorAction Stop
+        It 'Convert-IPv4Address -IP <Int> == <IP>' -TestCases $testCases1 {
+            param ($Int, $IP)
+            $r = Convert-IPv4Address -IP $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
-            $r | Should -Be $Ip
+            $r | Should -Be $IP
         }
 
-        It 'Convert-IPv4Address -Integer -Ip <Int> == <Int>' -TestCases $testCases1 {
+        It 'Convert-IPv4Address -Integer -IP <Int> == <Int>' -TestCases $testCases1 {
             param ($Int)
-            $r = Convert-IPv4Address -Integer -Ip $Int -ErrorAction Stop
+            $r = Convert-IPv4Address -Integer -IP $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             $r | Should -Be $Int
         }
 
-        It 'Convert-IPv4Address -Binary -Ip <Int> == <Bin>' -TestCases $testCases1 {
+        It 'Convert-IPv4Address -Binary -IP <Int> == <Bin>' -TestCases $testCases1 {
             param ($Int, $Bin)
-            $r = Convert-IPv4Address -Binary -Ip $Int -ErrorAction Stop
+            $r = Convert-IPv4Address -Binary -IP $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
 
-        It 'Convert-IPv4Address -Ip <Bin> == <Ip>' -TestCases $testCases1 {
-            param ($Bin, $Ip)
-            $r = Convert-IPv4Address -Ip $Bin -ErrorAction Stop
+        It 'Convert-IPv4Address -IP <Bin> == <IP>' -TestCases $testCases1 {
+            param ($Bin, $IP)
+            $r = Convert-IPv4Address -IP $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
-            $r | Should -Be $Ip
+            $r | Should -Be $IP
         }
 
-        It 'Convert-IPv4Address -Integer -Ip <Bin> == <Int>' -TestCases $testCases1 {
+        It 'Convert-IPv4Address -Integer -IP <Bin> == <Int>' -TestCases $testCases1 {
             param ($Bin, $Int)
-            $r = Convert-IPv4Address -Integer -Ip $Bin -ErrorAction Stop
+            $r = Convert-IPv4Address -Integer -IP $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             $r | Should -Be $Int
         }
 
-        It 'Convert-IPv4Address -Binary -Ip <Bin> == <Bin>' -TestCases $testCases1 {
+        It 'Convert-IPv4Address -Binary -IP <Bin> == <Bin>' -TestCases $testCases1 {
             param ($Bin)
-            $r = Convert-IPv4Address -Binary -Ip $Bin -ErrorAction Stop
+            $r = Convert-IPv4Address -Binary -IP $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
@@ -117,92 +117,92 @@ Describe 'Convert-IPv4Address' {
             @{Mask = '255.255.255.255' ; Length = 32 ; Int = 4294967295 ; Bin = '11111111111111111111111111111111' ; Hex = 'FFFFFFFF'}
         )
 
-        It 'Convert-IPv4Address -Ip <Mask> == <Mask>' -TestCases $testCasesSubnets1 {
+        It 'Convert-IPv4Address -IP <Mask> == <Mask>' -TestCases $testCasesSubnets1 {
             param ($Mask)
-            $r = Convert-IPv4Address -Ip $Mask -ErrorAction Stop
+            $r = Convert-IPv4Address -IP $Mask -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-IPv4Address -Integer -Ip <Mask> == <Int>' -TestCases $testCasesSubnets1 {
+        It 'Convert-IPv4Address -Integer -IP <Mask> == <Int>' -TestCases $testCasesSubnets1 {
             param ($Mask, $Int)
-            $r = Convert-IPv4Address -Integer -Ip $Mask -ErrorAction Stop
+            $r = Convert-IPv4Address -Integer -IP $Mask -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             $r | Should -Be $Int
         }
 
-        It 'Convert-IPv4Address -Binary -Ip <Mask> == <Bin>' -TestCases $testCasesSubnets1 {
+        It 'Convert-IPv4Address -Binary -IP <Mask> == <Bin>' -TestCases $testCasesSubnets1 {
             param ($Mask, $Bin)
-            $r = Convert-IPv4Address -Binary -Ip $Mask -ErrorAction Stop
+            $r = Convert-IPv4Address -Binary -IP $Mask -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
 
-        It 'Convert-IPv4Address -Ip <Int> == <Mask>' -TestCases $testCasesSubnets1 {
+        It 'Convert-IPv4Address -IP <Int> == <Mask>' -TestCases $testCasesSubnets1 {
             param ($Int, $Mask)
-            $r = Convert-IPv4Address -Ip $Int -ErrorAction Stop
+            $r = Convert-IPv4Address -IP $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-IPv4Address -Integer -Ip <Int> == <Int>' -TestCases $testCasesSubnets1 {
+        It 'Convert-IPv4Address -Integer -IP <Int> == <Int>' -TestCases $testCasesSubnets1 {
             param ($Int)
-            $r = Convert-IPv4Address -Integer -Ip $Int -ErrorAction Stop
+            $r = Convert-IPv4Address -Integer -IP $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             #$r | Should -Be $Int
         }
 
-        It 'Convert-IPv4Address -Binary -Ip <Int> == <Bin>' -TestCases $testCasesSubnets1 {
+        It 'Convert-IPv4Address -Binary -IP <Int> == <Bin>' -TestCases $testCasesSubnets1 {
             param ($Int, $Bin)
-            $r = Convert-IPv4Address -Binary -Ip $Int -ErrorAction Stop
+            $r = Convert-IPv4Address -Binary -IP $Int -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
 
-        It 'Convert-IPv4Address -Ip <Bin> == <Mask>' -TestCases $testCasesSubnets1 {
+        It 'Convert-IPv4Address -IP <Bin> == <Mask>' -TestCases $testCasesSubnets1 {
             param ($Bin, $Mask)
-            $r = Convert-IPv4Address -Ip $Bin -ErrorAction Stop
+            $r = Convert-IPv4Address -IP $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Mask
         }
 
-        It 'Convert-IPv4Address -Integer -Ip <Bin> == <Int>' -TestCases $testCasesSubnets1 {
+        It 'Convert-IPv4Address -Integer -IP <Bin> == <Int>' -TestCases $testCasesSubnets1 {
             param ($Bin, $Int)
-            $r = Convert-IPv4Address -Integer -Ip $Bin -ErrorAction Stop
+            $r = Convert-IPv4Address -Integer -IP $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.UInt32'
             $r | Should -Be $Int
         }
 
-        It 'Convert-IPv4Address -Binary -Ip <Bin> == <Bin>' -TestCases $testCasesSubnets1 {
+        It 'Convert-IPv4Address -Binary -IP <Bin> == <Bin>' -TestCases $testCasesSubnets1 {
             param ($Bin)
-            $r = Convert-IPv4Address -Binary -Ip $Bin -ErrorAction Stop
+            $r = Convert-IPv4Address -Binary -IP $Bin -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be $Bin
         }
     }
 
-    Context TestCasesRandomIp1 {
-        $testCasesRandomIp1 = (0..20).ForEach({@{Ip = (0..3).ForEach({Get-Random -Minimum 0 -Maximum 255}) -join '.'}})
+    Context TestCasesRandomIP1 {
+        $testCasesRandomIP1 = (0..20).ForEach({@{IP = (0..3).ForEach({Get-Random -Minimum 0 -Maximum 255}) -join '.'}})
 
-        It '<Ip> | Convert-IPv4ToInt | Convert-IntToIPv4 == <Ip>' -TestCases $testCasesRandomIp1 {
-            param ($Ip)
-            $r = $Ip | Convert-IPv4Address -ErrorAction Stop | Convert-IPv4Address -ErrorAction Stop
+        It '<IP> | Convert-IPv4ToInt | Convert-IntToIPv4 == <IP>' -TestCases $testCasesRandomIP1 {
+            param ($IP)
+            $r = $IP | Convert-IPv4Address -ErrorAction Stop | Convert-IPv4Address -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
-            $r | Should -Be $Ip
+            $r | Should -Be $IP
         }
 
-        It '<Ip> | Convert-IPv4ToInt -Integer | Convert-IntToIPv4 == <Ip>' -TestCases $testCasesRandomIp1 {
-            param ($Ip)
-            $r = $Ip | Convert-IPv4Address -Integer -ErrorAction Stop | Convert-IPv4Address -ErrorAction Stop
+        It '<IP> | Convert-IPv4ToInt -Integer | Convert-IntToIPv4 == <IP>' -TestCases $testCasesRandomIP1 {
+            param ($IP)
+            $r = $IP | Convert-IPv4Address -Integer -ErrorAction Stop | Convert-IPv4Address -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
-            $r | Should -Be $Ip
+            $r | Should -Be $IP
         }
 
-        It '<Ip> | Convert-IPv4ToInt -Binary | Convert-IntToIPv4 == <Ip>' -TestCases $testCasesRandomIp1 {
-            param ($Ip)
-            $r = $Ip | Convert-IPv4Address -Binary -ErrorAction Stop | Convert-IPv4Address -ErrorAction Stop
+        It '<IP> | Convert-IPv4ToInt -Binary | Convert-IntToIPv4 == <IP>' -TestCases $testCasesRandomIP1 {
+            param ($IP)
+            $r = $IP | Convert-IPv4Address -Binary -ErrorAction Stop | Convert-IPv4Address -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
-            $r | Should -Be $Ip
+            $r | Should -Be $IP
         }
     }
 
@@ -258,18 +258,18 @@ Describe 'Convert-IPv4Address' {
 
     Context TestCasesThrow1 {
         $testCasesThrow1 = @(
-            @{Ip = -1                                  ; Throw = '*is not a valid IPv4 address*'}
-            @{Ip = '253.254.255.256'                   ; Throw = '*is not a valid IPv4 address*'}
-            @{Ip = 'abc'                               ; Throw = '*is not a valid IPv4 address*'}
-            @{Ip = '1111111111111111111111111111111'   ; Throw = '*is not a valid IPv4 address*'}
-            @{Ip = '1111111111111111 1111111111111111' ; Throw = '*is not a valid IPv4 address*'}  # FIXXXME? Show we allow spaces in binary address?
-            @{Ip = '111111111111111111111111111111111' ; Throw = '*is not a valid IPv4 address*'}
+            @{IP = -1                                  ; Throw = '*is not a valid IPv4 address*'}
+            @{IP = '253.254.255.256'                   ; Throw = '*is not a valid IPv4 address*'}
+            @{IP = 'abc'                               ; Throw = '*is not a valid IPv4 address*'}
+            @{IP = '1111111111111111111111111111111'   ; Throw = '*is not a valid IPv4 address*'}
+            @{IP = '1111111111111111 1111111111111111' ; Throw = '*is not a valid IPv4 address*'}  # FIXXXME? Show we allow spaces in binary address?
+            @{IP = '111111111111111111111111111111111' ; Throw = '*is not a valid IPv4 address*'}
 
         )
 
-        It 'Convert-IPv4Address -Ip <Ip>  (throw)' -TestCases $testCasesThrow1 {
-            param ($Ip, $Throw)
-            {Convert-IPv4Address -Ip $Ip -ErrorAction Stop} | Should -Throw $Throw
+        It 'Convert-IPv4Address -IP <IP>  (throw)' -TestCases $testCasesThrow1 {
+            param ($IP, $Throw)
+            {Convert-IPv4Address -IP $IP -ErrorAction Stop} | Should -Throw $Throw
         }
     }
 }
