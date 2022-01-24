@@ -53,6 +53,11 @@ function Get-IPv6Address
         [Nullable[System.Byte]]
         $Prefix,
 
+        [Parameter(ParameterSetName = 'SubnetWithPrefix')]
+        [Parameter(ParameterSetName = 'SameIPIPOnly')]
+        [System.Management.Automation.SwitchParameter]
+        $SameIP,
+
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetWithPrefix')]
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIPOnly')]
         [System.Management.Automation.SwitchParameter]
@@ -82,6 +87,7 @@ function Get-IPv6Address
         #[System.Management.Automation.SwitchParameter]
         #$Pool,
 
+        [Parameter(ParameterSetName = 'SameIPWithPrefix')]
         [Parameter(ParameterSetName = 'SubnetWithPrefix')]
         #[Parameter(ParameterSetName = 'BroadcastWithPrefix')]
         #[Parameter(ParameterSetName = 'FirstWithPrefix')]
@@ -90,6 +96,7 @@ function Get-IPv6Address
         [System.Management.Automation.SwitchParameter]
         $WithPrefix,
 
+        [Parameter(Mandatory = $true, ParameterSetName = 'SameIPIPOnly')]
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIPOnly')]
         #[Parameter(Mandatory = $true, ParameterSetName = 'BroadcastIPOnly')]
         #[Parameter(Mandatory = $true, ParameterSetName = 'FirstIPOnly')]
@@ -168,8 +175,7 @@ function Get-IPv6Address
                     #elseif ($First)     { {$firstInt} }
                     #elseif ($Last)      { {$lastInt} }
                     #elseif ($All)       { {for ([uint32] $i = $firstInt; $i -le $lastInt; $i++) {$i}} }
-                    #else                { {$ipInt} }
-                    else                { throw 'Unknown error' }
+                    else                { {,@($ipInt)} }
 
                 $outputScript =
                     if     ($IPOnly)              { {(Convert-IPv6Address -IP $_ -Prefix $Prefix -Info).IPCompact} }

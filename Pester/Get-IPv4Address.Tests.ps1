@@ -8,7 +8,7 @@ Describe 'Get-IPv4Address' {
             $r | Should -Be 10.9.8.7/24
         }
 
-        It 'Positional argmuent1' {
+        It 'Positional argmuent2' {
             $r = Get-IPv4Address 10.9.8.7/255.255.255.0 -Subnet -ErrorAction Stop
             $r | Should -BeOfType 'System.String'
             $r | Should -Be 10.9.8.0/24

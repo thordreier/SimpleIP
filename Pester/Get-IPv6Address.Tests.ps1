@@ -1,10 +1,18 @@
 # Invoke-Pester -Path .\Pester\Get-IPv6Address.Tests.ps1 -Output Detailed
 Describe 'Get-IPv6Address' {
 
-    It 'Positional argmuent' {
-        $r = Get-IPv6Address a:b:c:FFFF::0ff/56 -Subnet -ErrorAction Stop
-        $r | Should -BeOfType 'System.String'
-        $r | Should -Be a:b:c:ff00::/56
+    Context PositionalArgmuent {
+        It 'Positional argmuent1' {
+            $r = Get-IPv6Address a:b:00c:FFFF::0ff/56 -Subnet -ErrorAction Stop
+            $r | Should -BeOfType 'System.String'
+            $r | Should -Be a:b:c:ff00::/56
+        }
+
+        It 'Positional argmuent2' {
+            $r = Get-IPv6Address a:b:00c:FFFF::0ff/56 -ErrorAction Stop
+            $r | Should -BeOfType 'System.String'
+            $r | Should -Be a:b:c:ffff::ff/56
+        }
     }
 
     Context TestCases1 {
@@ -47,8 +55,8 @@ Describe 'Get-IPv6Address' {
 
     Context TestCasesThrow1 {
         $testCasesThrow1 = @(
-            @{IP = 'a::b'      ; Prefix = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*Parameter set cannot be resolved using the specified named parameters*'}
-            @{IP = 'xxxx'      ; Prefix = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*Parameter set cannot be resolved using the specified named parameters*'}
+            @{IP = 'a::b'      ; Prefix = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*No prefix defined for*'}
+            @{IP = 'xxxx'      ; Prefix = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*Error parsing IPv6 address*'}
             @{IP = 'a::b'      ; Prefix = $null ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*No prefix defined for*'}
             @{IP = 'xxxx'      ; Prefix = $null ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*Error parsing IPv6 address*'}
             @{IP = 'a::b'      ; Prefix = 129   ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*Prefix is higher than 128*'}
