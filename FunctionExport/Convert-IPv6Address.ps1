@@ -136,7 +136,7 @@ function Convert-IPv6Address
             $ipReturn           = $ipCompact
             $ipBinary = ($ipIntArray | ForEach-Object -Process {[System.Convert]::ToString(([System.UInt16] $_), 2).PadLeft(16, '0')}) -join ''
 
-            if ($Prefix)
+            if ($Prefix -ne $null)
             {
                 $ipReturn = $cidr       = '{0}/{1}' -f $ipCompact, $Prefix
                 $prefixBinary           = '1' * $Prefix + '0' * (128 - $Prefix)

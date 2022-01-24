@@ -35,6 +35,39 @@ Describe 'Get-IPv6Address' {
         }
     }
 
+    Context TestCasesPrefix1 {
+        $testCasesPrefix1 = @(
+            @{IP = 'a::F'       ; Prefix = 0     ; PrefixOnly =  '0' ; PrefixWithSlashOnly = '/0'  }
+            @{IP = 'a::F/0'     ; Prefix = $null ; PrefixOnly =  '0' ; PrefixWithSlashOnly = '/0'  }
+            @{IP = 'f::a/64'    ; Prefix = 64    ; PrefixOnly = '64' ; PrefixWithSlashOnly = '/64' }
+            @{IP = 'f::a/64'    ; Prefix = $null ; PrefixOnly = '64' ; PrefixWithSlashOnly = '/64' }
+        )
+
+        It 'Get-IPv6Address -PrefixOnly -IP <IP> -Prefix <Prefix> == <PrefixOnly>' -TestCases $testCasesPrefix1 {
+            param ($IP, $Prefix, $PrefixOnly)
+            $params = @{
+                PrefixOnly = $true
+                IP         = $IP
+            }
+            if ($Prefix -ne $null) { $params['Prefix'] = $Prefix }
+            $r = Get-IPv6Address @params -ErrorAction Stop
+            $r | Should -BeOfType 'System.String'
+            $r | Should -Be $PrefixOnly
+        }
+
+        It 'Get-IPv6Address -PrefixWithSlashOnly -IP <IP> -Prefix <Prefix> == <PrefixWithSlashOnly>' -TestCases $testCasesPrefix1 {
+            param ($IP, $Prefix, $PrefixWithSlashOnly)
+            $params = @{
+                PrefixWithSlashOnly = $true
+                IP                  = $IP
+            }
+            if ($Prefix -ne $null) { $params['Prefix'] = $Prefix }
+            $r = Get-IPv6Address @params -ErrorAction Stop
+            $r | Should -BeOfType 'System.String'
+            $r | Should -Be $PrefixWithSlashOnly
+        }
+    }
+
     Context Info {
         It 'Info' {
             $r = Get-IPv6Address -IP 99:88:77:0::/15 -Info -ErrorAction Stop

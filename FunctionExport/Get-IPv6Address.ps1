@@ -105,13 +105,13 @@ function Get-IPv6Address
         [System.Management.Automation.SwitchParameter]
         $IPOnly,
 
-        #[Parameter(Mandatory = $true, ParameterSetName = 'PrefixOnly')]
-        #[System.Management.Automation.SwitchParameter]
-        #$PrefixOnly,
+        [Parameter(Mandatory = $true, ParameterSetName = 'PrefixOnly')]
+        [System.Management.Automation.SwitchParameter]
+        $PrefixOnly,
 
-        #[Parameter(Mandatory = $true, ParameterSetName = 'PrefixWithSlashOnly')]
-        #[System.Management.Automation.SwitchParameter]
-        #$PrefixWithSlashOnly,
+        [Parameter(Mandatory = $true, ParameterSetName = 'PrefixWithSlashOnly')]
+        [System.Management.Automation.SwitchParameter]
+        $PrefixWithSlashOnly,
 
         [Parameter(Mandatory = $true, ParameterSetName = 'Info')]
         [System.Management.Automation.SwitchParameter]
@@ -179,8 +179,8 @@ function Get-IPv6Address
 
                 $outputScript =
                     if     ($IPOnly)              { {(Convert-IPv6Address -IP $_ -Prefix $Prefix -Info).IPCompact} }
-                    #elseif ($PrefixOnly)          { {} }
-                    #elseif ($PrefixWithSlashOnly) { {} }
+                    elseif ($PrefixOnly)          { {'{0}' -f $Prefix} }
+                    elseif ($PrefixWithSlashOnly) { {'/{0}' -f $Prefix} }
                     else                          { {Convert-IPv6Address -IP $_ -Prefix $Prefix} }
 
                 $createScript.Invoke() | ForEach-Object -Process $outputScript
