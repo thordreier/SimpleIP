@@ -103,6 +103,12 @@ function Get-IPv4Address
         [System.String]
         $Mask = '',
 
+        [Parameter(ParameterSetName = 'SameIpWithMaskLength')]
+        [Parameter(ParameterSetName = 'SameIpWithMask')]
+        [Parameter(ParameterSetName = 'SameIpIpOnly')]
+        [System.Management.Automation.SwitchParameter]
+        $SameIp,
+
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetWithMaskLength')]
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetWithMask')]
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIpOnly')]
@@ -137,6 +143,7 @@ function Get-IPv4Address
         [System.Management.Automation.SwitchParameter]
         $Pool,
 
+        [Parameter(ParameterSetName = 'SameIpWithMaskLength')]
         [Parameter(ParameterSetName = 'SubnetWithMaskLength')]
         [Parameter(ParameterSetName = 'BroadcastWithMaskLength')]
         [Parameter(ParameterSetName = 'FirstWithMaskLength')]
@@ -145,6 +152,7 @@ function Get-IPv4Address
         [System.Management.Automation.SwitchParameter]
         $WithMaskLength,
 
+        [Parameter(Mandatory = $true, ParameterSetName = 'SameIpWithMask')]
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetWithMask')]
         [Parameter(Mandatory = $true, ParameterSetName = 'BroadcastWithMask')]
         [Parameter(Mandatory = $true, ParameterSetName = 'FirstWithMask')]
@@ -153,6 +161,7 @@ function Get-IPv4Address
         [System.Management.Automation.SwitchParameter]
         $WithMask,
 
+        [Parameter(Mandatory = $true, ParameterSetName = 'SameIpIpOnly')]
         [Parameter(Mandatory = $true, ParameterSetName = 'SubnetIpOnly')]
         [Parameter(Mandatory = $true, ParameterSetName = 'BroadcastIpOnly')]
         [Parameter(Mandatory = $true, ParameterSetName = 'FirstIpOnly')]

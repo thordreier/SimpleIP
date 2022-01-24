@@ -1,10 +1,18 @@
 # Invoke-Pester -Path .\Pester\Get-IPv4Address.Tests.ps1 -Output Detailed
 Describe 'Get-IPv4Address' {
 
-    It 'Positional argmuent' {
-        $r = Get-IPv4Address 10.9.8.7/255.255.255.0 -Subnet -ErrorAction Stop
-        $r | Should -BeOfType 'System.String'
-        $r | Should -Be 10.9.8.0/24
+    Context PositionalArgmuent {
+        It 'Positional argmuent1' {
+            $r = Get-IPv4Address 10.9.8.7/255.255.255.0 -ErrorAction Stop
+            $r | Should -BeOfType 'System.String'
+            $r | Should -Be 10.9.8.7/24
+        }
+
+        It 'Positional argmuent1' {
+            $r = Get-IPv4Address 10.9.8.7/255.255.255.0 -Subnet -ErrorAction Stop
+            $r | Should -BeOfType 'System.String'
+            $r | Should -Be 10.9.8.0/24
+        }
     }
 
     Context TestCasesWithMaskLength1 {
@@ -357,13 +365,12 @@ Describe 'Get-IPv4Address' {
 
     Context TestCasesThrow1 {
         $testCasesThrow1 = @(
-            @{Ip = $null       ; Mask = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*Parameter set cannot be resolved using the specified named parameters*'}
             @{Ip = -1          ; Mask = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*is not a valid IPv4 address*'}
             @{Ip = 22          ; Mask = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*is not a valid IPv4 address*'}
             @{Ip = -1          ; Mask = -1    ; Switch1 = $null    ; Switch2 = $null ; Throw = '*is not a valid IPv4*'}
             @{Ip = '127.0.0.1' ; Mask = -1    ; Switch1 = $null    ; Switch2 = $null ; Throw = '*is not a valid IPv4 mask*'}
-            @{Ip = '127.0.0.1' ; Mask = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*Parameter set cannot be resolved using the specified named parameters*'}
-            @{Ip = '127.0.0.1' ; Mask = $null ; Switch1 = 'Abc'    ; Switch2 = $null ; Throw = '*Parameter set cannot be resolved using the specified named parameters*'}
+            @{Ip = '127.0.0.1' ; Mask = $null ; Switch1 = $null    ; Switch2 = $null ; Throw = '*No mask defined*'}
+            @{Ip = '127.0.0.1' ; Mask = $null ; Switch1 = 'Abc'    ; Switch2 = $null ; Throw = '*A parameter cannot be found that matches parameter name*'}
             @{Ip = '127.0.0.1' ; Mask = $null ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*No mask defined*'}
         )
 
