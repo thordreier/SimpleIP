@@ -2,10 +2,16 @@ function Convert-IPv4Mask
 {
     <#
         .SYNOPSIS
-            Convert IP subnet mask between formats
+            Convert IP subnet mask between different formats
 
         .DESCRIPTION
-            Convert IP subnet mask between formats
+            Convert IP subnet mask between different formats
+            - Quad dot                eg. "255.255.128.0"
+            - Mask length (0-32)      eg. "17"
+            - Mask length with slash  eg. "/17"
+            - Integer (uint32)        eg. "4294934528"
+            - Binary (32 long string) eg. "11111111111111111000000000000000"
+
             If input is in quad dot format ("255.0.0.0"), output defaults to mask length with a leading slash ("/8")
             - else output defaults to quad dot format
             Output can be forced to be in specific format with switches
@@ -36,6 +42,10 @@ function Convert-IPv4Mask
         .EXAMPLE
             Convert-IPv4Mask -Mask 255.255.128.0
             /17
+
+        .EXAMPLE
+            Convert-IPv4Mask -Mask /17 -Length
+            17
 
         .EXAMPLE
             Convert-IPv4Mask -Mask /17

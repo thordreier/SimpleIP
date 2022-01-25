@@ -52,35 +52,51 @@ function Test-ValidIPv4
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -IP 127.0.0.1/32 -AllowMask
+            Test-ValidIPv4 -AllowMask -IP 127.0.0.1/32
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -IP "127.0.0.1 255.255.255.255" -AllowMask
+            Test-ValidIPv4 -AllowMask -IP "127.0.0.1 255.255.255.255"
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -IP 127.0.0.1 -RequireMask
+            Test-ValidIPv4 -AllowMask -IP "127.0.0.1"
+            True
+
+        .EXAMPLE
+            Test-ValidIPv4 -RequireMask -IP 127.0.0.1/32
+            True
+
+        .EXAMPLE
+            Test-ValidIPv4 -RequireMask -IP 127.0.0.1
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -IP 255.255.0.0 -Mask
+            Test-ValidIPv4 -Mask -IP 255.255.0.0
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -IP 255.0.255.0 -Mask
+            Test-ValidIPv4 -Mask -IP 255.0.255.0
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -IP 32 -Mask
+            Test-ValidIPv4 -Mask -IP 32
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -IP 32 -Mask -AllowLength
+            Test-ValidIPv4 -Mask -AllowLength -IP 255.0.255.0
+            False
+
+        .EXAMPLE
+            Test-ValidIPv4 -Mask -AllowLength -IP 255.255.0.0
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -IP /32 -Mask -AllowLength
+            Test-ValidIPv4 -Mask -AllowLength -IP 32
+            True
+
+        .EXAMPLE
+            Test-ValidIPv4 -Mask -AllowLength -IP /32
             True
     #>
 

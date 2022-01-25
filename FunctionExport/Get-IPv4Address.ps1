@@ -19,6 +19,10 @@ function Get-IPv4Address
             - Mask length (0-32),     eg. "24"
             - Mask length with slash, eg. "/24"
 
+        .PARAMETER SameIP
+            Return same IP as input IP (why? maybe in a different format back)
+            If input is "10.11.12.13/24", then "10.11.12.13/24" is returned
+
         .PARAMETER Subnet
             Return subnet
             If input is "10.11.12.13/24", then "10.11.12.0/24" is returned
@@ -70,8 +74,16 @@ function Get-IPv4Address
             127.0.0.0/24
 
         .EXAMPLE
+            Get-IPv4Address -IP 127.0.0.1/8 -Subnet -WithMask
+            127.0.0.0 255.0.0.0
+
+        .EXAMPLE
             Get-IPv4Address -IP 127.0.0.1/8 -Broadcast -WithMask
             127.255.255.255 255.0.0.0
+
+        .EXAMPLE
+            Get-IPv4Address -IP 127.0.0.1/8 -Broadcast -IPOnly
+            127.255.255.255
 
         .EXAMPLE
             Get-IPv4Address -IP 10.100.200.201 -Mask /30 -All -WithMask

@@ -22,8 +22,16 @@ function Get-IPv4Mask
             Return subnet mask in "/8" format
 
         .EXAMPLE
-            Get-IPv4Mask 9.8.7.6/22 -QuadDot
+            Get-IPv4Mask 9.8.7.6/22
             255.255.252.0
+
+        .EXAMPLE
+            Get-IPv4Mask 9.8.7.6/22 -LengthWithSlash
+            /22
+
+        .EXAMPLE
+            Get-IPv4Mask 9.8.7.6/255.255.252.0 -Length
+            22
     #>
 
     [OutputType([System.String])]

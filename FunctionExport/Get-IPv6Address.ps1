@@ -13,6 +13,10 @@ function Get-IPv6Address
         .PARAMETER Prefix
             If prefix is not set in IP address, it must be set with this parameter
 
+        .PARAMETER SameIP
+            Return same IP as input IP (why? maybe in a different format back)
+            If input is "7:6:5::77:88/56", then "7:6:5::77:88/56" is returned
+
         .PARAMETER Subnet
             Return subnet
             If input is "7:6:5::77:88/56", then "7:6:5::/56" is returned
@@ -24,15 +28,29 @@ function Get-IPv6Address
         .PARAMETER IPOnly
             Return in "7:6:5::" format
 
+        .PARAMETER PrefixOnly
+            Only return prefix in "64" format
+
+        .PARAMETER PrefixWithSlashOnly
+            Only return prefix in "/64" format
+
         .PARAMETER Info
             Return object with different info
 
         .EXAMPLE
-            Get-IPv6Address -IP 7:6:5::77:88/64 -Subnet
+            Get-IPv6Address -IP 007:6:5::77:88/64 -Subnet
             7:6:5::/64
 
         .EXAMPLE
-            Get-IPv6Address -IP 7:6:5::77:88/64 -Info
+            Get-IPv6Address -IP 007:6:5::77:88/64 -Subnet -IPOnly
+            7:6:5::
+
+        .EXAMPLE
+            Get-IPv6Address -IP 007:6:5::77:88/64 -IPOnly
+            7:6:5::77:88
+
+        .EXAMPLE
+            Get-IPv6Address -IP 007:6:5::77:88/64 -Info
             IP           : 7:6:5::77:88/64
             Subnet       : 7:6:5::/64
             FirstIP4Real : 7:6:5::/64

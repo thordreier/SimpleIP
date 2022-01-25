@@ -2,10 +2,13 @@ function Convert-IPv4Address
 {
     <#
         .SYNOPSIS
-            Convert IP address between formats
+            Convert IP address between different formats
 
         .DESCRIPTION
-            Convert IP address between formats
+            Convert IP address between different formats
+            - Quad dot (without mask) eg. "192.168.1.2"
+            - Integer (uint32)        eg. 3232235778
+            - Binary (32 long string) eg. "11000000101010000000000100000010"
 
         .PARAMETER IP
             Input IP is either:
@@ -38,6 +41,10 @@ function Convert-IPv4Address
         .EXAMPLE
             3232235778 | Convert-IPv4Address
             192.168.1.2
+
+        .EXAMPLE
+            Convert-IPv4Address 192.168.1.2 -Integer
+            3232235778
     #>
 
     [OutputType([System.String], ParameterSetName = 'QuadDot')]

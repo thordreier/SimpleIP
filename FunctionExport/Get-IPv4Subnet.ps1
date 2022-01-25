@@ -36,6 +36,10 @@ function Get-IPv4Subnet
         .EXAMPLE
             Get-IPv4Subnet -IP 10.20.30.40/28 -WithMask
             10.20.30.32 255.255.255.240
+
+        .EXAMPLE
+            Get-IPv4Subnet -IP '10.20.30.40 255.255.255.240' -IPOnly
+            10.20.30.32
     #>
 
     [OutputType([System.String])]

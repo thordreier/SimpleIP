@@ -29,11 +29,11 @@ SYNOPSIS
     
     
 SYNTAX
-    Convert-IPv4Address [-Ip] <String> [-QuadDot] [<CommonParameters>]
+    Convert-IPv4Address [-IP] <String> [-QuadDot] [<CommonParameters>]
     
-    Convert-IPv4Address [-Ip] <String> -Integer [<CommonParameters>]
+    Convert-IPv4Address [-IP] <String> -Integer [<CommonParameters>]
     
-    Convert-IPv4Address [-Ip] <String> -Binary [<CommonParameters>]
+    Convert-IPv4Address [-IP] <String> -Binary [<CommonParameters>]
     
     
 DESCRIPTION
@@ -41,7 +41,7 @@ DESCRIPTION
     
 
 PARAMETERS
-    -Ip <String>
+    -IP <String>
         Input IP is either:
         - Quad dot (without mask) eg. "192.168.1.2"
         - Integer (uint32)        eg. 3232235778
@@ -65,7 +65,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS C:\>Convert-IPv4Address -Ip 192.168.1.2 -Integer
+    PS C:\>Convert-IPv4Address -IP 192.168.1.2 -Integer
     
     3232235778
     
@@ -74,7 +74,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS C:\>Convert-IPv4Address -Ip 192.168.1.2 -Binary
+    PS C:\>Convert-IPv4Address -IP 192.168.1.2 -Binary
     
     11000000101010000000000100000010
     
@@ -83,7 +83,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 3 --------------------------
     
-    PS C:\>Convert-IPv4Address -Ip 11000000101010000000000100000010 -QuadDot
+    PS C:\>Convert-IPv4Address -IP 11000000101010000000000100000010 -QuadDot
     
     192.168.1.2
     
@@ -223,9 +223,9 @@ SYNOPSIS
     
     
 SYNTAX
-    Convert-IPv6Address [-Ip] <Object> [-Prefix <Nullable`1>] [<CommonParameters>]
+    Convert-IPv6Address [-IP] <Object> [-Prefix <Nullable`1>] [<CommonParameters>]
     
-    Convert-IPv6Address [-Ip] <Object> [-Prefix <Nullable`1>] -Info [<CommonParameters>]
+    Convert-IPv6Address [-IP] <Object> [-Prefix <Nullable`1>] -Info [<CommonParameters>]
     
     
 DESCRIPTION
@@ -237,7 +237,7 @@ DESCRIPTION
     
 
 PARAMETERS
-    -Ip <Object>
+    -IP <Object>
         Input IP is either
         - Standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
         - [uint16[]] array with  8 elements
@@ -265,7 +265,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS C:\>Convert-IPv6Address -Ip a:b:c::/64 -Info
+    PS C:\>Convert-IPv6Address -IP a:b:c::/64 -Info
     
     IP                     : a:b:c::/64
     IPCompact              : a:b:c::
@@ -303,43 +303,49 @@ SYNOPSIS
     
     
 SYNTAX
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -Subnet [-Pool] -IpOnly [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] [-SameIP] [-Pool] -IPOnly [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -Subnet [-Pool] -WithMask [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] [-SameIP] [-Pool] -WithMask [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -Subnet [-Pool] [-WithMaskLength] [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] [-SameIP] [-Pool] [-WithMaskLength] [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -Broadcast [-Pool] -IpOnly [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -Subnet [-Pool] -IPOnly [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -Broadcast [-Pool] -WithMask [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -Subnet [-Pool] -WithMask [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -Broadcast [-Pool] [-WithMaskLength] [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -Subnet [-Pool] [-WithMaskLength] [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -First [-Pool] -IpOnly [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -Broadcast [-Pool] -IPOnly [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -First [-Pool] -WithMask [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -Broadcast [-Pool] -WithMask [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -First [-Pool] [-WithMaskLength] [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -Broadcast [-Pool] [-WithMaskLength] [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -Last [-Pool] -IpOnly [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -First [-Pool] -IPOnly [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -Last [-Pool] -WithMask [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -First [-Pool] -WithMask [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -Last [-Pool] [-WithMaskLength] [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -First [-Pool] [-WithMaskLength] [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -All [-Pool] -IpOnly [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -Last [-Pool] -IPOnly [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -All [-Pool] -WithMask [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -Last [-Pool] -WithMask [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] -All [-Pool] [-WithMaskLength] [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -Last [-Pool] [-WithMaskLength] [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] [-Pool] -MaskQuadDotOnly [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -All [-Pool] -IPOnly [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] [-Pool] -MaskLengthOnly [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -All [-Pool] -WithMask [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] [-Pool] -MaskLengthWithSlashOnly [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] -All [-Pool] [-WithMaskLength] [<CommonParameters>]
     
-    Get-IPv4Address [-Ip] <String> [-Mask <String>] [-Pool] -Info [<CommonParameters>]
+    Get-IPv4Address [-IP] <String> [-Mask <String>] [-Pool] -MaskQuadDotOnly [<CommonParameters>]
+    
+    Get-IPv4Address [-IP] <String> [-Mask <String>] [-Pool] -MaskLengthOnly [<CommonParameters>]
+    
+    Get-IPv4Address [-IP] <String> [-Mask <String>] [-Pool] -MaskLengthWithSlashOnly [<CommonParameters>]
+    
+    Get-IPv4Address [-IP] <String> [-Mask <String>] [-Pool] -Info [<CommonParameters>]
     
     
 DESCRIPTION
@@ -347,7 +353,7 @@ DESCRIPTION
     
 
 PARAMETERS
-    -Ip <String>
+    -IP <String>
         Input IP in quad dot format with subnet mask, either:
         - IP + mask in quad dot, eg. "127.0.0.1 255.0.0.0"
         - IP + mask length,      eg. "127.0.0.1/8"
@@ -358,6 +364,8 @@ PARAMETERS
         - Quad dot format,        eg. "255.255.255.0"
         - Mask length (0-32),     eg. "24"
         - Mask length with slash, eg. "/24"
+        
+    -SameIP [<SwitchParameter>]
         
     -Subnet [<SwitchParameter>]
         Return subnet
@@ -390,7 +398,7 @@ PARAMETERS
     -WithMask [<SwitchParameter>]
         Return in "127.0.0.1 255.0.0.0" format
         
-    -IpOnly [<SwitchParameter>]
+    -IPOnly [<SwitchParameter>]
         Return in "127.0.0.1" format
         
     -MaskQuadDotOnly [<SwitchParameter>]
@@ -413,7 +421,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS C:\>Get-IPv4Address -Ip 127.0.0.1/8 -Subnet
+    PS C:\>Get-IPv4Address -IP 127.0.0.1/8 -Subnet
     
     127.0.0.0/24
     
@@ -422,7 +430,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS C:\>Get-IPv4Address -Ip 127.0.0.1/8 -Broadcast -WithMask
+    PS C:\>Get-IPv4Address -IP 127.0.0.1/8 -Broadcast -WithMask
     
     127.255.255.255 255.0.0.0
     
@@ -431,7 +439,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 3 --------------------------
     
-    PS C:\>Get-IPv4Address -Ip 10.100.200.201 -Mask /30 -All -WithMask
+    PS C:\>Get-IPv4Address -IP 10.100.200.201 -Mask /30 -All -WithMask
     
     10.100.200.201 255.255.255.252
     10.100.200.202 255.255.255.252
@@ -441,7 +449,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 4 --------------------------
     
-    PS C:\>Get-IPv4Address -Ip 192.168.0.150/255.255.255.128 -Info
+    PS C:\>Get-IPv4Address -IP 192.168.0.150/255.255.255.128 -Info
     
     IP          : 192.168.0.150
     Subnet      : 192.168.0.128
@@ -473,11 +481,11 @@ SYNOPSIS
     
     
 SYNTAX
-    Get-IPv4Mask [-Ip] <String> [-QuadDot] [<CommonParameters>]
+    Get-IPv4Mask [-IP] <String> [-QuadDot] [<CommonParameters>]
     
-    Get-IPv4Mask [-Ip] <String> -Length [<CommonParameters>]
+    Get-IPv4Mask [-IP] <String> -Length [<CommonParameters>]
     
-    Get-IPv4Mask [-Ip] <String> -LengthWithSlash [<CommonParameters>]
+    Get-IPv4Mask [-IP] <String> -LengthWithSlash [<CommonParameters>]
     
     
 DESCRIPTION
@@ -485,7 +493,7 @@ DESCRIPTION
     
 
 PARAMETERS
-    -Ip <String>
+    -IP <String>
         Input IP in quad dot format with subnet mask, either:
         - IP + mask in quad dot, eg. "127.0.0.1 255.0.0.0"
         - IP + mask length,      eg. "127.0.0.1/8"
@@ -533,11 +541,11 @@ SYNOPSIS
     
     
 SYNTAX
-    Get-IPv4Subnet [-Ip] <String> [-Mask <String>] [-WithMaskLength] [<CommonParameters>]
+    Get-IPv4Subnet [-IP] <String> [-Mask <String>] [-WithMaskLength] [<CommonParameters>]
     
-    Get-IPv4Subnet [-Ip] <String> [-Mask <String>] -WithMask [<CommonParameters>]
+    Get-IPv4Subnet [-IP] <String> [-Mask <String>] -WithMask [<CommonParameters>]
     
-    Get-IPv4Subnet [-Ip] <String> [-Mask <String>] -IpOnly [<CommonParameters>]
+    Get-IPv4Subnet [-IP] <String> [-Mask <String>] -IPOnly [<CommonParameters>]
     
     
 DESCRIPTION
@@ -545,7 +553,7 @@ DESCRIPTION
     
 
 PARAMETERS
-    -Ip <String>
+    -IP <String>
         Input IP in quad dot format with subnet mask, either:
         - IP + mask in quad dot, eg. "127.0.0.1 255.0.0.0"
         - IP + mask length,      eg. "127.0.0.1/8"
@@ -564,7 +572,7 @@ PARAMETERS
     -WithMask [<SwitchParameter>]
         Return in "127.0.0.0 255.0.0.0" format
         
-    -IpOnly [<SwitchParameter>]
+    -IPOnly [<SwitchParameter>]
         Return in "127.0.0.1" format
         
     <CommonParameters>
@@ -584,7 +592,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS C:\>Get-IPv4Subnet -Ip 10.20.30.40/28 -WithMask
+    PS C:\>Get-IPv4Subnet -IP 10.20.30.40/28 -WithMask
     
     10.20.30.32 255.255.255.240
     
@@ -610,11 +618,19 @@ SYNOPSIS
     
     
 SYNTAX
-    Get-IPv6Address [-Ip] <String> [-Prefix <Nullable`1>] -Subnet -IpOnly [<CommonParameters>]
+    Get-IPv6Address [-IP] <String> [-Prefix <Nullable`1>] [-SameIP] -IPOnly [<CommonParameters>]
     
-    Get-IPv6Address [-Ip] <String> [-Prefix <Nullable`1>] -Subnet [-WithPrefix] [<CommonParameters>]
+    Get-IPv6Address [-IP] <String> [-Prefix <Nullable`1>] [-SameIP] -Subnet [-WithPrefix] [<CommonParameters>]
     
-    Get-IPv6Address [-Ip] <String> [-Prefix <Nullable`1>] -Info [<CommonParameters>]
+    Get-IPv6Address [-IP] <String> [-Prefix <Nullable`1>] -Subnet -IPOnly [<CommonParameters>]
+    
+    Get-IPv6Address [-IP] <String> [-Prefix <Nullable`1>] [-WithPrefix] [<CommonParameters>]
+    
+    Get-IPv6Address [-IP] <String> [-Prefix <Nullable`1>] -PrefixOnly [<CommonParameters>]
+    
+    Get-IPv6Address [-IP] <String> [-Prefix <Nullable`1>] -PrefixWithSlashOnly [<CommonParameters>]
+    
+    Get-IPv6Address [-IP] <String> [-Prefix <Nullable`1>] -Info [<CommonParameters>]
     
     
 DESCRIPTION
@@ -622,11 +638,13 @@ DESCRIPTION
     
 
 PARAMETERS
-    -Ip <String>
+    -IP <String>
         Input IP is standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
         
     -Prefix <Nullable`1>
         If prefix is not set in IP address, it must be set with this parameter
+        
+    -SameIP [<SwitchParameter>]
         
     -Subnet [<SwitchParameter>]
         Return subnet
@@ -636,8 +654,12 @@ PARAMETERS
         Return in "7:6:5::/64" format
         This is default output
         
-    -IpOnly [<SwitchParameter>]
+    -IPOnly [<SwitchParameter>]
         Return in "7:6:5::" format
+        
+    -PrefixOnly [<SwitchParameter>]
+        
+    -PrefixWithSlashOnly [<SwitchParameter>]
         
     -Info [<SwitchParameter>]
         Return object with different info
@@ -650,7 +672,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS C:\>Get-IPv6Address -Ip 7:6:5::77:88/64 -Subnet
+    PS C:\>Get-IPv6Address -IP 7:6:5::77:88/64 -Subnet
     
     7:6:5::/64
     
@@ -659,7 +681,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS C:\>Get-IPv6Address -Ip 7:6:5::77:88/64 -Info
+    PS C:\>Get-IPv6Address -IP 7:6:5::77:88/64 -Info
     
     IP           : 7:6:5::77:88/64
     Subnet       : 7:6:5::/64
@@ -690,9 +712,9 @@ SYNOPSIS
     
     
 SYNTAX
-    Get-IPv6Subnet [-Ip] <String> [-Prefix <Nullable`1>] [-WithPrefix] [<CommonParameters>]
+    Get-IPv6Subnet [-IP] <String> [-Prefix <Nullable`1>] [-WithPrefix] [<CommonParameters>]
     
-    Get-IPv6Subnet [-Ip] <String> [-Prefix <Nullable`1>] -IpOnly [<CommonParameters>]
+    Get-IPv6Subnet [-IP] <String> [-Prefix <Nullable`1>] -IPOnly [<CommonParameters>]
     
     
 DESCRIPTION
@@ -700,7 +722,7 @@ DESCRIPTION
     
 
 PARAMETERS
-    -Ip <String>
+    -IP <String>
         Input IP is standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
         
     -Prefix <Nullable`1>
@@ -710,7 +732,7 @@ PARAMETERS
         Return in "7:6:5::/64" format
         This is default output
         
-    -IpOnly [<SwitchParameter>]
+    -IPOnly [<SwitchParameter>]
         Return in "7:6:5::" format
         
     <CommonParameters>
@@ -721,7 +743,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS C:\>Get-IPv6Subnet -Ip 7:6:5::77:88/64
+    PS C:\>Get-IPv6Subnet -IP 7:6:5::77:88/64
     
     7:6:5::/64
     
@@ -730,7 +752,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS C:\>Get-IPv6Subnet -Ip 7:6:5::77:88/64 -IpOnly
+    PS C:\>Get-IPv6Subnet -IP 7:6:5::77:88/64 -IPOnly
     
     7:6:5::
     
@@ -756,13 +778,13 @@ SYNOPSIS
     
     
 SYNTAX
-    Test-ValidIPv4 [-Ip] <String> [-IpOnly] [<CommonParameters>]
+    Test-ValidIPv4 [-IP] <String> [-IPOnly] [<CommonParameters>]
     
-    Test-ValidIPv4 [-Ip] <String> -Mask [-AllowLength] [<CommonParameters>]
+    Test-ValidIPv4 [-IP] <String> -Mask [-AllowLength] [<CommonParameters>]
     
-    Test-ValidIPv4 [-Ip] <String> -AllowMask [<CommonParameters>]
+    Test-ValidIPv4 [-IP] <String> -AllowMask [<CommonParameters>]
     
-    Test-ValidIPv4 [-Ip] <String> -RequireMask [<CommonParameters>]
+    Test-ValidIPv4 [-IP] <String> -RequireMask [<CommonParameters>]
     
     
 DESCRIPTION
@@ -772,10 +794,10 @@ DESCRIPTION
     
 
 PARAMETERS
-    -Ip <String>
+    -IP <String>
         IP address (or subnet mask) to test is valid or not
         
-    -IpOnly [<SwitchParameter>]
+    -IPOnly [<SwitchParameter>]
         Only return True if input is valid IPv4 in quad dot format (without subnet mask)
         Eg. "127.0.0.1"
         This is default
@@ -810,7 +832,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip 127.0.0.1
+    PS C:\>Test-ValidIPv4 -IP 127.0.0.1
     
     True
     
@@ -819,7 +841,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip 127.0.0.256
+    PS C:\>Test-ValidIPv4 -IP 127.0.0.256
     
     False
     
@@ -828,7 +850,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 3 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip 127.0.0.1/32
+    PS C:\>Test-ValidIPv4 -IP 127.0.0.1/32
     
     False
     
@@ -837,7 +859,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 4 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip 127.0.0.1/32 -AllowMask
+    PS C:\>Test-ValidIPv4 -IP 127.0.0.1/32 -AllowMask
     
     True
     
@@ -846,7 +868,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 5 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip "127.0.0.1 255.255.255.255" -AllowMask
+    PS C:\>Test-ValidIPv4 -IP "127.0.0.1 255.255.255.255" -AllowMask
     
     True
     
@@ -855,7 +877,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 6 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip 127.0.0.1 -RequireMask
+    PS C:\>Test-ValidIPv4 -IP 127.0.0.1 -RequireMask
     
     False
     
@@ -864,7 +886,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 7 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip 255.255.0.0 -Mask
+    PS C:\>Test-ValidIPv4 -IP 255.255.0.0 -Mask
     
     True
     
@@ -873,7 +895,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 8 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip 255.0.255.0 -Mask
+    PS C:\>Test-ValidIPv4 -IP 255.0.255.0 -Mask
     
     False
     
@@ -882,7 +904,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 9 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip 32 -Mask
+    PS C:\>Test-ValidIPv4 -IP 32 -Mask
     
     False
     
@@ -891,7 +913,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 10 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip 32 -Mask -AllowLength
+    PS C:\>Test-ValidIPv4 -IP 32 -Mask -AllowLength
     
     True
     
@@ -900,7 +922,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 11 --------------------------
     
-    PS C:\>Test-ValidIPv4 -Ip /32 -Mask -AllowLength
+    PS C:\>Test-ValidIPv4 -IP /32 -Mask -AllowLength
     
     True
     

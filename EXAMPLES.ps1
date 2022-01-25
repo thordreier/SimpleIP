@@ -1,12 +1,3 @@
-# SimpleIP
-
-PowerShell functions to get info about an IP addresses.
-
-## Usage
-
-### Examples
-
-```powershell
 ######## IPv4
 
 
@@ -174,27 +165,3 @@ Get-IPv6Address -IP 007:6:5::77:88/64 -Info  # Returns object...:
 # Get subnet in different formats from IP address (this funtion is just a wrapper for Get-IPv6Address)
 Get-IPv6Subnet -IP 0007:006:05::077:0088/64          # Returns 7:6:5::/64
 Get-IPv6Subnet -IP 0007:006:05::077:0088/64 -IPOnly  # Returns 7:6:5::
-
-```
-
-Examples are also found in [EXAMPLES.ps1](EXAMPLES.ps1).
-
-### Functions
-
-See [FUNCTIONS.md](FUNCTIONS.md) for documentation of funtions in this module.
-
-## Install
-
-### Install module from PowerShell Gallery
-
-```
-Install-Module SimpleIP
-```
-
-### Install module from source
-
-```
-git clone https://github.com/thordreier/SimpleIP.git
-cd SimpleIP
-.\Build.ps1 -InstallModule
-```

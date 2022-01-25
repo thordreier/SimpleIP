@@ -27,6 +27,10 @@ function Convert-IPv6Address
             ab::fff:0:1
 
         .EXAMPLE
+            Convert-IPv6Address 00ab:00:0:000:00:fff::1/64
+            ab::fff:0:1/64
+
+        .EXAMPLE
             Convert-IPv6Address -IP a:b:c::/64 -Info
             IP                     : a:b:c::/64
             IPCompact              : a:b:c::
