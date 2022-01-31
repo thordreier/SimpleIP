@@ -39,12 +39,12 @@ function Get-IPv4Mask
     param
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position=0)]
-        [ValidateScript({ (Test-ValidIPv4 -IP $_ -AllowMask) -or $(throw "$_ is not a valid IPv4 address") })]
+        [ValidateScript({ (Test-IPv4Address -IP $_ -AllowMask) -or $(throw "$_ is not a valid IPv4 address") })]
         [System.String]
         $IP,
 
         #[Parameter()]
-        #[ValidateScript({ (Test-ValidIPv4 -IP $_ -Mask -AllowLength) -or $(throw "$_ is not a valid IPv4 mask") })]
+        #[ValidateScript({ (Test-IPv4Address -IP $_ -Mask -AllowLength) -or $(throw "$_ is not a valid IPv4 mask") })]
         #[System.String]
         #$Mask = '',
         

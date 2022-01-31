@@ -87,7 +87,7 @@ function Convert-IPv4Address
             $ErrorActionPreference = 'Stop'
 
             [System.UInt32] $i = 0
-            if (Test-ValidIPv4 -IP $IP)
+            if (Test-IPv4Address -IP $IP)
             {
                 $IP -split '\.' | ForEach-Object -Process {
                     $i = $i * 256 + $_

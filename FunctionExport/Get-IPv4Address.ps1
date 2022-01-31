@@ -106,12 +106,12 @@ function Get-IPv4Address
     param
     (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position=0)]
-        [ValidateScript({ (Test-ValidIPv4 -IP $_ -AllowMask) -or $(throw "$_ is not a valid IPv4 address") })]
+        [ValidateScript({ (Test-IPv4Address -IP $_ -AllowMask) -or $(throw "$_ is not a valid IPv4 address") })]
         [System.String]
         $IP,
 
         [Parameter()]
-        [ValidateScript({ (Test-ValidIPv4 -IP $_ -Mask -AllowLength) -or $(throw "$_ is not a valid IPv4 mask") })]
+        [ValidateScript({ (Test-IPv4Address -IP $_ -Mask -AllowLength) -or $(throw "$_ is not a valid IPv4 mask") })]
         [System.String]
         $Mask = '',
 
@@ -217,14 +217,14 @@ function Get-IPv4Address
 
             if ($Mask -eq '')
             {
-                if (Test-ValidIPv4 -IP $IP) {throw "No mask defined for $IP"}
+                if (Test-IPv4Address -IP $IP) {throw "No mask defined for $IP"}
             }
             else
             {
                 $Mask = $Mask | Convert-IPv4Mask -Length
             }
 
-            if (-not (Test-ValidIPv4 -IP $IP))
+            if (-not (Test-IPv4Address -IP $IP))
             {
                 ($IP, $m) = $IP -split '[/ ]'
                 $m = $m | Convert-IPv4Mask -Length
@@ -259,6 +259,20 @@ function Get-IPv4Address
                     FirstIP     = $firstInt     | Convert-IPv4Address
                     LastIP      = $lastInt      | Convert-IPv4Address
                     Broadcast   = $broadcastInt | Convert-IPv4Address
+                    Integer     = [PSCustomObject] @{
+                        IP          = $ipInt
+                        Subnet      = $subnetInt
+                        FirstIP     = $firstInt
+                        LastIP      = $lastInt
+                        Broadcast   = $broadcastInt
+                    }
+                    Binary     = [PSCustomObject] @{
+                        IP          = $ipInt        | Convert-IPv4Address -Binary
+                        Subnet      = $subnetInt    | Convert-IPv4Address -Binary
+                        FirstIP     = $firstInt     | Convert-IPv4Address -Binary
+                        LastIP      = $lastInt      | Convert-IPv4Address -Binary
+                        Broadcast   = $broadcastInt | Convert-IPv4Address -Binary
+                    }
                     MaskQuadDot = $maskQuadDot
                     MaskLength  = $Mask
                 }

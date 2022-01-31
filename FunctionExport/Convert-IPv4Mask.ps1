@@ -121,14 +121,14 @@ function Convert-IPv4Mask
             {
                 try
                 {
-                    if (-not ($Mask | Convert-IPv4Address | Test-ValidIPv4 -Mask)) {throw}
+                    if (-not ($Mask | Convert-IPv4Address | Test-IPv4Address -Mask)) {throw}
                 }
                 catch
                 {
                     throw "$Mask is not a valid subnet mask"
                 }
 
-                if (Test-ValidIPv4 -IP $Mask) {$quadDotInput = $true}
+                if (Test-IPv4Address -IP $Mask) {$quadDotInput = $true}
                 $i = Convert-IPv4Address -IP $Mask -Integer
             }
 

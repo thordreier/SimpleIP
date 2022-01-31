@@ -1,4 +1,4 @@
-function Test-ValidIPv4
+function Test-IPv4Address
 {
     <#
         .SYNOPSIS
@@ -40,63 +40,63 @@ function Test-ValidIPv4
             - IP + mask length,      eg. "127.0.0.1/8"
 
         .EXAMPLE
-            Test-ValidIPv4 -IP 127.0.0.1
+            Test-IPv4Address -IP 127.0.0.1
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -IP 127.0.0.256
+            Test-IPv4Address -IP 127.0.0.256
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -IP 127.0.0.1/32
+            Test-IPv4Address -IP 127.0.0.1/32
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -AllowMask -IP 127.0.0.1/32
+            Test-IPv4Address -AllowMask -IP 127.0.0.1/32
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -AllowMask -IP "127.0.0.1 255.255.255.255"
+            Test-IPv4Address -AllowMask -IP "127.0.0.1 255.255.255.255"
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -AllowMask -IP "127.0.0.1"
+            Test-IPv4Address -AllowMask -IP "127.0.0.1"
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -RequireMask -IP 127.0.0.1/32
+            Test-IPv4Address -RequireMask -IP 127.0.0.1/32
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -RequireMask -IP 127.0.0.1
+            Test-IPv4Address -RequireMask -IP 127.0.0.1
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -Mask -IP 255.255.0.0
+            Test-IPv4Address -Mask -IP 255.255.0.0
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -Mask -IP 255.0.255.0
+            Test-IPv4Address -Mask -IP 255.0.255.0
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -Mask -IP 32
+            Test-IPv4Address -Mask -IP 32
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -Mask -AllowLength -IP 255.0.255.0
+            Test-IPv4Address -Mask -AllowLength -IP 255.0.255.0
             False
 
         .EXAMPLE
-            Test-ValidIPv4 -Mask -AllowLength -IP 255.255.0.0
+            Test-IPv4Address -Mask -AllowLength -IP 255.255.0.0
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -Mask -AllowLength -IP 32
+            Test-IPv4Address -Mask -AllowLength -IP 32
             True
 
         .EXAMPLE
-            Test-ValidIPv4 -Mask -AllowLength -IP /32
+            Test-IPv4Address -Mask -AllowLength -IP /32
             True
     #>
 

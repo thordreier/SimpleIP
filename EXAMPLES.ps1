@@ -80,32 +80,32 @@ Get-IPv4Subnet -IP '10.20.30.40 255.255.255.240' -IPOnly  # Returns 10.20.30.32
 
 
 
-#### Test-ValidIPv4
+#### Test-IPv4Address
 
 # Test if input is a valid IPv4 address
-Test-ValidIPv4 -IP 127.0.0.1     # Returns True
-Test-ValidIPv4 -IP 127.0.0.256   # Returns False
-Test-ValidIPv4 -IP 127.0.0.1/32  # Returns False
+Test-IPv4Address -IP 127.0.0.1     # Returns True
+Test-IPv4Address -IP 127.0.0.256   # Returns False
+Test-IPv4Address -IP 127.0.0.1/32  # Returns False
 
 # Test if input is a valid IPv4 address - subnet mask is allowed, but not required
-Test-ValidIPv4 -AllowMask -IP 127.0.0.1/32                 # Returns True
-Test-ValidIPv4 -AllowMask -IP "127.0.0.1 255.255.255.255"  # Returns True
-Test-ValidIPv4 -AllowMask -IP "127.0.0.1"                  # Returns True
+Test-IPv4Address -AllowMask -IP 127.0.0.1/32                 # Returns True
+Test-IPv4Address -AllowMask -IP "127.0.0.1 255.255.255.255"  # Returns True
+Test-IPv4Address -AllowMask -IP "127.0.0.1"                  # Returns True
 
 # Test if input is a valid IPv4 address - subnet mask is required
-Test-ValidIPv4 -RequireMask -IP 127.0.0.1/32  # Returns True
-Test-ValidIPv4 -RequireMask -IP 127.0.0.1     # Returns False
+Test-IPv4Address -RequireMask -IP 127.0.0.1/32  # Returns True
+Test-IPv4Address -RequireMask -IP 127.0.0.1     # Returns False
 
 # Test if input is a valid subnet mask (in quad dot format)
-Test-ValidIPv4 -Mask -IP 255.255.0.0  # Returns True
-Test-ValidIPv4 -Mask -IP 255.0.255.0  # Returns False
-Test-ValidIPv4 -Mask -IP 32           # Returns False
+Test-IPv4Address -Mask -IP 255.255.0.0  # Returns True
+Test-IPv4Address -Mask -IP 255.0.255.0  # Returns False
+Test-IPv4Address -Mask -IP 32           # Returns False
 
 # Test if input is a valid subnet mask (quad dot) or mask length
-Test-ValidIPv4 -Mask -AllowLength -IP 255.0.255.0  # Returns False
-Test-ValidIPv4 -Mask -AllowLength -IP 255.255.0.0  # Returns True
-Test-ValidIPv4 -Mask -AllowLength -IP 32           # Returns True
-Test-ValidIPv4 -Mask -AllowLength -IP /32          # Returns True
+Test-IPv4Address -Mask -AllowLength -IP 255.0.255.0  # Returns False
+Test-IPv4Address -Mask -AllowLength -IP 255.255.0.0  # Returns True
+Test-IPv4Address -Mask -AllowLength -IP 32           # Returns True
+Test-IPv4Address -Mask -AllowLength -IP /32          # Returns True
 
 
 

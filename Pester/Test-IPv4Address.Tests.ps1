@@ -1,8 +1,8 @@
-# Invoke-Pester -Path .\Pester\Test-ValidIPv4.Tests.ps1 -Output Detailed
-Describe 'Test-ValidIPv4' {
+# Invoke-Pester -Path .\Pester\Test-IPv4Address.Tests.ps1 -Output Detailed
+Describe 'Test-IPv4Address' {
 
     It 'Positional argmuent' {
-        $r = Test-ValidIPv4 '10.11.12.13' -ErrorAction Stop
+        $r = Test-IPv4Address '10.11.12.13' -ErrorAction Stop
         $r | Should -BeOfType 'System.Boolean'
         $r | Should -Be $true
     }
@@ -32,37 +32,37 @@ Describe 'Test-ValidIPv4' {
             #>
         )
 
-        It 'Test-ValidIPv4 -IP <IP> -IPOnly == <IPOnly>' -TestCases $testCases1 {
+        It 'Test-IPv4Address -IP <IP> -IPOnly == <IPOnly>' -TestCases $testCases1 {
             param ($IP, $IPOnly)
-            $r = Test-ValidIPv4 -IP $IP -IPOnly -ErrorAction Stop
+            $r = Test-IPv4Address -IP $IP -IPOnly -ErrorAction Stop
             $r | Should -BeOfType 'System.Boolean'
             $r | Should -Be $IPOnly
         }
 
-        It 'Test-ValidIPv4 -IP <IP> -Mask == <Mask>' -TestCases $testCases1 {
+        It 'Test-IPv4Address -IP <IP> -Mask == <Mask>' -TestCases $testCases1 {
             param ($IP, $Mask)
-            $r = Test-ValidIPv4 -IP $IP -Mask -ErrorAction Stop
+            $r = Test-IPv4Address -IP $IP -Mask -ErrorAction Stop
             $r | Should -BeOfType 'System.Boolean'
             $r | Should -Be $Mask
         }
 
-        It 'Test-ValidIPv4 -IP <IP> -Mask -AllowLength == <Length>' -TestCases $testCases1 {
+        It 'Test-IPv4Address -IP <IP> -Mask -AllowLength == <Length>' -TestCases $testCases1 {
             param ($IP, $Length)
-            $r = Test-ValidIPv4 -IP $IP -Mask -AllowLength -ErrorAction Stop
+            $r = Test-IPv4Address -IP $IP -Mask -AllowLength -ErrorAction Stop
             $r | Should -BeOfType 'System.Boolean'
             $r | Should -Be $Length
         }
 
-        It 'Test-ValidIPv4 -IP <IP> -AllowMask == <AllowMask>' -TestCases $testCases1 {
+        It 'Test-IPv4Address -IP <IP> -AllowMask == <AllowMask>' -TestCases $testCases1 {
             param ($IP, $AllowMask)
-            $r = Test-ValidIPv4 -IP $IP -AllowMask -ErrorAction Stop
+            $r = Test-IPv4Address -IP $IP -AllowMask -ErrorAction Stop
             $r | Should -BeOfType 'System.Boolean'
             $r | Should -Be $AllowMask
         }
 
-        It 'Test-ValidIPv4 -IP <IP> -RequireMask == <RequireMask>' -TestCases $testCases1 {
+        It 'Test-IPv4Address -IP <IP> -RequireMask == <RequireMask>' -TestCases $testCases1 {
             param ($IP, $RequireMask)
-            $r = Test-ValidIPv4 -IP $IP -RequireMask -ErrorAction Stop
+            $r = Test-IPv4Address -IP $IP -RequireMask -ErrorAction Stop
             $r | Should -BeOfType 'System.Boolean'
             $r | Should -Be $RequireMask
         }
