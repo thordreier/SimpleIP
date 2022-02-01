@@ -50,7 +50,7 @@ function Test-IPv4AddressInSubnet
             False
     #>
 
-    [OutputType([System.String])]
+    [OutputType([System.Boolean])]
     [CmdletBinding()]
     param
     (

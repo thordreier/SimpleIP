@@ -43,7 +43,7 @@ function Test-IPv4AddressInSameNet
             True
     #>
 
-    [OutputType([System.String])]
+    [OutputType([System.Boolean])]
     [CmdletBinding()]
     param
     (
