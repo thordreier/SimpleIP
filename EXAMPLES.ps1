@@ -189,14 +189,13 @@ Get-IPv6Address -IP 007:6:5::77:88/64 -IPOnly          # Returns 7:6:5::77:88
 
 # Get different info for 7:6:5::77:88/64
 Get-IPv6Address -IP 007:6:5::77:88/64 -Info  # Returns object...:
-# IP           : 7:6:5::77:88/64
-# Subnet       : 7:6:5::/64
-# FirstIP4Real : 7:6:5::/64
-# FirstIP      : 7:6:5::1/64
-# LastIP       : 7:6:5::ffff:ffff:ffff:fffe/64
-# LastIP4Real  : 7:6:5::ffff:ffff:ffff:ffff/64
-# Objects      : @{IP=; Subnet=; FirstIP4Real=; FirstIP=; LastIP=; LastIP4Real=}
-
+# IP            : 7:6:5::77:88/64
+# Subnet        : 7:6:5::/64
+# FirstIP       : 7:6:5::/64
+# SecondIP      : 7:6:5::1/64
+# PenultimateIP : 7:6:5::ffff:ffff:ffff:fffe/64
+# LastIP        : 7:6:5::ffff:ffff:ffff:ffff/64
+# Objects       : @{IP=; Subnet=; FirstIP=; SecondIP=; PenultimateIP=; LastIP=}
 
 
 ################################ Get-IPv6Subnet ################################

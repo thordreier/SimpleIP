@@ -51,13 +51,13 @@ function Get-IPv6Address
 
         .EXAMPLE
             Get-IPv6Address -IP 007:6:5::77:88/64 -Info
-            IP           : 7:6:5::77:88/64
-            Subnet       : 7:6:5::/64
-            FirstIP4Real : 7:6:5::/64
-            FirstIP      : 7:6:5::1/64
-            LastIP       : 7:6:5::ffff:ffff:ffff:fffe/64
-            LastIP4Real  : 7:6:5::ffff:ffff:ffff:ffff/64
-            Objects      : @{IP=; Subnet=; FirstIP4Real=; FirstIP=; LastIP=; LastIP4Real=}
+            IP            : 7:6:5::77:88/64
+            Subnet        : 7:6:5::/64
+            FirstIP       : 7:6:5::/64
+            SecondIP      : 7:6:5::1/64
+            PenultimateIP : 7:6:5::ffff:ffff:ffff:fffe/64
+            LastIP        : 7:6:5::ffff:ffff:ffff:ffff/64
+            Objects       : @{IP=; Subnet=; FirstIP=; SecondIP=; PenultimateIP=; LastIP=}
     #>
 
     [OutputType([System.String])]
@@ -165,34 +165,36 @@ function Get-IPv6Address
 
             # Why the f**k does binary operators not work properly with uint16
             # For IPv4 it's just  "$ip -band $mask"  and  "$ip -bor (-bnot $mask)"
-            [uint16[]] $subnetInt    = (0..7).ForEach({ [uint16] (([uint32]$ipInt[$_]) -band ([uint32]$prefixInt[$_])) })
-            [uint16[]] $broadcastInt = (0..7).ForEach({ [uint16] ((([uint32]$ipInt[$_]) -bor (-bnot ([uint32]$prefixInt[$_]))) -band [uint16]::MaxValue)})
-            [uint16[]] $firstInt     = $subnetInt.Clone()
-            [uint16[]] $lastInt      = $broadcastInt.Clone()
+            [uint16[]] $subnetInt      = (0..7).ForEach({ [uint16] (([uint32]$ipInt[$_]) -band ([uint32]$prefixInt[$_])) })
+            [uint16[]] $lastInt        = (0..7).ForEach({ [uint16] ((([uint32]$ipInt[$_]) -bor (-bnot ([uint32]$prefixInt[$_]))) -band [uint16]::MaxValue)})
+            [uint16[]] $firstInt       = $subnetInt.Clone()
+            [uint16[]] $secondInt      = $firstInt.Clone()
+            [uint16[]] $penultimateInt = $lastInt.Clone()
             if ($Prefix -ne 128)
             {
-                ++$firstInt[7]
-                --$lastInt[7]
+                # FIXXXME - should we do something else if it's /128? Set to $null?
+                ++$secondInt[7]
+                --$penultimateInt[7]
             }
 
             if ($Info)
             {
                 $objects = [PSCustomObject] @{
-                    IP           = Convert-IPv6Address -IP $ipInt        -Prefix $Prefix -Info
-                    Subnet       = Convert-IPv6Address -IP $subnetInt    -Prefix $Prefix -Info
-                    FirstIP4Real = Convert-IPv6Address -IP $subnetInt    -Prefix $Prefix -Info
-                    FirstIP      = Convert-IPv6Address -IP $firstInt     -Prefix $Prefix -Info
-                    LastIP       = Convert-IPv6Address -IP $lastInt      -Prefix $Prefix -Info
-                    LastIP4Real  = Convert-IPv6Address -IP $broadcastInt -Prefix $Prefix -Info
+                    IP            = Convert-IPv6Address -IP $ipInt          -Prefix $Prefix -Info
+                    Subnet        = Convert-IPv6Address -IP $subnetInt      -Prefix $Prefix -Info
+                    FirstIP       = Convert-IPv6Address -IP $firstInt       -Prefix $Prefix -Info
+                    SecondIP      = Convert-IPv6Address -IP $secondInt      -Prefix $Prefix -Info
+                    PenultimateIP = Convert-IPv6Address -IP $penultimateInt -Prefix $Prefix -Info
+                    LastIP        = Convert-IPv6Address -IP $lastInt        -Prefix $Prefix -Info
                 }
                 [PSCustomObject] @{
-                    IP           = $objects.IP.IP
-                    Subnet       = $objects.Subnet.IP
-                    FirstIP4Real = $objects.FirstIP4Real.IP
-                    FirstIP      = $objects.FirstIP.IP
-                    LastIP       = $objects.LastIP.IP
-                    LastIP4Real  = $objects.LastIP4Real.IP
-                    Objects      = $objects
+                    IP            = $objects.IP.IP
+                    Subnet        = $objects.Subnet.IP
+                    FirstIP       = $objects.FirstIP.IP
+                    SecondIP      = $objects.SecondIP.IP
+                    PenultimateIP = $objects.PenultimateIP.IP
+                    LastIP        = $objects.LastIP.IP
+                    Objects       = $objects
                 }
             }
             else

@@ -71,12 +71,12 @@ Describe 'Get-IPv6Address' {
     Context Info {
         It 'Info' {
             $r = Get-IPv6Address -IP 99:88:77:0::/15 -Info -ErrorAction Stop
-            $r.IP           | Should -Be 99:88:77::/15
-            $r.Subnet       | Should -Be 98::/15
-            $r.FirstIP4Real | Should -Be 98::/15
-            $r.FirstIP      | Should -Be 98::1/15
-            $r.LastIP       | Should -Be 99:ffff:ffff:ffff:ffff:ffff:ffff:fffe/15
-            $r.LastIP4Real  | Should -Be 99:ffff:ffff:ffff:ffff:ffff:ffff:ffff/15
+            $r.IP            | Should -Be 99:88:77::/15
+            $r.Subnet        | Should -Be 98::/15
+            $r.FirstIP       | Should -Be 98::/15
+            $r.SecondIP      | Should -Be 98::1/15
+            $r.PenultimateIP | Should -Be 99:ffff:ffff:ffff:ffff:ffff:ffff:fffe/15
+            $r.LastIP        | Should -Be 99:ffff:ffff:ffff:ffff:ffff:ffff:ffff/15
         }
     }
 
