@@ -1,5 +1,5 @@
 <#PSScriptInfo
-	.VERSION 0.2
+	.VERSION 0.3
 	.GUID e0a6966d-65c7-4ed7-8f6c-417fb2d43c5f
 	.AUTHOR Thor Dreier
 	.COMPANYNAME Thor Dreier
@@ -633,6 +633,33 @@ function Invoke-ModuleBuild
                     else
                     {
                         New-ModuleManifest -Path $psd1Tmp
+                    }
+
+                    # Update ReleaseNotes with git info
+                    if (-not $ManifestParameters['ReleaseNotes'])
+                    {
+                        try
+                        {
+                            if ($gitCommit = git rev-parse HEAD)
+                            {
+                                if ($gitStatus = git status -s)
+                                {
+                                    Write-Warning -Message ($ManifestParameters['ReleaseNotes'] = "git commit $gitCommit (with uncommitted changes)")
+                                }
+                                else
+                                {
+                                    $ManifestParameters['ReleaseNotes'] = "git commit $gitCommit"
+                                }
+                            }
+                            else
+                            {
+                                throw
+                            }
+                        }
+                        catch
+                        {
+                            Write-Verbose -Message 'Not adding git commit id to release note, maybe git is not installed'
+                        }
                     }
 
                     # ManifestParameters come as hashtable from parameter. Add other values
