@@ -15,6 +15,7 @@ function Convert-IPv6Address
             Input IP is either
             - Standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
             - [uint16[]] array with  8 elements
+            - Binary (128 long string containing only "0" and "1")
 
         .PARAMETER Prefix
             If prefix is not set in IP address, it must be set with this parameter
@@ -85,7 +86,11 @@ function Convert-IPv6Address
 
             [System.UInt16[]] $ipIntArray = @()
 
-            if ($IP -is [System.String])
+            if ($IP -is [System.String] -and $IP -match '^[01]{128}$')
+            {
+                $ipIntArray = (0..7).ForEach({ [System.Convert]::ToUInt16($IP.Substring(($_*16), 16), 2) })
+            }
+            elseif ($IP -is [System.String])
             {
                 if (-not ($IP -match '^([0-9a-f:]+)(/(([1-9]?[0-9])|(1[01][0-9])|(12[0-8])))?$')) {throw "Error parsing IPv6 address $IP"}
                 $ipOnly = $Matches[1]

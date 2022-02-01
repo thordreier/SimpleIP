@@ -2,10 +2,10 @@ function Test-IPv4Address
 {
     <#
         .SYNOPSIS
-            Test if a string contains a valid IP address
+            Test if a string contains a valid IP address (IPv4)
 
         .DESCRIPTION
-            Test if a string contains a valid IP address
+            Test if a string contains a valid IP address (IPv4)
             Uses regex to test
             Returns [bool]
 

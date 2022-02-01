@@ -85,30 +85,30 @@ Get-IPv4Subnet -IP '10.20.30.40 255.255.255.240' -IPOnly  # Returns 10.20.30.32
 
 ############################### Test-IPv4Address ###############################
 
-# Test if input is a valid IPv4 address
-Test-IPv4Address -IP 127.0.0.1     # Returns True
-Test-IPv4Address -IP 127.0.0.256   # Returns False
-Test-IPv4Address -IP 127.0.0.1/32  # Returns False
+# Test if input is a valid IPv4 address (without subnet mask)
+Test-IPv4Address -IP 127.0.0.1                           # Returns True
+Test-IPv4Address -IP 127.0.0.256                         # Returns False
+Test-IPv4Address -IP 127.0.0.1/32                        # Returns False
 
 # Test if input is a valid IPv4 address - subnet mask is allowed, but not required
-Test-IPv4Address -AllowMask -IP 127.0.0.1/32                 # Returns True
-Test-IPv4Address -AllowMask -IP "127.0.0.1 255.255.255.255"  # Returns True
-Test-IPv4Address -AllowMask -IP "127.0.0.1"                  # Returns True
+Test-IPv4Address -AllowMask -IP 127.0.0.1/32             # Returns True
+Test-IPv4Address -AllowMask "127.0.0.1 255.255.255.255"  # Returns True
+Test-IPv4Address -AllowMask -IP "127.0.0.1"              # Returns True
 
 # Test if input is a valid IPv4 address - subnet mask is required
-Test-IPv4Address -RequireMask -IP 127.0.0.1/32  # Returns True
-Test-IPv4Address -RequireMask -IP 127.0.0.1     # Returns False
+Test-IPv4Address -RequireMask -IP 127.0.0.1/32           # Returns True
+Test-IPv4Address -RequireMask -IP 127.0.0.1              # Returns False
 
 # Test if input is a valid subnet mask (in quad dot format)
-Test-IPv4Address -Mask -IP 255.255.0.0  # Returns True
-Test-IPv4Address -Mask -IP 255.0.255.0  # Returns False
-Test-IPv4Address -Mask -IP 32           # Returns False
+Test-IPv4Address -Mask -IP 255.255.0.0                   # Returns True
+Test-IPv4Address -Mask -IP 255.0.255.0                   # Returns False
+Test-IPv4Address -Mask -IP 32                            # Returns False
 
 # Test if input is a valid subnet mask (quad dot) or mask length
-Test-IPv4Address -Mask -AllowLength -IP 255.0.255.0  # Returns False
-Test-IPv4Address -Mask -AllowLength -IP 255.255.0.0  # Returns True
-Test-IPv4Address -Mask -AllowLength -IP 32           # Returns True
-Test-IPv4Address -Mask -AllowLength -IP /32          # Returns True
+Test-IPv4Address -Mask -AllowLength -IP 255.0.255.0      # Returns False
+Test-IPv4Address -Mask -AllowLength -IP 255.255.0.0      # Returns True
+Test-IPv4Address -Mask -AllowLength -IP 32               # Returns True
+Test-IPv4Address -Mask -AllowLength -IP /32              # Returns True
 
 
 
@@ -121,7 +121,7 @@ Test-IPv4AddressInSameNet -IP 10.30.50.60/24 -IP2 10.30.50.61/29             # R
 
 # Allow mismatch in subnet mask, as long as hosts with the two IP addresses
 # would be able to communicate directly (not routed)
-Test-IPv4AddressInSameNet -IP 10.30.50.60/24 -IP2 10.30.50.61/29 -AllowMaskMismatch  # Returns True
+Test-IPv4AddressInSameNet 10.30.50.60/24 10.30.50.61/29 -AllowMaskMismatch   # Returns True
 
 
 
@@ -204,3 +204,22 @@ Get-IPv6Address -IP 007:6:5::77:88/64 -Info  # Returns object...:
 # Get subnet in different formats from IP address (this funtion is just a wrapper for Get-IPv6Address)
 Get-IPv6Subnet -IP 0007:006:05::077:0088/64          # Returns 7:6:5::/64
 Get-IPv6Subnet -IP 0007:006:05::077:0088/64 -IPOnly  # Returns 7:6:5::
+
+
+
+############################### Test-IPv6Address ###############################
+
+# Test if input is a valid IPv6 address (without prefix)
+Test-IPv6Address -IP a:b::c                    # Returns True
+Test-IPv6Address -IP a:b::c/64                 # Returns False
+Test-IPv6Address -IP a:b::x                    # Returns False
+Test-IPv6Address -IP a:b::c/64                 # Returns False
+
+# Test if input is a valid IPv6 address - prefix is allowed, but not required
+Test-IPv6Address -AllowPrefix -IP a:b::c/64    # Returns True
+Test-IPv6Address -AllowPrefix -IP a:b::c       # Returns True
+Test-IPv6Address -AllowPrefix -IP a:b::x/64    # Returns False
+
+# Test if input is a valid IPv6 address - prefix is required
+Test-IPv6Address -RequirePrefix -IP a:b::c/64  # Returns True
+Test-IPv6Address -RequirePrefix -IP a:b::c     # Returns False

@@ -91,24 +91,24 @@ function Test-IPv4AddressInSameNet
                 ((Test-IPv4Address -IP $IP -RequireMask) -and (Test-IPv4Address -IP $IP2 -RequireMask))
             )
             {
-                $info1 = Get-IPAddress -Info -IP $IP @PSBoundParameters
-                $info2 = Get-IPAddress -Info -IP $IP2 @PSBoundParameters
+                $info1 = Get-IPv4Address -Info -IP $IP @PSBoundParameters
+                $info2 = Get-IPv4Address -Info -IP $IP2 @PSBoundParameters
             }
             elseif (Test-IPv4Address -IP $IP -RequireMask)
             {
-                $info1 = Get-IPAddress -Info -IP $IP @PSBoundParameters
+                $info1 = Get-IPv4Address -Info -IP $IP @PSBoundParameters
                 $null = $PSBoundParameters.Remove('Mask')
-                $info2 = Get-IPAddress -Info -IP $IP2 -Mask $info1.MaskLength @PSBoundParameters
+                $info2 = Get-IPv4Address -Info -IP $IP2 -Mask $info1.MaskLength @PSBoundParameters
             }
             elseif (Test-IPv4Address -IP $IP2 -RequireMask)
             {
-                $info2 = Get-IPAddress -Info -IP $IP2 @PSBoundParameters
+                $info2 = Get-IPv4Address -Info -IP $IP2 @PSBoundParameters
                 $null = $PSBoundParameters.Remove('Mask')
-                $info1 = Get-IPAddress -Info -IP $IP -Mask $info2.MaskLength @PSBoundParameters
+                $info1 = Get-IPv4Address -Info -IP $IP -Mask $info2.MaskLength @PSBoundParameters
             }
             else
             {
-                throw "No mask defined for either IP ($IP) or IP2 ($IP2), and -Mask parameter is not used"
+                throw "No mask defined for either IP ($IP) or IP2 ($IP2), and -Mask parameter is not set"
             }
 
             if ($info1.IP -eq $info2.IP)
