@@ -23,10 +23,10 @@ Describe 'Get-IPv6Address' {
         )
 
         It 'Get-IPv6Address -Subnet -IP <IP> -Prefix <Prefix> == <Subnet>' -TestCases $testCases1 {
-            param ($IP, $Prefix, $Pool, $Subnet)
+            param ($IP, $Prefix, $Subnet)
             $params = @{
-                Subnet         = $true
-                IP             = $IP
+                Subnet = $true
+                IP     = $IP
             }
             if ($Prefix -ne $null) { $params['Prefix'] = $Prefix }
             $r = Get-IPv6Address @params -ErrorAction Stop
@@ -96,7 +96,7 @@ Describe 'Get-IPv6Address' {
             @{IP = 'a::b'      ; Prefix = -1    ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*Cannot convert*Byte*'}
         )
 
-        It 'Convert-IPv6Address -IP <IP> -Prefix <Prefix> -<Switch1> -<Switch2>  (throw)' -TestCases $testCasesThrow1 {
+        It 'Get-IPv6Address -IP <IP> -Prefix <Prefix> -<Switch1> -<Switch2>  (throw)' -TestCases $testCasesThrow1 {
             param ($IP, $Prefix, $Switch1, $Switch2, $Throw)
             $params = @{}
             if ($IP      -ne $null) {$params['IP']     = $IP}

@@ -374,7 +374,7 @@ Describe 'Get-IPv4Address' {
             @{IP = '127.0.0.1' ; Mask = $null ; Switch1 = 'Subnet' ; Switch2 = $null ; Throw = '*No mask defined*'}
         )
 
-        It 'Convert-IPv4Address -IP <IP> -Mask <Mask> -<Switch1> -<Switch2>  (throw)' -TestCases $testCasesThrow1 {
+        It 'Get-IPv4Address -IP <IP> -Mask <Mask> -<Switch1> -<Switch2>  (throw)' -TestCases $testCasesThrow1 {
             param ($IP, $Mask, $Switch1, $Switch2, $Throw)
             $params = @{}
             if ($IP      -ne $null) {$params['IP']     = $IP}

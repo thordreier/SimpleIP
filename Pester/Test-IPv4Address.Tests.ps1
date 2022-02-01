@@ -29,7 +29,6 @@ Describe 'Test-IPv4Address' {
             @{IP = 32                             ; IPOnly = $false ; Mask = $false ; Length = $true  ; AllowMask = $false ; RequireMask = $false}
             @{IP = 33                             ; IPOnly = $false ; Mask = $false ; Length = $false ; AllowMask = $false ; RequireMask = $false}
             @{IP = 'abcdef'                       ; IPOnly = $false ; Mask = $false ; Length = $false ; AllowMask = $false ; RequireMask = $false}
-            #>
         )
 
         It 'Test-IPv4Address -IP <IP> -IPOnly == <IPOnly>' -TestCases $testCases1 {

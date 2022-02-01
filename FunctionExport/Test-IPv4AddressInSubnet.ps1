@@ -88,7 +88,7 @@ function Test-IPv4AddressInSubnet
 
             if (-not (Test-IPv4Subnet -Subnet $Subnet @PSBoundParameters))
             {
-                throw "$Subnet is not a subnet"
+                throw "$Subnet (mask $Mask) is not a subnet"
             }
             elseif (
                 $Mask -or
