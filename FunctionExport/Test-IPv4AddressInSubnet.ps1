@@ -40,6 +40,14 @@ function Test-IPv4AddressInSubnet
         .EXAMPLE
             Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70/29 -AllowMaskMismatch
             True
+
+        .EXAMPLE
+            Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70/23 -AllowMaskMismatch
+            True
+
+        .EXAMPLE
+            Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.51.70/23 -AllowMaskMismatch
+            False
     #>
 
     [OutputType([System.String])]

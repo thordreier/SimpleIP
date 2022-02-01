@@ -12,7 +12,10 @@ Text in this document is automatically created - don't change it manually
 [Get-IPv4Subnet](#Get-IPv4Subnet)<br>
 [Get-IPv6Address](#Get-IPv6Address)<br>
 [Get-IPv6Subnet](#Get-IPv6Subnet)<br>
-[Test-ValidIPv4](#Test-ValidIPv4)<br>
+[Test-IPv4Address](#Test-IPv4Address)<br>
+[Test-IPv4AddressInSameNet](#Test-IPv4AddressInSameNet)<br>
+[Test-IPv4AddressInSubnet](#Test-IPv4AddressInSubnet)<br>
+[Test-IPv4Subnet](#Test-IPv4Subnet)<br>
 
 ## Functions
 
@@ -25,7 +28,7 @@ NAME
     Convert-IPv4Address
     
 SYNOPSIS
-    Convert IP address between formats
+    Convert IP address between different formats
     
     
 SYNTAX
@@ -37,7 +40,10 @@ SYNTAX
     
     
 DESCRIPTION
-    Convert IP address between formats
+    Convert IP address between different formats
+    - Quad dot (without mask) eg. "192.168.1.2"
+    - Integer (uint32)        eg. 3232235778
+    - Binary (32 long string) eg. "11000000101010000000000100000010"
     
 
 PARAMETERS
@@ -99,6 +105,15 @@ PARAMETERS
     
     
     
+    -------------------------- EXAMPLE 5 --------------------------
+    
+    PS C:\>Convert-IPv4Address 192.168.1.2 -Integer
+    
+    3232235778
+    
+    
+    
+    
 REMARKS
     To see the examples, type: "get-help Convert-IPv4Address -examples".
     For more information, type: "get-help Convert-IPv4Address -detailed".
@@ -114,7 +129,7 @@ NAME
     Convert-IPv4Mask
     
 SYNOPSIS
-    Convert IP subnet mask between formats
+    Convert IP subnet mask between different formats
     
     
 SYNTAX
@@ -132,7 +147,13 @@ SYNTAX
     
     
 DESCRIPTION
-    Convert IP subnet mask between formats
+    Convert IP subnet mask between different formats
+    - Quad dot                eg. "255.255.128.0"
+    - Mask length (0-32)      eg. "17"
+    - Mask length with slash  eg. "/17"
+    - Integer (uint32)        eg. "4294934528"
+    - Binary (32 long string) eg. "11111111111111111000000000000000"
+    
     If input is in quad dot format ("255.0.0.0"), output defaults to mask length with a leading slash ("/8")
     - else output defaults to quad dot format
     Output can be forced to be in specific format with switches
@@ -179,6 +200,15 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
+    PS C:\>Convert-IPv4Mask -Mask /17 -Length
+    
+    17
+    
+    
+    
+    
+    -------------------------- EXAMPLE 3 --------------------------
+    
     PS C:\>Convert-IPv4Mask -Mask /17
     
     255.255.128.0
@@ -186,7 +216,7 @@ PARAMETERS
     
     
     
-    -------------------------- EXAMPLE 3 --------------------------
+    -------------------------- EXAMPLE 4 --------------------------
     
     PS C:\>Convert-IPv4Mask -Mask 17
     
@@ -195,7 +225,7 @@ PARAMETERS
     
     
     
-    -------------------------- EXAMPLE 4 --------------------------
+    -------------------------- EXAMPLE 5 --------------------------
     
     PS C:\>Convert-IPv4Mask -Mask 17 -Binary
     
@@ -264,6 +294,15 @@ PARAMETERS
     
     
     -------------------------- EXAMPLE 2 --------------------------
+    
+    PS C:\>Convert-IPv6Address 00ab:00:0:000:00:fff::1/64
+    
+    ab::fff:0:1/64
+    
+    
+    
+    
+    -------------------------- EXAMPLE 3 --------------------------
     
     PS C:\>Convert-IPv6Address -IP a:b:c::/64 -Info
     
@@ -366,6 +405,8 @@ PARAMETERS
         - Mask length with slash, eg. "/24"
         
     -SameIP [<SwitchParameter>]
+        Return same IP as input IP (why? maybe in a different format back)
+        If input is "10.11.12.13/24", then "10.11.12.13/24" is returned
         
     -Subnet [<SwitchParameter>]
         Return subnet
@@ -430,6 +471,15 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
+    PS C:\>Get-IPv4Address -IP 127.0.0.1/8 -Subnet -WithMask
+    
+    127.0.0.0 255.0.0.0
+    
+    
+    
+    
+    -------------------------- EXAMPLE 3 --------------------------
+    
     PS C:\>Get-IPv4Address -IP 127.0.0.1/8 -Broadcast -WithMask
     
     127.255.255.255 255.0.0.0
@@ -437,7 +487,16 @@ PARAMETERS
     
     
     
-    -------------------------- EXAMPLE 3 --------------------------
+    -------------------------- EXAMPLE 4 --------------------------
+    
+    PS C:\>Get-IPv4Address -IP 127.0.0.1/8 -Broadcast -IPOnly
+    
+    127.255.255.255
+    
+    
+    
+    
+    -------------------------- EXAMPLE 5 --------------------------
     
     PS C:\>Get-IPv4Address -IP 10.100.200.201 -Mask /30 -All -WithMask
     
@@ -447,7 +506,7 @@ PARAMETERS
     
     
     
-    -------------------------- EXAMPLE 4 --------------------------
+    -------------------------- EXAMPLE 6 --------------------------
     
     PS C:\>Get-IPv4Address -IP 192.168.0.150/255.255.255.128 -Info
     
@@ -515,9 +574,27 @@ PARAMETERS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS C:\>Get-IPv4Mask 9.8.7.6/22 -QuadDot
+    PS C:\>Get-IPv4Mask 9.8.7.6/22
     
     255.255.252.0
+    
+    
+    
+    
+    -------------------------- EXAMPLE 2 --------------------------
+    
+    PS C:\>Get-IPv4Mask 9.8.7.6/22 -LengthWithSlash
+    
+    /22
+    
+    
+    
+    
+    -------------------------- EXAMPLE 3 --------------------------
+    
+    PS C:\>Get-IPv4Mask 9.8.7.6/255.255.252.0 -Length
+    
+    22
     
     
     
@@ -599,6 +676,15 @@ PARAMETERS
     
     
     
+    -------------------------- EXAMPLE 3 --------------------------
+    
+    PS C:\>Get-IPv4Subnet -IP '10.20.30.40 255.255.255.240' -IPOnly
+    
+    10.20.30.32
+    
+    
+    
+    
 REMARKS
     To see the examples, type: "get-help Get-IPv4Subnet -examples".
     For more information, type: "get-help Get-IPv4Subnet -detailed".
@@ -645,6 +731,8 @@ PARAMETERS
         If prefix is not set in IP address, it must be set with this parameter
         
     -SameIP [<SwitchParameter>]
+        Return same IP as input IP (why? maybe in a different format back)
+        If input is "7:6:5::77:88/56", then "7:6:5::77:88/56" is returned
         
     -Subnet [<SwitchParameter>]
         Return subnet
@@ -658,8 +746,10 @@ PARAMETERS
         Return in "7:6:5::" format
         
     -PrefixOnly [<SwitchParameter>]
+        Only return prefix in "64" format
         
     -PrefixWithSlashOnly [<SwitchParameter>]
+        Only return prefix in "/64" format
         
     -Info [<SwitchParameter>]
         Return object with different info
@@ -672,7 +762,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS C:\>Get-IPv6Address -IP 7:6:5::77:88/64 -Subnet
+    PS C:\>Get-IPv6Address -IP 007:6:5::77:88/64 -Subnet
     
     7:6:5::/64
     
@@ -681,7 +771,25 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS C:\>Get-IPv6Address -IP 7:6:5::77:88/64 -Info
+    PS C:\>Get-IPv6Address -IP 007:6:5::77:88/64 -Subnet -IPOnly
+    
+    7:6:5::
+    
+    
+    
+    
+    -------------------------- EXAMPLE 3 --------------------------
+    
+    PS C:\>Get-IPv6Address -IP 007:6:5::77:88/64 -IPOnly
+    
+    7:6:5::77:88
+    
+    
+    
+    
+    -------------------------- EXAMPLE 4 --------------------------
+    
+    PS C:\>Get-IPv6Address -IP 007:6:5::77:88/64 -Info
     
     IP           : 7:6:5::77:88/64
     Subnet       : 7:6:5::/64
@@ -766,25 +874,25 @@ REMARKS
 
 ```
 
-<a name="Test-ValidIPv4"></a>
-### Test-ValidIPv4
+<a name="Test-IPv4Address"></a>
+### Test-IPv4Address
 
 ```
 NAME
-    Test-ValidIPv4
+    Test-IPv4Address
     
 SYNOPSIS
     Test if a string contains a valid IP address
     
     
 SYNTAX
-    Test-ValidIPv4 [-IP] <String> [-IPOnly] [<CommonParameters>]
+    Test-IPv4Address [-IP] <String> [-IPOnly] [<CommonParameters>]
     
-    Test-ValidIPv4 [-IP] <String> -Mask [-AllowLength] [<CommonParameters>]
+    Test-IPv4Address [-IP] <String> -Mask [-AllowLength] [<CommonParameters>]
     
-    Test-ValidIPv4 [-IP] <String> -AllowMask [<CommonParameters>]
+    Test-IPv4Address [-IP] <String> -AllowMask [<CommonParameters>]
     
-    Test-ValidIPv4 [-IP] <String> -RequireMask [<CommonParameters>]
+    Test-IPv4Address [-IP] <String> -RequireMask [<CommonParameters>]
     
     
 DESCRIPTION
@@ -832,7 +940,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS C:\>Test-ValidIPv4 -IP 127.0.0.1
+    PS C:\>Test-IPv4Address -IP 127.0.0.1
     
     True
     
@@ -841,7 +949,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS C:\>Test-ValidIPv4 -IP 127.0.0.256
+    PS C:\>Test-IPv4Address -IP 127.0.0.256
     
     False
     
@@ -850,7 +958,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 3 --------------------------
     
-    PS C:\>Test-ValidIPv4 -IP 127.0.0.1/32
+    PS C:\>Test-IPv4Address -IP 127.0.0.1/32
     
     False
     
@@ -859,7 +967,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 4 --------------------------
     
-    PS C:\>Test-ValidIPv4 -IP 127.0.0.1/32 -AllowMask
+    PS C:\>Test-IPv4Address -AllowMask -IP 127.0.0.1/32
     
     True
     
@@ -868,7 +976,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 5 --------------------------
     
-    PS C:\>Test-ValidIPv4 -IP "127.0.0.1 255.255.255.255" -AllowMask
+    PS C:\>Test-IPv4Address -AllowMask -IP "127.0.0.1 255.255.255.255"
     
     True
     
@@ -877,16 +985,16 @@ PARAMETERS
     
     -------------------------- EXAMPLE 6 --------------------------
     
-    PS C:\>Test-ValidIPv4 -IP 127.0.0.1 -RequireMask
+    PS C:\>Test-IPv4Address -AllowMask -IP "127.0.0.1"
     
-    False
+    True
     
     
     
     
     -------------------------- EXAMPLE 7 --------------------------
     
-    PS C:\>Test-ValidIPv4 -IP 255.255.0.0 -Mask
+    PS C:\>Test-IPv4Address -RequireMask -IP 127.0.0.1/32
     
     True
     
@@ -895,7 +1003,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 8 --------------------------
     
-    PS C:\>Test-ValidIPv4 -IP 255.0.255.0 -Mask
+    PS C:\>Test-IPv4Address -RequireMask -IP 127.0.0.1
     
     False
     
@@ -904,25 +1012,61 @@ PARAMETERS
     
     -------------------------- EXAMPLE 9 --------------------------
     
-    PS C:\>Test-ValidIPv4 -IP 32 -Mask
-    
-    False
-    
-    
-    
-    
-    -------------------------- EXAMPLE 10 --------------------------
-    
-    PS C:\>Test-ValidIPv4 -IP 32 -Mask -AllowLength
+    PS C:\>Test-IPv4Address -Mask -IP 255.255.0.0
     
     True
     
     
     
     
+    -------------------------- EXAMPLE 10 --------------------------
+    
+    PS C:\>Test-IPv4Address -Mask -IP 255.0.255.0
+    
+    False
+    
+    
+    
+    
     -------------------------- EXAMPLE 11 --------------------------
     
-    PS C:\>Test-ValidIPv4 -IP /32 -Mask -AllowLength
+    PS C:\>Test-IPv4Address -Mask -IP 32
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 12 --------------------------
+    
+    PS C:\>Test-IPv4Address -Mask -AllowLength -IP 255.0.255.0
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 13 --------------------------
+    
+    PS C:\>Test-IPv4Address -Mask -AllowLength -IP 255.255.0.0
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 14 --------------------------
+    
+    PS C:\>Test-IPv4Address -Mask -AllowLength -IP 32
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 15 --------------------------
+    
+    PS C:\>Test-IPv4Address -Mask -AllowLength -IP /32
     
     True
     
@@ -930,9 +1074,246 @@ PARAMETERS
     
     
 REMARKS
-    To see the examples, type: "get-help Test-ValidIPv4 -examples".
-    For more information, type: "get-help Test-ValidIPv4 -detailed".
-    For technical information, type: "get-help Test-ValidIPv4 -full".
+    To see the examples, type: "get-help Test-IPv4Address -examples".
+    For more information, type: "get-help Test-IPv4Address -detailed".
+    For technical information, type: "get-help Test-IPv4Address -full".
+
+```
+
+<a name="Test-IPv4AddressInSameNet"></a>
+### Test-IPv4AddressInSameNet
+
+```
+NAME
+    Test-IPv4AddressInSameNet
+    
+SYNOPSIS
+    Test if two IP addresses is in the same subnet
+    
+    
+SYNTAX
+    Test-IPv4AddressInSameNet [-IP] <String> [-IP2] <String> [-Mask <String>] [-AllowMaskMismatch] [<CommonParameters>]
+    
+    
+DESCRIPTION
+    Test if two IP addresses is in the same subnet
+    
+
+PARAMETERS
+    -IP <String>
+        Input IP in quad dot format with subnet mask, either:
+        - IP + mask in quad dot, eg. "127.0.0.1 255.0.0.0"
+        - IP + mask length,      eg. "127.0.0.1/8"
+        If input is IP without subnet mask (eg. "127.0.0.1") then -Mask parameter must be set
+        
+    -IP2 <String>
+        
+    -Mask <String>
+        If input IP is in format without subnet mask, this parameter must be set to either
+        - Quad dot format,        eg. "255.255.255.0"
+        - Mask length (0-32),     eg. "24"
+        - Mask length with slash, eg. "/24"
+        
+    -AllowMaskMismatch [<SwitchParameter>]
+        Return true if hosts with the two IP addresses can communicate with each other directly
+        (not routed), even if there's a mismatch in subnet mask between the two.
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see 
+        about_CommonParameters (https:/go.microsoft.com/fwlink/?LinkID=113216). 
+    
+    -------------------------- EXAMPLE 1 --------------------------
+    
+    PS C:\>Test-IPv4AddressInSameNet -IP 10.30.50.60 -IP2 10.30.50.61/24
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 2 --------------------------
+    
+    PS C:\>Test-IPv4AddressInSameNet -IP 10.30.50.60/24 -IP2 10.30.50.61/255.255.255.0
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 3 --------------------------
+    
+    PS C:\>Test-IPv4AddressInSameNet -IP 10.30.50.60/24 -IP2 10.30.50.61/29
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 4 --------------------------
+    
+    PS C:\>Test-IPv4AddressInSameNet -IP 10.30.50.60/24 -IP2 10.30.50.61/29 -AllowMaskMismatch
+    
+    True
+    
+    
+    
+    
+REMARKS
+    To see the examples, type: "get-help Test-IPv4AddressInSameNet -examples".
+    For more information, type: "get-help Test-IPv4AddressInSameNet -detailed".
+    For technical information, type: "get-help Test-IPv4AddressInSameNet -full".
+
+```
+
+<a name="Test-IPv4AddressInSubnet"></a>
+### Test-IPv4AddressInSubnet
+
+```
+NAME
+    Test-IPv4AddressInSubnet
+    
+SYNOPSIS
+    Test if IP address is in a subnet
+    
+    
+SYNTAX
+    Test-IPv4AddressInSubnet [-Subnet] <String> [-IP] <String> [-Mask <String>] [-AllowMaskMismatch] [<CommonParameters>]
+    
+    
+DESCRIPTION
+    Test if IP address is in a subnet
+    
+
+PARAMETERS
+    -Subnet <String>
+        Input IP in quad dot format with subnet mask, either:
+        - IP + mask in quad dot, eg. "127.0.0.0 255.0.0.0"
+        - IP + mask length,      eg. "127.0.0.0/8"
+        If input is IP without subnet mask (eg. "127.0.0.0") then -Mask parameter must be set
+        
+    -IP <String>
+        Same format as -Subnet
+        
+    -Mask <String>
+        If input IP is in format without subnet mask, this parameter must be set to either
+        - Quad dot format,        eg. "255.255.255.0"
+        - Mask length (0-32),     eg. "24"
+        - Mask length with slash, eg. "/24"
+        
+    -AllowMaskMismatch [<SwitchParameter>]
+        Return true if IP is in subnet, even if the subnet mask is wrong.
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see 
+        about_CommonParameters (https:/go.microsoft.com/fwlink/?LinkID=113216). 
+    
+    -------------------------- EXAMPLE 1 --------------------------
+    
+    PS C:\>Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 2 --------------------------
+    
+    PS C:\>Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70/24
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 3 --------------------------
+    
+    PS C:\>Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70/29
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 4 --------------------------
+    
+    PS C:\>Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70/29 -AllowMaskMismatch
+    
+    True
+    
+    
+    
+    
+REMARKS
+    To see the examples, type: "get-help Test-IPv4AddressInSubnet -examples".
+    For more information, type: "get-help Test-IPv4AddressInSubnet -detailed".
+    For technical information, type: "get-help Test-IPv4AddressInSubnet -full".
+
+```
+
+<a name="Test-IPv4Subnet"></a>
+### Test-IPv4Subnet
+
+```
+NAME
+    Test-IPv4Subnet
+    
+SYNOPSIS
+    Test if IP address is a valid subnet address
+    
+    
+SYNTAX
+    Test-IPv4Subnet [-Subnet] <String> [-Mask <String>] [<CommonParameters>]
+    
+    
+DESCRIPTION
+    Test if IP address is a valid subnet address
+    
+
+PARAMETERS
+    -Subnet <String>
+        Input IP in quad dot format with subnet mask, either:
+        - IP + mask in quad dot, eg. "127.0.0.0 255.0.0.0"
+        - IP + mask length,      eg. "127.0.0.0/8"
+        If input is IP without subnet mask (eg. "127.0.0.0") then -Mask parameter must be set
+        
+    -Mask <String>
+        If input IP is in format without subnet mask, this parameter must be set to either
+        - Quad dot format,        eg. "255.255.255.0"
+        - Mask length (0-32),     eg. "24"
+        - Mask length with slash, eg. "/24"
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see 
+        about_CommonParameters (https:/go.microsoft.com/fwlink/?LinkID=113216). 
+    
+    -------------------------- EXAMPLE 1 --------------------------
+    
+    PS C:\>Test-IPv4Subnet -Subnet 10.20.30.0/24
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 2 --------------------------
+    
+    PS C:\>Test-IPv4Subnet -Subnet 10.20.30.0/255.255.0.0
+    
+    True
+    
+    
+    
+    
+REMARKS
+    To see the examples, type: "get-help Test-IPv4Subnet -examples".
+    For more information, type: "get-help Test-IPv4Subnet -detailed".
+    For technical information, type: "get-help Test-IPv4Subnet -full".
 
 ```
 

@@ -1,8 +1,9 @@
-######## IPv4
+#******************************************************************************#
+#                                     IPv4                                     #
+#******************************************************************************#
 
 
-
-#### Convert-IPv4Address
+############################# Convert-IPv4Address ##############################
 
 # Convert IP address between different formats
 # - Quad dot (without mask) eg. "192.168.1.2"
@@ -15,7 +16,7 @@ Convert-IPv4Address 192.168.1.2 -Integer                  # Returns 3232235778
 
 
 
-#### Convert-IPv4Mask
+############################### Convert-IPv4Mask ###############################
 
 # Convert IP subnet mask between different formats
 # - Quad dot                eg. "255.255.128.0"
@@ -31,7 +32,7 @@ Convert-IPv4Mask -Mask 17 -Binary     # Returns 11111111111111111000000000000000
 
 
 
-#### Get-IPv4Address
+############################### Get-IPv4Address ################################
 
 # Get subnet address in CIDR format for an IP address
 Get-IPv4Address -IP 127.0.0.1/8 -Subnet               # Returns 127.0.0.0/24
@@ -62,7 +63,7 @@ Get-IPv4Address -IP 192.168.0.150/255.255.255.128 -Info  # Returns object...:
 
 
 
-#### Get-IPv4Mask
+################################# Get-IPv4Mask #################################
 
 # Get subnet mask in different formats from IP address (this funtion is just a wrapper for Get-IPv4Address)
 Get-IPv4Mask 9.8.7.6/22                     # Returns 255.255.252.0
@@ -71,7 +72,7 @@ Get-IPv4Mask 9.8.7.6/255.255.252.0 -Length  # Returns 22
 
 
 
-#### Get-IPv4Subnet
+################################ Get-IPv4Subnet ################################
 
 # Get subnet in different formats from IP address (this funtion is just a wrapper for Get-IPv4Address)
 Get-IPv4Subnet 127.0.0.1/8                                # Returns 127.0.0.0/8
@@ -80,7 +81,7 @@ Get-IPv4Subnet -IP '10.20.30.40 255.255.255.240' -IPOnly  # Returns 10.20.30.32
 
 
 
-#### Test-IPv4Address
+############################### Test-IPv4Address ###############################
 
 # Test if input is a valid IPv4 address
 Test-IPv4Address -IP 127.0.0.1     # Returns True
@@ -109,12 +110,47 @@ Test-IPv4Address -Mask -AllowLength -IP /32          # Returns True
 
 
 
+########################## Test-IPv4AddressInSameNet ###########################
 
-######## IPv6
+# Test if two IP addresses is in the same subnet
+Test-IPv4AddressInSameNet -IP 10.30.50.60 -IP2 10.30.50.61/24                # Returns True
+Test-IPv4AddressInSameNet -IP 10.30.50.60/24 -IP2 10.30.50.61/255.255.255.0  # Returns True
+Test-IPv4AddressInSameNet -IP 10.30.50.60/24 -IP2 10.30.50.61/29             # Returns False
+
+# Allow mismatch in subnet mask, as long as hosts with the two IP addresses
+# would be able to communicate directly (not routed)
+Test-IPv4AddressInSameNet -IP 10.30.50.60/24 -IP2 10.30.50.61/29 -AllowMaskMismatch  # Returns True
 
 
 
-#### Convert-IPv6Address
+########################### Test-IPv4AddressInSubnet ###########################
+
+# Test if IP address is in a subnet
+Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70  # Returns True
+Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70/24  # Returns True
+Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70/29  # Returns False
+
+# Ignore mask on IP
+Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70/29 -AllowMaskMismatch  # Returns True
+Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70/23 -AllowMaskMismatch  # Returns True
+Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.51.70/23 -AllowMaskMismatch  # Returns False
+
+
+
+############################### Test-IPv4Subnet ################################
+
+# Test if input is a subnet
+Test-IPv4Subnet -Subnet 10.20.30.0/24           # Returns True
+Test-IPv4Subnet -Subnet 10.20.30.0/255.255.0.0  # Returns False
+
+
+
+#******************************************************************************#
+#                                     IPv6                                     #
+#******************************************************************************#
+
+
+############################# Convert-IPv6Address ##############################
 
 # Compact IPv6 address
 Convert-IPv6Address 00ab:00:0:000:00:fff::1     # Returns ab::fff:0:1
@@ -138,7 +174,7 @@ Convert-IPv6Address -IP a:b:c::/64 -Info  # Returns object...:
 
 
 
-#### Get-IPv6Address
+############################### Get-IPv6Address ################################
 
 # Get subnet
 Get-IPv6Address -IP 007:6:5::77:88/64 -Subnet          # Returns 7:6:5::/64
@@ -160,7 +196,7 @@ Get-IPv6Address -IP 007:6:5::77:88/64 -Info  # Returns object...:
 
 
 
-#### Get-IPv6Subnet
+################################ Get-IPv6Subnet ################################
 
 # Get subnet in different formats from IP address (this funtion is just a wrapper for Get-IPv6Address)
 Get-IPv6Subnet -IP 0007:006:05::077:0088/64          # Returns 7:6:5::/64

@@ -25,7 +25,7 @@ function Test-IPv4Subnet
 
         .EXAMPLE
             Test-IPv4Subnet -Subnet 10.20.30.0/255.255.0.0
-            True
+            False
     #>
 
     [OutputType([System.Boolean])]
