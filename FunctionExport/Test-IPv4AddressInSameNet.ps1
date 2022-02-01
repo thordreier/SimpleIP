@@ -2,10 +2,10 @@ function Test-IPv4AddressInSameNet
 {
     <#
         .SYNOPSIS
-            Test if two IP addresses is in the same subnet
+            Test if two IP addresses are in the same subnet
 
         .DESCRIPTION
-            Test if two IP addresses is in the same subnet
+            Test if two IP addresses are in the same subnet
 
         .PARAMETER IP
             Input IP in quad dot format with subnet mask, either:
@@ -13,7 +13,7 @@ function Test-IPv4AddressInSameNet
             - IP + mask length,      eg. "127.0.0.1/8"
             If input is IP without subnet mask (eg. "127.0.0.1") then -Mask parameter must be set
 
-        .PARAMETER IP
+        .PARAMETER IP2
             Same format as -IP
 
         .PARAMETER Mask

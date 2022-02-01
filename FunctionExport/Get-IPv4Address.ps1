@@ -97,6 +97,8 @@ function Get-IPv4Address
             FirstIP     : 192.168.0.129
             LastIP      : 192.168.0.254
             Broadcast   : 192.168.0.255
+            Integer     : @{IP=3232235670; Subnet=3232235648; FirstIP=3232235...
+            Binary      : @{IP=11000000101010000000000010010110; Subnet=11000...
             MaskQuadDot : 255.255.255.128
             MaskLength  : 25
     #>

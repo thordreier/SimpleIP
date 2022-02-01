@@ -58,6 +58,8 @@ Get-IPv4Address -IP 192.168.0.150/255.255.255.128 -Info  # Returns object...:
 # FirstIP     : 192.168.0.129
 # LastIP      : 192.168.0.254
 # Broadcast   : 192.168.0.255
+# Integer     : @{IP=3232235670; Subnet=3232235648; FirstIP=3232235...
+# Binary      : @{IP=11000000101010000000000010010110; Subnet=11000...
 # MaskQuadDot : 255.255.255.128
 # MaskLength  : 25
 
@@ -193,6 +195,7 @@ Get-IPv6Address -IP 007:6:5::77:88/64 -Info  # Returns object...:
 # FirstIP      : 7:6:5::1/64
 # LastIP       : 7:6:5::ffff:ffff:ffff:fffe/64
 # LastIP4Real  : 7:6:5::ffff:ffff:ffff:ffff/64
+# Objects      : @{IP=; Subnet=; FirstIP4Real=; FirstIP=; LastIP=; LastIP4Real=}
 
 
 

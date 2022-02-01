@@ -57,6 +57,7 @@ function Get-IPv6Address
             FirstIP      : 7:6:5::1/64
             LastIP       : 7:6:5::ffff:ffff:ffff:fffe/64
             LastIP4Real  : 7:6:5::ffff:ffff:ffff:ffff/64
+            Objects      : @{IP=; Subnet=; FirstIP4Real=; FirstIP=; LastIP=; LastIP4Real=}
     #>
 
     [OutputType([System.String])]
@@ -176,13 +177,22 @@ function Get-IPv6Address
 
             if ($Info)
             {
+                $objects = [PSCustomObject] @{
+                    IP           = Convert-IPv6Address -IP $ipInt        -Prefix $Prefix -Info
+                    Subnet       = Convert-IPv6Address -IP $subnetInt    -Prefix $Prefix -Info
+                    FirstIP4Real = Convert-IPv6Address -IP $subnetInt    -Prefix $Prefix -Info
+                    FirstIP      = Convert-IPv6Address -IP $firstInt     -Prefix $Prefix -Info
+                    LastIP       = Convert-IPv6Address -IP $lastInt      -Prefix $Prefix -Info
+                    LastIP4Real  = Convert-IPv6Address -IP $broadcastInt -Prefix $Prefix -Info
+                }
                 [PSCustomObject] @{
-                    IP           = Convert-IPv6Address -IP $ipInt        -Prefix $Prefix
-                    Subnet       = Convert-IPv6Address -IP $subnetInt    -Prefix $Prefix
-                    FirstIP4Real = Convert-IPv6Address -IP $subnetInt    -Prefix $Prefix
-                    FirstIP      = Convert-IPv6Address -IP $firstInt     -Prefix $Prefix
-                    LastIP       = Convert-IPv6Address -IP $lastInt      -Prefix $Prefix
-                    LastIP4Real  = Convert-IPv6Address -IP $broadcastInt -Prefix $Prefix
+                    IP           = $objects.IP.IP
+                    Subnet       = $objects.Subnet.IP
+                    FirstIP4Real = $objects.FirstIP4Real.IP
+                    FirstIP      = $objects.FirstIP.IP
+                    LastIP       = $objects.LastIP.IP
+                    LastIP4Real  = $objects.LastIP4Real.IP
+                    Objects      = $objects
                 }
             }
             else
