@@ -17,7 +17,7 @@ function Test-IPv4AddressInSubnet
             Same format as -Subnet
 
         .PARAMETER Mask
-            If input IP is in format without subnet mask, this parameter must be set to either
+            If subnet is in format without subnet mask, this parameter must be set to either
             - Quad dot format,        eg. "255.255.255.0"
             - Mask length (0-32),     eg. "24"
             - Mask length with slash, eg. "/24"
@@ -114,7 +114,7 @@ function Test-IPv4AddressInSubnet
             }
             else
             {
-                throw "No mask defined for Subnet ($Subnet), and -Mask parameter is not used"
+                throw "No mask defined for Subnet ($Subnet), and -Mask parameter is not set"
             }
 
             if ($info1.IP -eq $info2.IP)

@@ -194,6 +194,7 @@ function Get-IPv6Address
                     SecondIP      = $objects.SecondIP.IP
                     PenultimateIP = $objects.PenultimateIP.IP
                     LastIP        = $objects.LastIP.IP
+                    Prefix        = $Prefix
                     Objects       = $objects
                 }
             }

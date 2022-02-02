@@ -159,20 +159,23 @@ Convert-IPv6Address 00ab:00:0:000:00:fff::1     # Returns ab::fff:0:1
 Convert-IPv6Address 00ab:00:0:000:00:fff::1/64  # Returns ab::fff:0:1/64
 
 # Get different info about an IPv6 address
-Convert-IPv6Address -IP a:b:c::/64 -Info  # Returns object...:
-# IP                     : a:b:c::/64
-# IPCompact              : a:b:c::
-# IPExpanded             : 000a:000b:000c:0000:0000:0000:0000:0000
-# IPIntArray             : {10, 11, 12, 0...}
-# IPHexArray             : {a, b, c, 0...}
-# IPHexArrayExpanded     : {000a, 000b, 000c, 0000...}
-# IPBinary               : 00000000000010100000000000001011000000000000110000000000000000000000000000000000000000000000000000000000000000000000000000000000
-# Cidr                   : a:b:c::/64
-# Prefix                 : 64
-# PrefixIntArray         : {65535, 65535, 65535, 65535...}
-# PrefixHexArray         : {ffff, ffff, ffff, ffff...}
-# PrefixHexArrayExpanded : {ffff, ffff, ffff, ffff...}
-# PrefixBinary           : 11111111111111111111111111111111111111111111111111111111111111110000000000000000000000000000000000000000000000000000000000000000
+# Convert-IPv6Address -IP a:b:c::/64 -Info  # Returns object...:
+# IP                      : a:b:c::/64
+# IPCompact               : a:b:c::
+# IPExpanded              : 000a:000b:000c:0000:0000:0000:0000:0000
+# IPIntArray              : {10, 11, 12, 0...}
+# IPHexArray              : {a, b, c, 0...}
+# IPHexArrayExpanded      : {000a, 000b, 000c, 0000...}
+# IPBinary                : 0000000000001010 0000000000001011 0000000000001100 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+# Cidr                    : a:b:c::/64
+# CidrExpanded            : 000a:000b:000c:0000:0000:0000:0000:0000/64
+# Prefix                  : 64
+# PrefixIntArray          : {65535, 65535, 65535, 65535...}
+# PrefixHexArray          : {ffff, ffff, ffff, ffff...}
+# PrefixHexArrayExpanded  : {ffff, ffff, ffff, ffff...}
+# PrefixHexString         : ffff:ffff:ffff:ffff:0:0:0:0
+# PrefixHexStringExpanded : ffff:ffff:ffff:ffff:0000:0000:0000:0000
+# PrefixBinary            : 1111111111111111 1111111111111111 1111111111111111 1111111111111111 0000000000000000 0000000000000000 0000000000000000 0000000000000000
 
 
 
@@ -222,3 +225,38 @@ Test-IPv6Address -AllowPrefix -IP a:b::x/64    # Returns False
 # Test if input is a valid IPv6 address - prefix is required
 Test-IPv6Address -RequirePrefix -IP a:b::c/64  # Returns True
 Test-IPv6Address -RequirePrefix -IP a:b::c     # Returns False
+
+
+
+########################## Test-IPv4AddressInSameNet ###########################
+
+# Test if two IP addresses is in the same subnet
+Test-IPv6AddressInSameNet a:2::/31 a:3::/31  # Returns True
+Test-IPv6AddressInSameNet a:2::/32 a:3::/32  # Returns False
+Test-IPv6AddressInSameNet a:2::/31 a:3::/30  # Returns False
+
+# Allow mismatch in prefix, as long as hosts with the two IP addresses
+# would be able to communicate directly (not routed)
+Test-IPv6AddressInSameNet a:2::/31 a:3::/32 -AllowPrefixMismatch  # Returns False
+Test-IPv6AddressInSameNet a:2::/31 a:3::/30 -AllowPrefixMismatch  # Returns True
+
+
+
+########################### Test-IPv6AddressInSubnet ###########################
+
+# Test if IP address is in a subnet
+Test-IPv6AddressInSubnet -Subnet a:2::/31 -IP a:3::/31  # Returns True
+Test-IPv6AddressInSubnet -Subnet a:2::/32 -IP a:3::/32  # Returns False
+Test-IPv6AddressInSubnet -Subnet a:2::/31 -IP a:3::/30  # Returns False
+
+# Ignore mask on IP
+Test-IPv6AddressInSubnet -Subnet a:2::/32 -IP a:3::/31 -AllowPrefixMismatch  # Returns False
+Test-IPv6AddressInSubnet -Subnet a:2::/31 -IP a:3::/32 -AllowPrefixMismatch  # Returns True
+
+
+
+############################### Test-IPv6Subnet ################################
+
+# Test if input is a subnet
+Test-IPv6Subnet -Subnet a:0:0:b::/64    # Returns True
+Test-IPv6Subnet -Subnet a:0:0:0:b::/64  # Returns False

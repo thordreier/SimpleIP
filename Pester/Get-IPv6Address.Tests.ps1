@@ -77,6 +77,7 @@ Describe 'Get-IPv6Address' {
             $r.SecondIP      | Should -Be 98::1/15
             $r.PenultimateIP | Should -Be 99:ffff:ffff:ffff:ffff:ffff:ffff:fffe/15
             $r.LastIP        | Should -Be 99:ffff:ffff:ffff:ffff:ffff:ffff:ffff/15
+            $r.Prefix        | Should -Be 15
         }
     }
 

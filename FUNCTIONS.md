@@ -15,7 +15,12 @@ Text in this document is automatically created - don't change it manually
 [Test-IPv4Address](#Test-IPv4Address)<br>
 [Test-IPv4AddressInSameNet](#Test-IPv4AddressInSameNet)<br>
 [Test-IPv4AddressInSubnet](#Test-IPv4AddressInSubnet)<br>
+[Test-IPv4AddressIsPrivate](#Test-IPv4AddressIsPrivate)<br>
 [Test-IPv4Subnet](#Test-IPv4Subnet)<br>
+[Test-IPv6Address](#Test-IPv6Address)<br>
+[Test-IPv6AddressInSameNet](#Test-IPv6AddressInSameNet)<br>
+[Test-IPv6AddressInSubnet](#Test-IPv6AddressInSubnet)<br>
+[Test-IPv6Subnet](#Test-IPv6Subnet)<br>
 
 ## Functions
 
@@ -271,6 +276,7 @@ PARAMETERS
         Input IP is either
         - Standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
         - [uint16[]] array with  8 elements
+        - Binary (string containinging 128 "0" or "1" - spaces are allowed)
         
     -Prefix <Nullable`1>
         If prefix is not set in IP address, it must be set with this parameter
@@ -306,19 +312,22 @@ PARAMETERS
     
     PS C:\>Convert-IPv6Address -IP a:b:c::/64 -Info
     
-    IP                     : a:b:c::/64
-    IPCompact              : a:b:c::
-    IPExpanded             : 000a:000b:000c:0000:0000:0000:0000:0000
-    IPIntArray             : {10, 11, 12, 0...}
-    IPHexArray             : {a, b, c, 0...}
-    IPHexArrayExpanded     : {000a, 000b, 000c, 0000...}
-    IPBinary               : 00000000000010100000000000001011000000000000110000000000000000000000000000000000000000000000000000000000000000000000000000000000
-    Cidr                   : a:b:c::/64
-    Prefix                 : 64
-    PrefixIntArray         : {65535, 65535, 65535, 65535...}
-    PrefixHexArray         : {ffff, ffff, ffff, ffff...}
-    PrefixHexArrayExpanded : {ffff, ffff, ffff, ffff...}
-    PrefixBinary           : 11111111111111111111111111111111111111111111111111111111111111110000000000000000000000000000000000000000000000000000000000000000
+    IP                      : a:b:c::/64
+    IPCompact               : a:b:c::
+    IPExpanded              : 000a:000b:000c:0000:0000:0000:0000:0000
+    IPIntArray              : {10, 11, 12, 0...}
+    IPHexArray              : {a, b, c, 0...}
+    IPHexArrayExpanded      : {000a, 000b, 000c, 0000...}
+    IPBinary                : 0000000000001010 0000000000001011 0000000000001100 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+    Cidr                    : a:b:c::/64
+    CidrExpanded            : 000a:000b:000c:0000:0000:0000:0000:0000/64
+    Prefix                  : 64
+    PrefixIntArray          : {65535, 65535, 65535, 65535...}
+    PrefixHexArray          : {ffff, ffff, ffff, ffff...}
+    PrefixHexArrayExpanded  : {ffff, ffff, ffff, ffff...}
+    PrefixHexString         : ffff:ffff:ffff:ffff:0:0:0:0
+    PrefixHexStringExpanded : ffff:ffff:ffff:ffff:0000:0000:0000:0000
+    PrefixBinary            : 1111111111111111 1111111111111111 1111111111111111 1111111111111111 0000000000000000 0000000000000000 0000000000000000 0000000000000000
     
     
     
@@ -515,6 +524,8 @@ PARAMETERS
     FirstIP     : 192.168.0.129
     LastIP      : 192.168.0.254
     Broadcast   : 192.168.0.255
+    Integer     : @{IP=3232235670; Subnet=3232235648; FirstIP=3232235...
+    Binary      : @{IP=11000000101010000000000010010110; Subnet=11000...
     MaskQuadDot : 255.255.255.128
     MaskLength  : 25
     
@@ -791,12 +802,13 @@ PARAMETERS
     
     PS C:\>Get-IPv6Address -IP 007:6:5::77:88/64 -Info
     
-    IP           : 7:6:5::77:88/64
-    Subnet       : 7:6:5::/64
-    FirstIP4Real : 7:6:5::/64
-    FirstIP      : 7:6:5::1/64
-    LastIP       : 7:6:5::ffff:ffff:ffff:fffe/64
-    LastIP4Real  : 7:6:5::ffff:ffff:ffff:ffff/64
+    IP            : 7:6:5::77:88/64
+    Subnet        : 7:6:5::/64
+    FirstIP       : 7:6:5::/64
+    SecondIP      : 7:6:5::1/64
+    PenultimateIP : 7:6:5::ffff:ffff:ffff:fffe/64
+    LastIP        : 7:6:5::ffff:ffff:ffff:ffff/64
+    Objects       : @{IP=; Subnet=; FirstIP=; SecondIP=; PenultimateIP=; LastIP=}
     
     
     
@@ -882,7 +894,7 @@ NAME
     Test-IPv4Address
     
 SYNOPSIS
-    Test if a string contains a valid IP address
+    Test if a string contains a valid IP address (IPv4)
     
     
 SYNTAX
@@ -896,7 +908,7 @@ SYNTAX
     
     
 DESCRIPTION
-    Test if a string contains a valid IP address
+    Test if a string contains a valid IP address (IPv4)
     Uses regex to test
     Returns [bool]
     
@@ -1088,7 +1100,7 @@ NAME
     Test-IPv4AddressInSameNet
     
 SYNOPSIS
-    Test if two IP addresses is in the same subnet
+    Test if two IP addresses are in the same subnet
     
     
 SYNTAX
@@ -1096,7 +1108,7 @@ SYNTAX
     
     
 DESCRIPTION
-    Test if two IP addresses is in the same subnet
+    Test if two IP addresses are in the same subnet
     
 
 PARAMETERS
@@ -1107,6 +1119,7 @@ PARAMETERS
         If input is IP without subnet mask (eg. "127.0.0.1") then -Mask parameter must be set
         
     -IP2 <String>
+        Same format as -IP
         
     -Mask <String>
         If input IP is in format without subnet mask, this parameter must be set to either
@@ -1197,7 +1210,7 @@ PARAMETERS
         Same format as -Subnet
         
     -Mask <String>
-        If input IP is in format without subnet mask, this parameter must be set to either
+        If subnet is in format without subnet mask, this parameter must be set to either
         - Quad dot format,        eg. "255.255.255.0"
         - Mask length (0-32),     eg. "24"
         - Mask length with slash, eg. "/24"
@@ -1247,10 +1260,81 @@ PARAMETERS
     
     
     
+    -------------------------- EXAMPLE 5 --------------------------
+    
+    PS C:\>Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.50.70/23 -AllowMaskMismatch
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 6 --------------------------
+    
+    PS C:\>Test-IPv4AddressInSubnet -Subnet 10.30.50.0/24 -IP 10.30.51.70/23 -AllowMaskMismatch
+    
+    False
+    
+    
+    
+    
 REMARKS
     To see the examples, type: "get-help Test-IPv4AddressInSubnet -examples".
     For more information, type: "get-help Test-IPv4AddressInSubnet -detailed".
     For technical information, type: "get-help Test-IPv4AddressInSubnet -full".
+
+```
+
+<a name="Test-IPv4AddressIsPrivate"></a>
+### Test-IPv4AddressIsPrivate
+
+```
+NAME
+    Test-IPv4AddressIsPrivate
+    
+SYNOPSIS
+    Test if IP address is in a private segment
+    
+    
+SYNTAX
+    Test-IPv4AddressIsPrivate [-IP] <String> [<CommonParameters>]
+    
+    Test-IPv4AddressIsPrivate [-IP] <String> -Rfc1918 [<CommonParameters>]
+    
+    Test-IPv4AddressIsPrivate [-IP] <String> -Rfc6598 [<CommonParameters>]
+    
+    
+DESCRIPTION
+    Test if IP address is in a private segment
+    
+
+PARAMETERS
+    -IP <String>
+        Input IP in quad dot format with or without subnet mask
+        
+    -Rfc1918 [<SwitchParameter>]
+        
+    -Rfc6598 [<SwitchParameter>]
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see 
+        about_CommonParameters (https:/go.microsoft.com/fwlink/?LinkID=113216). 
+    
+    -------------------------- EXAMPLE 1 --------------------------
+    
+    PS C:\>xxx
+    
+    
+    
+    
+    
+    
+REMARKS
+    To see the examples, type: "get-help Test-IPv4AddressIsPrivate -examples".
+    For more information, type: "get-help Test-IPv4AddressIsPrivate -detailed".
+    For technical information, type: "get-help Test-IPv4AddressIsPrivate -full".
 
 ```
 
@@ -1305,7 +1389,7 @@ PARAMETERS
     
     PS C:\>Test-IPv4Subnet -Subnet 10.20.30.0/255.255.0.0
     
-    True
+    False
     
     
     
@@ -1314,6 +1398,380 @@ REMARKS
     To see the examples, type: "get-help Test-IPv4Subnet -examples".
     For more information, type: "get-help Test-IPv4Subnet -detailed".
     For technical information, type: "get-help Test-IPv4Subnet -full".
+
+```
+
+<a name="Test-IPv6Address"></a>
+### Test-IPv6Address
+
+```
+NAME
+    Test-IPv6Address
+    
+SYNOPSIS
+    Test if a string contains a valid IP address (IPv6)
+    
+    
+SYNTAX
+    Test-IPv6Address [-IP] <String> [-IPOnly] [<CommonParameters>]
+    
+    Test-IPv6Address [-IP] <String> -AllowPrefix [<CommonParameters>]
+    
+    Test-IPv6Address [-IP] <String> -RequirePrefix [<CommonParameters>]
+    
+    
+DESCRIPTION
+    Test if a string contains a valid IP address (IPv6)
+    Returns [bool]
+    
+
+PARAMETERS
+    -IP <String>
+        IP address to test is valid or not
+        
+    -IPOnly [<SwitchParameter>]
+        Only return True if input is valid IPv6 address (without prefix)
+        Eg. "a:b::c"
+        This is default
+        
+    -AllowPrefix [<SwitchParameter>]
+        Return true if input valid IPv6 address with or without prefix
+        Eg. "a:b::c" or "a:b::c/64"
+        
+    -RequirePrefix [<SwitchParameter>]
+        Return true if input valid IPv6 address with prefix
+        Eg. "a:b::c/64"
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see 
+        about_CommonParameters (https:/go.microsoft.com/fwlink/?LinkID=113216). 
+    
+    -------------------------- EXAMPLE 1 --------------------------
+    
+    PS C:\>Test-IPv6Address -IP a:b::c
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 2 --------------------------
+    
+    PS C:\>Test-IPv6Address -IP a:b::c/64
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 3 --------------------------
+    
+    PS C:\>Test-IPv6Address -IP a:b::x
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 4 --------------------------
+    
+    PS C:\>Test-IPv6Address -IP a:b::c/64
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 5 --------------------------
+    
+    PS C:\>Test-IPv6Address -AllowPrefix -IP a:b::c/64
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 6 --------------------------
+    
+    PS C:\>Test-IPv6Address -AllowPrefix -IP a:b::c
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 7 --------------------------
+    
+    PS C:\>Test-IPv6Address -AllowPrefix -IP a:b::x/64
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 8 --------------------------
+    
+    PS C:\>Test-IPv6Address -RequirePrefix -IP a:b::c/64
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 9 --------------------------
+    
+    PS C:\>Test-IPv6Address -RequirePrefix -IP a:b::c
+    
+    False
+    
+    
+    
+    
+REMARKS
+    To see the examples, type: "get-help Test-IPv6Address -examples".
+    For more information, type: "get-help Test-IPv6Address -detailed".
+    For technical information, type: "get-help Test-IPv6Address -full".
+
+```
+
+<a name="Test-IPv6AddressInSameNet"></a>
+### Test-IPv6AddressInSameNet
+
+```
+NAME
+    Test-IPv6AddressInSameNet
+    
+SYNOPSIS
+    Test if two IP addresses are in the same subnet (IPv6)
+    
+    
+SYNTAX
+    Test-IPv6AddressInSameNet [-IP] <String> [-IP2] <String> [-Prefix <Nullable`1>] [-AllowPrefixMismatch] [<CommonParameters>]
+    
+    
+DESCRIPTION
+    Test if two IP addresses are in the same subnet (IPv6)
+    
+
+PARAMETERS
+    -IP <String>
+        Input IP is standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
+        
+    -IP2 <String>
+        Same format as -IP
+        
+    -Prefix <Nullable`1>
+        If prefix is not set in IP address, it must be set with this parameter
+        
+    -AllowPrefixMismatch [<SwitchParameter>]
+        Return true if hosts with the two IP addresses can communicate with each other directly
+        (not routed), even if there's a mismatch in prefix between the two.
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see 
+        about_CommonParameters (https:/go.microsoft.com/fwlink/?LinkID=113216). 
+    
+    -------------------------- EXAMPLE 1 --------------------------
+    
+    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/31
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 2 --------------------------
+    
+    PS C:\>Test-IPv6AddressInSameNet a:2::/32 a:3::/32
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 3 --------------------------
+    
+    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/30
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 4 --------------------------
+    
+    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/32 -AllowPrefixMismatch
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 5 --------------------------
+    
+    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/30 -AllowPrefixMismatch
+    
+    True
+    
+    
+    
+    
+REMARKS
+    To see the examples, type: "get-help Test-IPv6AddressInSameNet -examples".
+    For more information, type: "get-help Test-IPv6AddressInSameNet -detailed".
+    For technical information, type: "get-help Test-IPv6AddressInSameNet -full".
+
+```
+
+<a name="Test-IPv6AddressInSubnet"></a>
+### Test-IPv6AddressInSubnet
+
+```
+NAME
+    Test-IPv6AddressInSubnet
+    
+SYNOPSIS
+    Test if two IP addresses are in the same subnet (IPv6)
+    
+    
+SYNTAX
+    Test-IPv6AddressInSubnet [-Subnet] <String> [-IP] <String> [-Prefix <Nullable`1>] [-AllowPrefixMismatch] [<CommonParameters>]
+    
+    
+DESCRIPTION
+    Test if two IP addresses are in the same subnet (IPv6)
+    
+
+PARAMETERS
+    -Subnet <String>
+        Input IP is standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
+        
+    -IP <String>
+        Same format as -Subnet
+        
+    -Prefix <Nullable`1>
+        If prefix is not set in subnet address, it must be set with this parameter
+        
+    -AllowPrefixMismatch [<SwitchParameter>]
+        Return true if hosts with the two IP addresses can communicate with each other directly
+        (not routed), even if there's a mismatch in prefix between the two.
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see 
+        about_CommonParameters (https:/go.microsoft.com/fwlink/?LinkID=113216). 
+    
+    -------------------------- EXAMPLE 1 --------------------------
+    
+    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/31
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 2 --------------------------
+    
+    PS C:\>Test-IPv6AddressInSameNet a:2::/32 a:3::/32
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 3 --------------------------
+    
+    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/30
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 4 --------------------------
+    
+    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/32 -AllowPrefixMismatch
+    
+    False
+    
+    
+    
+    
+    -------------------------- EXAMPLE 5 --------------------------
+    
+    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/30 -AllowPrefixMismatch
+    
+    True
+    
+    
+    
+    
+REMARKS
+    To see the examples, type: "get-help Test-IPv6AddressInSubnet -examples".
+    For more information, type: "get-help Test-IPv6AddressInSubnet -detailed".
+    For technical information, type: "get-help Test-IPv6AddressInSubnet -full".
+
+```
+
+<a name="Test-IPv6Subnet"></a>
+### Test-IPv6Subnet
+
+```
+NAME
+    Test-IPv6Subnet
+    
+SYNOPSIS
+    Test if IP address is a valid subnet address (IPv6)
+    
+    
+SYNTAX
+    Test-IPv6Subnet [-Subnet] <String> [-Prefix <String>] [<CommonParameters>]
+    
+    
+DESCRIPTION
+    Test if IP address is a valid subnet address (IPv6)
+    
+
+PARAMETERS
+    -Subnet <String>
+        Input IP is standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
+        
+    -Prefix <String>
+        If prefix is not set in subnet address, it must be set with this parameter
+        
+    <CommonParameters>
+        This cmdlet supports the common parameters: Verbose, Debug,
+        ErrorAction, ErrorVariable, WarningAction, WarningVariable,
+        OutBuffer, PipelineVariable, and OutVariable. For more information, see 
+        about_CommonParameters (https:/go.microsoft.com/fwlink/?LinkID=113216). 
+    
+    -------------------------- EXAMPLE 1 --------------------------
+    
+    PS C:\>Test-IPv6Subnet -Subnet a:0:0:b::/64
+    
+    True
+    
+    
+    
+    
+    -------------------------- EXAMPLE 2 --------------------------
+    
+    PS C:\>Test-IPv6Subnet -Subnet a:0:0:0:b::/64
+    
+    False
+    
+    
+    
+    
+REMARKS
+    To see the examples, type: "get-help Test-IPv6Subnet -examples".
+    For more information, type: "get-help Test-IPv6Subnet -detailed".
+    For technical information, type: "get-help Test-IPv6Subnet -full".
 
 ```
 

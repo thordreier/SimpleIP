@@ -15,7 +15,7 @@ function Convert-IPv6Address
             Input IP is either
             - Standard IPv6 format with out prefix (eg. "a:b:00c::" or "a:b:00c::0/64")
             - [uint16[]] array with  8 elements
-            - Binary (128 long string containing only "0" and "1")
+            - Binary (string containinging 128 "0" or "1" - spaces are allowed)
 
         .PARAMETER Prefix
             If prefix is not set in IP address, it must be set with this parameter
@@ -33,19 +33,22 @@ function Convert-IPv6Address
 
         .EXAMPLE
             Convert-IPv6Address -IP a:b:c::/64 -Info
-            IP                     : a:b:c::/64
-            IPCompact              : a:b:c::
-            IPExpanded             : 000a:000b:000c:0000:0000:0000:0000:0000
-            IPIntArray             : {10, 11, 12, 0...}
-            IPHexArray             : {a, b, c, 0...}
-            IPHexArrayExpanded     : {000a, 000b, 000c, 0000...}
-            IPBinary               : 00000000000010100000000000001011000000000000110000000000000000000000000000000000000000000000000000000000000000000000000000000000
-            Cidr                   : a:b:c::/64
-            Prefix                 : 64
-            PrefixIntArray         : {65535, 65535, 65535, 65535...}
-            PrefixHexArray         : {ffff, ffff, ffff, ffff...}
-            PrefixHexArrayExpanded : {ffff, ffff, ffff, ffff...}
-            PrefixBinary           : 11111111111111111111111111111111111111111111111111111111111111110000000000000000000000000000000000000000000000000000000000000000
+            IP                      : a:b:c::/64
+            IPCompact               : a:b:c::
+            IPExpanded              : 000a:000b:000c:0000:0000:0000:0000:0000
+            IPIntArray              : {10, 11, 12, 0...}
+            IPHexArray              : {a, b, c, 0...}
+            IPHexArrayExpanded      : {000a, 000b, 000c, 0000...}
+            IPBinary                : 0000000000001010 0000000000001011 0000000000001100 0000000000000000 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+            Cidr                    : a:b:c::/64
+            CidrExpanded            : 000a:000b:000c:0000:0000:0000:0000:0000/64
+            Prefix                  : 64
+            PrefixIntArray          : {65535, 65535, 65535, 65535...}
+            PrefixHexArray          : {ffff, ffff, ffff, ffff...}
+            PrefixHexArrayExpanded  : {ffff, ffff, ffff, ffff...}
+            PrefixHexString         : ffff:ffff:ffff:ffff:0:0:0:0
+            PrefixHexStringExpanded : ffff:ffff:ffff:ffff:0000:0000:0000:0000
+            PrefixBinary            : 1111111111111111 1111111111111111 1111111111111111 1111111111111111 0000000000000000 0000000000000000 0000000000000000 0000000000000000
     #>
 
     [OutputType([System.String],  ParameterSetName = 'Default')]
@@ -86,9 +89,9 @@ function Convert-IPv6Address
 
             [System.UInt16[]] $ipIntArray = @()
 
-            if ($IP -is [System.String] -and $IP -match '^[01]{128}$')
+            if ($IP -is [System.String] -and ($nospaceIP = $IP -replace ' ') -and $nospaceIP -match '^[01]{128}$')
             {
-                $ipIntArray = (0..7).ForEach({ [System.Convert]::ToUInt16($IP.Substring(($_*16), 16), 2) })
+                $ipIntArray = (0..7).ForEach({ [System.Convert]::ToUInt16($nospaceIP.Substring(($_*16), 16), 2) })
             }
             elseif ($IP -is [System.String])
             {
@@ -136,38 +139,45 @@ function Convert-IPv6Address
             }
 
 
-            $cidr = $prefixIntArray = $prefixHexArray = $prefixHexArrayExpanded = $prefixBinary = $null
+            $cidr = $cidrExpanded = $prefixIntArray = $prefixHexArray = $prefixHexArrayExpanded = $prefixHexString = $prefixHexStringExpanded = $prefixBinary = $null
             $ipHexArrayExpanded = $ipIntArray | ForEach-Object -Process { '{0:x4}' -f $_ }
             $ipHexArray         = $ipIntArray | ForEach-Object -Process { '{0:x}'  -f $_ }
             $ipExpanded         = $ipHexArrayExpanded -join ':'
             $ipCompact          = $ipHexArray -join ':'
             foreach ($i in (7..0)) { if ($ipCompact -ne ($ipCompact = $ipCompact -replace "(^|:)0(:0){$i}(:|`$)",'::')) {break} }
             $ipReturn           = $ipCompact
-            $ipBinary = ($ipIntArray | ForEach-Object -Process {[System.Convert]::ToString(([System.UInt16] $_), 2).PadLeft(16, '0')}) -join ''
+            $ipBinary = ($ipIntArray | ForEach-Object -Process {[System.Convert]::ToString(([System.UInt16] $_), 2).PadLeft(16, '0')}) -join ' '
 
             if ($Prefix -ne $null)
             {
-                $ipReturn = $cidr       = '{0}/{1}' -f $ipCompact, $Prefix
-                $prefixBinary           = '1' * $Prefix + '0' * (128 - $Prefix)
-                $prefixIntArray         = (0..7).ForEach({ [System.Convert]::ToUInt16($prefixBinary.Substring(($_*16), 16), 2) })
-                $prefixHexArrayExpanded = $prefixIntArray | ForEach-Object -Process { '{0:x4}' -f $_ }
-                $prefixHexArray         = $prefixIntArray | ForEach-Object -Process { '{0:x}'  -f $_ }
+                $ipReturn = $cidr        = '{0}/{1}' -f $ipCompact, $Prefix
+                $cidrExpanded            = '{0}/{1}' -f $ipExpanded, $Prefix
+                $prefixBinary            = '1' * $Prefix + '0' * (128 - $Prefix)
+                $prefixIntArray          = (0..7).ForEach({ [System.Convert]::ToUInt16($prefixBinary.Substring(($_*16), 16), 2) })
+                $prefixHexArrayExpanded  = $prefixIntArray | ForEach-Object -Process { '{0:x4}' -f $_ }
+                $prefixHexArray          = $prefixIntArray | ForEach-Object -Process { '{0:x}'  -f $_ }
+                $prefixHexString         = $prefixHexArray -join ':'
+                $prefixHexStringExpanded = $prefixHexArrayExpanded -join ':'
+                $prefixBinary            = ($prefixIntArray | ForEach-Object -Process {[System.Convert]::ToString(([System.UInt16] $_), 2).PadLeft(16, '0')}) -join ' '
             }
 
             $r = [PSCustomObject] @{
-                IP                     = $ipReturn
-                IPCompact              = $ipCompact
-                IPExpanded             = $ipExpanded
-                IPIntArray             = $ipIntArray
-                IPHexArray             = $ipHexArray
-                IPHexArrayExpanded     = $ipHexArrayExpanded
-                IPBinary               = $ipBinary
-                Cidr                   = $cidr
-                Prefix                 = $Prefix
-                PrefixIntArray         = $prefixIntArray
-                PrefixHexArray         = $prefixHexArray
-                PrefixHexArrayExpanded = $prefixHexArrayExpanded
-                PrefixBinary           = $prefixBinary
+                IP                      = $ipReturn
+                IPCompact               = $ipCompact
+                IPExpanded              = $ipExpanded
+                IPIntArray              = $ipIntArray
+                IPHexArray              = $ipHexArray
+                IPHexArrayExpanded      = $ipHexArrayExpanded
+                IPBinary                = $ipBinary
+                Cidr                    = $cidr
+                CidrExpanded            = $cidrExpanded
+                Prefix                  = $Prefix
+                PrefixIntArray          = $prefixIntArray
+                PrefixHexArray          = $prefixHexArray
+                PrefixHexArrayExpanded  = $prefixHexArrayExpanded
+                PrefixHexString         = $prefixHexString
+                PrefixHexStringExpanded = $prefixHexStringExpanded
+                PrefixBinary            = $prefixBinary
             }
 
             # Return
