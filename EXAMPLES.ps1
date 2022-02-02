@@ -232,14 +232,14 @@ Test-IPv6Address -RequirePrefix -IP a:b::c     # Returns False
 ########################## Test-IPv4AddressInSameNet ###########################
 
 # Test if two IP addresses is in the same subnet
-Test-IPv6AddressInSameNet a:2::/31 a:3::/31  # Returns True
-Test-IPv6AddressInSameNet a:2::/32 a:3::/32  # Returns False
-Test-IPv6AddressInSameNet a:2::/31 a:3::/30  # Returns False
+Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/31  # Returns True
+Test-IPv6AddressInSameNet -IP a:2::/32 -IP2 a:3::/32  # Returns False
+Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/30  # Returns False
 
 # Allow mismatch in prefix, as long as hosts with the two IP addresses
 # would be able to communicate directly (not routed)
-Test-IPv6AddressInSameNet a:2::/31 a:3::/32 -AllowPrefixMismatch  # Returns False
-Test-IPv6AddressInSameNet a:2::/31 a:3::/30 -AllowPrefixMismatch  # Returns True
+Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/32 -AllowPrefixMismatch  # Returns False
+Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/30 -AllowPrefixMismatch  # Returns True
 
 
 

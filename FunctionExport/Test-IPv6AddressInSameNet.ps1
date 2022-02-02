@@ -21,23 +21,23 @@ function Test-IPv6AddressInSameNet
             (not routed), even if there's a mismatch in prefix between the two.
 
         .EXAMPLE
-            Test-IPv6AddressInSameNet a:2::/31 a:3::/31
+            Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/31
             True
 
         .EXAMPLE
-            Test-IPv6AddressInSameNet a:2::/32 a:3::/32
+            Test-IPv6AddressInSameNet -IP a:2::/32 -IP2 a:3::/32
             False
 
         .EXAMPLE
-            Test-IPv6AddressInSameNet a:2::/31 a:3::/30
+            Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/30
             False
 
         .EXAMPLE
-            Test-IPv6AddressInSameNet a:2::/31 a:3::/32 -AllowPrefixMismatch
+            Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/32 -AllowPrefixMismatch
             False
 
         .EXAMPLE
-            Test-IPv6AddressInSameNet a:2::/31 a:3::/30 -AllowPrefixMismatch
+            Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/30 -AllowPrefixMismatch
             True
     #>
 

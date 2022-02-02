@@ -241,14 +241,14 @@ Test-IPv6Address -RequirePrefix -IP a:b::c     # Returns False
 ########################## Test-IPv4AddressInSameNet ###########################
 
 # Test if two IP addresses is in the same subnet
-Test-IPv6AddressInSameNet a:2::/31 a:3::/31  # Returns True
-Test-IPv6AddressInSameNet a:2::/32 a:3::/32  # Returns False
-Test-IPv6AddressInSameNet a:2::/31 a:3::/30  # Returns False
+Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/31  # Returns True
+Test-IPv6AddressInSameNet -IP a:2::/32 -IP2 a:3::/32  # Returns False
+Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/30  # Returns False
 
 # Allow mismatch in prefix, as long as hosts with the two IP addresses
 # would be able to communicate directly (not routed)
-Test-IPv6AddressInSameNet a:2::/31 a:3::/32 -AllowPrefixMismatch  # Returns False
-Test-IPv6AddressInSameNet a:2::/31 a:3::/30 -AllowPrefixMismatch  # Returns True
+Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/32 -AllowPrefixMismatch  # Returns False
+Test-IPv6AddressInSameNet -IP a:2::/31 -IP2 a:3::/30 -AllowPrefixMismatch  # Returns True
 
 
 
@@ -277,20 +277,21 @@ Examples are also found in [EXAMPLES.ps1](EXAMPLES.ps1).
 
 ### Functions
 
-See [FUNCTIONS.md](FUNCTIONS.md) for documentation of funtions in this module.
+See [FUNCTIONS.md](FUNCTIONS.md) for documentation of functions in this module.
 
 ## Install
 
 ### Install module from PowerShell Gallery
 
-```
+```powershell
 Install-Module SimpleIP
 ```
 
 ### Install module from source
 
-```
+```powershell
 git clone https://github.com/thordreier/SimpleIP.git
 cd SimpleIP
+git pull
 .\Build.ps1 -InstallModule
 ```
