@@ -1668,7 +1668,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 1 --------------------------
     
-    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/31
+    PS C:\>Test-IPv6AddressInSubnet -Subnet a:2::/31 -IP a:3::/31
     
     True
     
@@ -1677,7 +1677,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 2 --------------------------
     
-    PS C:\>Test-IPv6AddressInSameNet a:2::/32 a:3::/32
+    PS C:\>Test-IPv6AddressInSubnet -Subnet a:2::/32 -IP a:3::/32
     
     False
     
@@ -1686,7 +1686,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 3 --------------------------
     
-    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/30
+    PS C:\>Test-IPv6AddressInSubnet -Subnet a:2::/31 -IP a:3::/30
     
     False
     
@@ -1695,7 +1695,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 4 --------------------------
     
-    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/32 -AllowPrefixMismatch
+    PS C:\>Test-IPv6AddressInSubnet -Subnet a:2::/32 -IP a:3::/31 -AllowPrefixMismatch
     
     False
     
@@ -1704,7 +1704,7 @@ PARAMETERS
     
     -------------------------- EXAMPLE 5 --------------------------
     
-    PS C:\>Test-IPv6AddressInSameNet a:2::/31 a:3::/30 -AllowPrefixMismatch
+    PS C:\>Test-IPv6AddressInSubnet -Subnet a:2::/31 -IP a:3::/32 -AllowPrefixMismatch
     
     True
     

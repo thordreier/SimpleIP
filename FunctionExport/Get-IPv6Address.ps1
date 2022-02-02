@@ -57,6 +57,7 @@ function Get-IPv6Address
             SecondIP      : 7:6:5::1/64
             PenultimateIP : 7:6:5::ffff:ffff:ffff:fffe/64
             LastIP        : 7:6:5::ffff:ffff:ffff:ffff/64
+            Prefix        : 64
             Objects       : @{IP=; Subnet=; FirstIP=; SecondIP=; PenultimateIP=; LastIP=}
     #>
 

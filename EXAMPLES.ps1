@@ -159,7 +159,7 @@ Convert-IPv6Address 00ab:00:0:000:00:fff::1     # Returns ab::fff:0:1
 Convert-IPv6Address 00ab:00:0:000:00:fff::1/64  # Returns ab::fff:0:1/64
 
 # Get different info about an IPv6 address
-# Convert-IPv6Address -IP a:b:c::/64 -Info  # Returns object...:
+Convert-IPv6Address -IP a:b:c::/64 -Info  # Returns object...:
 # IP                      : a:b:c::/64
 # IPCompact               : a:b:c::
 # IPExpanded              : 000a:000b:000c:0000:0000:0000:0000:0000
@@ -198,6 +198,7 @@ Get-IPv6Address -IP 007:6:5::77:88/64 -Info  # Returns object...:
 # SecondIP      : 7:6:5::1/64
 # PenultimateIP : 7:6:5::ffff:ffff:ffff:fffe/64
 # LastIP        : 7:6:5::ffff:ffff:ffff:ffff/64
+# Prefix        : 64
 # Objects       : @{IP=; Subnet=; FirstIP=; SecondIP=; PenultimateIP=; LastIP=}
 
 
