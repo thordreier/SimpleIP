@@ -22,7 +22,7 @@ CompanyName = 'Thor Dreier'
 Copyright = 'MIT License'
 
 # Description of the functionality provided by this module
-Description = 'PowerShell functions to get info about IP addresses'
+Description = 'Get info about IP addresses (eg. network address)'
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''

@@ -1,6 +1,6 @@
 # SimpleIP
 
-PowerShell functions to get info about IP addresses.
+PowerShell module: Get info about IP addresses (eg. network address).
 
 ## Usage
 
