@@ -44,7 +44,7 @@ Convert-IPv4Mask -Mask 17 -Binary     # Returns 11111111111111111000000000000000
 ############################### Get-IPv4Address ################################
 
 # Get subnet address in CIDR format for an IP address
-Get-IPv4Address -IP 127.0.0.1/8 -Subnet               # Returns 127.0.0.0/24
+Get-IPv4Address -IP 127.0.0.1/8 -Subnet               # Returns 127.0.0.0/8
 
 # Get subnet address with mask in quad dot format
 Get-IPv4Address -IP 127.0.0.1/8 -Subnet -WithMask     # Returns 127.0.0.0 255.0.0.0
