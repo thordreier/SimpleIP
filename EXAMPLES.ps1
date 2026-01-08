@@ -147,6 +147,16 @@ Test-IPv4Subnet -Subnet 10.20.30.0/255.255.0.0  # Returns False
 
 
 
+############################### Test-IPv4Subnet ################################
+
+# Test if input is a subnet
+Test-IPv4AddressIsPrivate -IP 1.1.1.1              # Returns False
+Test-IPv4AddressIsPrivate -IP 10.1.1.1             # Returns True
+Test-IPv4AddressIsPrivate -IP 100.64.1.1           # Returns True
+Test-IPv4AddressIsPrivate -IP 100.64.1.1 -Rfc1918  # Returns False
+
+
+
 #******************************************************************************#
 #                                     IPv6                                     #
 #******************************************************************************#
